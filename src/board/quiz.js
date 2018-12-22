@@ -134,8 +134,7 @@ class QuizBoard extends React.Component {
     return (
       <div id="top-list">
         <div>
-          {top.map((staff) => {
-            console.log(staff);
+          {top.filter((staff, index) => index < 3).map((staff) => {
             return (
               <div key={staff.user_id}>
                 <Avatar width="96px" src={staff.avatar} style={{ float: 'left', marginRight: '30px' }} />
