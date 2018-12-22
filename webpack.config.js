@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Uglify = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -17,7 +17,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.(less|css)$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       { test: /\.html$/, loader: 'html-loader' },
-      { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 8192, name: '[name]-[hash:8].[ext]' } },
+      { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 8192, name: '/[name]-[hash:8].[ext]' } },
     ]
   },
   plugins: [
@@ -30,10 +30,12 @@ module.exports = {
       template: './src/board.html',
       chunks: ['board'],
     }),
+    new CleanWebpackPlugin(['dist']),
   ],
   resolve: {
     alias: {
       components: path.resolve(__dirname, 'src/components'),
+      public: path.resolve(__dirname, 'src/public'),
     }
   },
   devServer: {

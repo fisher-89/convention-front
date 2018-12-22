@@ -3,10 +3,10 @@ import axios from 'axios';
 import Avatar from 'components/Avatar';
 import './quiz.less';
 import questions from './questions.json';
-import quizCover from '../public/quiz_cover.png';
-import progressBgDanger from '../public/progress_bg_danger.png';
-import clock from '../public/clock.png';
-import countDownGif from '../public/count_down.gif';
+import quizCover from 'public/quiz_cover.png';
+import progressBgDanger from 'public/progress_bg_danger.png';
+import clock from 'public/clock.png';
+import countDownGif from 'public/count_down.gif';
 
 class QuizBoard extends React.Component {
   state = {
