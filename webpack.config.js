@@ -10,6 +10,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath:'/',
     filename: '[name]-[hash:8].js',
   },
   module: {
@@ -17,7 +18,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.(less|css)$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       { test: /\.html$/, loader: 'html-loader' },
-      { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 8192} },
+      { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 8192, name: 'images/[name]-[hash:8].[ext]' } },
     ]
   },
   plugins: [
@@ -26,7 +27,7 @@ module.exports = {
       chunks: ['app'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'board.html',
+      filename: 'board/index.html',
       template: './src/board.html',
       chunks: ['board'],
     }),
