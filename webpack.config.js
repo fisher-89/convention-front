@@ -26,7 +26,7 @@ module.exports = {
       chunks: ['app'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'board/index.html',
+      filename: 'board.html',
       template: './src/board.html',
       chunks: ['board'],
     }),
