@@ -18,12 +18,6 @@ class QuizBoard extends React.Component {
     result: false,
   }
 
-  // state = {
-  //   start: true,
-  //   index: 3,
-  //   showAnswer: false,
-  // }
-
   componentWillMount() {
     document.addEventListener('keyup', this.handleStart);
   }
@@ -65,7 +59,7 @@ class QuizBoard extends React.Component {
     setTimeout(() => {
       const progressBox = document.getElementsByClassName('progress')[0];
       progressBox.getElementsByTagName('div')[0].style.width = 0;
-    }, 1);
+    }, 10);
     setTimeout(() => {
       const progressBox = document.getElementsByClassName('progress')[0];
       progressBox.style.borderColor = '#d0021b';
@@ -153,6 +147,8 @@ class QuizBoard extends React.Component {
   showResult = (e) => {
     e.preventDefault();
     if (e.keyCode === 39) {
+      document.removeEventListener('keyup', this.showResult);
+      document.removeEventListener('keyup', this.showTopList);
       axios.get(`/api/all-top`).then((res) => {
         this.setState({ result: res.data });
       });
@@ -164,7 +160,6 @@ class QuizBoard extends React.Component {
     const question = questions[index - 1];
 
     if (result) {
-      console.log(result);
       return (
         <div className="result">
           <div className="top-3">

@@ -14,14 +14,6 @@ class WelcomePage extends React.Component {
     showSelector: false,
   }
 
-  // state = {
-  //   hasLoggedIn: true,
-  //   currentUser: {
-  //     name: '测试',
-  //     avatar: '',
-  //   },
-  // }
-
   componentWillMount() {
     const currentUser = localStorage.getItem('current-user');
     if (currentUser) {
