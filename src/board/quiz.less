@@ -1,0 +1,174 @@
+body {
+  background-image: url(../public/quiz_bg.png);
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.count-down {
+  display: block;
+}
+
+.question-box {
+  font-size: 60px;
+  margin: 190px auto 0;
+  width: 1700px;
+  line-height: 84px;
+  position: relative;
+  text-align: justify;
+  padding: 40px 100px;
+  .progress {
+    width: 100%;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    > div {
+      width: 100%;
+      height: 100%;
+      background-image: url(../public/progress_bg.png);
+      transition: width 10s linear;
+    }
+  }
+
+  .options {
+    position: absolute;
+    top: 360px;
+    text-align: left;
+    > div {
+      height: 96px;
+      > span {
+        display: block;
+        float: left;
+        width: 50px;
+      }
+    }
+    > div.right-answer {
+      color: red;
+      font-weight: 700;
+    }
+    > div.wrong-answer {
+      //opacity: 0.5;
+    }
+  }
+}
+
+#top-list {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  > div {
+    height: 100%;
+    background-image: url(../public/quiz_top.png);
+    background-position: center;
+    transition: transform 0.3s linear;
+    padding-top: 435px;
+    padding-left: 690px;
+    transform: scale(0.2, 0.2);
+    > div {
+      height: 96px;
+      line-height: 96px;
+      font-size: 36px;
+      margin-bottom: 63px;
+      .name {
+        color: #333;
+        font-weight: 700;
+        margin-right: 30px;
+        display: inline-block;
+        width: 150px;
+      }
+      .score {
+        color: #f8b551;
+        margin-right: 120px;
+      }
+      .time {
+        color: #44baa2;
+        > img {
+          margin-right: 12px;
+          position: relative;
+          top: 5px;
+        }
+      }
+    }
+  }
+}
+
+.result {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-left: 390px;
+  padding-top: 360px;
+  background-image: url(../public/result.png);
+  .top-3 {
+    float: left;
+    width: 1020px;
+    > div {
+      height: 96px;
+      line-height: 96px;
+      font-size: 36px;
+      margin-bottom: 96px;
+      .avatar {
+        float: left;
+        margin-right: 30px;
+      }
+      .name {
+        display: inline-block;
+        width: 170px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-right: 30px;
+      }
+      .score {
+        display: inline-block;
+        color: #f8b551;
+        width: 130px;
+        font-weight: 700;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .time {
+        display: inline-block;
+        color: #44baa2;
+        font-size: 30px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        > img {
+          margin-right: 18px;
+          position: relative;
+          top: 5px;
+        }
+      }
+    }
+  }
+  .top-8 {
+    float: left;
+    > div {
+      height: 72px;
+      line-height: 72px;
+      font-size: 30px;
+      margin-bottom: 30px;
+      .avatar {
+        float: left;
+        margin-right: 30px;
+      }
+      .name {
+        display: inline-block;
+        width: 240px;
+        color: #666;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+}
