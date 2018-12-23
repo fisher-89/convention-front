@@ -53,6 +53,23 @@ body {
   }
 }
 
+#time-up {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  //background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  text-align: center;
+  > img {
+    position: relative;
+    top: 50%;
+    margin-top: -75px;
+    transition: transform 0.3s linear;
+    transform: scale(0.1, 0.1);
+  }
+}
+
 #top-list {
   position: absolute;
   top: 0;

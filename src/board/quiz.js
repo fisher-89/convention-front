@@ -7,12 +7,15 @@ import quizCover from 'public/quiz_cover.png';
 import progressBgDanger from 'public/progress_bg_danger.png';
 import clock from 'public/clock.png';
 import countDownGif from 'public/count_down.gif';
+import countDownAudio from 'public/start_count_down.mp3';
+import timeUp from 'public/time_up.png';
 
 class QuizBoard extends React.Component {
   state = {
     start: false,
     showCountDown: true,
     index: 1,
+    showTimeUp: false,
     showAnswer: false,
     top: null,
     result: false,
@@ -55,7 +58,7 @@ class QuizBoard extends React.Component {
   }
 
   questionCountDown = () => {
-    const { index } = this.state;
+
     setTimeout(() => {
       const progressBox = document.getElementsByClassName('progress')[0];
       progressBox.getElementsByTagName('div')[0].style.width = 0;
@@ -66,7 +69,21 @@ class QuizBoard extends React.Component {
       progressBox.getElementsByTagName('div')[0].style.backgroundImage = `url(${progressBgDanger})`;
     }, 7000);
     setTimeout(() => {
-      this.setState({ showAnswer: true }, () => {
+      this.setState({ showTimeUp: true }, () => {
+        setTimeout(() => {
+          document.getElementById('time-up').getElementsByTagName('img')[0].style.transform = 'scale(1,1)';
+        }, 10);
+        document.addEventListener('keyup', this.showAnswer);
+      });
+    }, 10000);
+  }
+
+  showAnswer = (e) => {
+    e.preventDefault();
+    const { index } = this.state;
+    if (e.keyCode === 39) {
+      document.removeEventListener('keyup', this.showAnswer);
+      this.setState({ showAnswer: true, showTimeUp: false }, () => {
         document.addEventListener('keyup', this.showTopList);
       });
       if (index < 10) {
@@ -74,7 +91,7 @@ class QuizBoard extends React.Component {
       } else {
         document.addEventListener('keyup', this.showResult);
       }
-    }, 10000);
+    }
   }
 
   showTopList = (e) => {
@@ -85,7 +102,7 @@ class QuizBoard extends React.Component {
         this.setState({ top: res.data.top }, () => {
           setTimeout(() => {
             document.getElementById('top-list').getElementsByTagName('div')[0].style.transform = 'scale(1,1)';
-          }, 1);
+          }, 10);
           document.addEventListener('keyup', this.hideTopList);
         });
       });
@@ -156,7 +173,7 @@ class QuizBoard extends React.Component {
   }
 
   render() {
-    const { start, showCountDown, index, top, result } = this.state;
+    const { start, showCountDown, index, showTimeUp, top, result } = this.state;
     const question = questions[index - 1];
 
     if (result) {
@@ -197,7 +214,10 @@ class QuizBoard extends React.Component {
       return (
         <React.Fragment>
           {showCountDown ? (
-            <img key={`count-down-${index}`} className="count-down" src={countDownGif} />
+            <React.Fragment>
+              <img key={`count-down-${index}`} className="count-down" src={countDownGif} />
+              <audio src={countDownAudio} autoPlay />
+            </React.Fragment>
           ) : (
             <div className="question-box">
               {this.makeProgress()}
@@ -207,11 +227,16 @@ class QuizBoard extends React.Component {
               </div>
             </div>
           )}
+          {showTimeUp && <div id="time-up"><img src={timeUp} /></div>}
           {top && this.makeTopList()}
         </React.Fragment>
       );
     } else {
-      return <img className="cover" src={quizCover} />;
+      return (
+        <React.Fragment>
+          <img className="cover" src={quizCover} />
+        </React.Fragment>
+      );
     }
   }
 }

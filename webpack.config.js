@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath:'/',
+    publicPath: '/',
     filename: '[name]-[hash:8].js',
   },
   module: {
@@ -19,6 +19,7 @@ module.exports = {
       { test: /\.(less|css)$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       { test: /\.html$/, loader: 'html-loader' },
       { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 8192, name: 'images/[name]-[hash:8].[ext]' } },
+      { test: /\.(mp3)$/, loader: 'url-loader', options: { limit: 0, name: 'audio/[name]-[hash:8].[ext]' } },
     ]
   },
   plugins: [
@@ -45,7 +46,7 @@ module.exports = {
     port: 8000,
     proxy: {
       '/api': {
-        target: 'http://of.xigemall.com',
+        target: 'http://192.168.20.16:8002',
         pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
       },
