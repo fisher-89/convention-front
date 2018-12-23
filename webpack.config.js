@@ -46,7 +46,7 @@ module.exports = {
     port: 8000,
     proxy: {
       '/api': {
-        target: 'http://192.168.20.16:8002',
+        target: 'http://of.xigemall.com',
         pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
       },

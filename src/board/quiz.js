@@ -52,13 +52,12 @@ class QuizBoard extends React.Component {
       setTimeout(() => {
         axios.get(`/api/start?round=${index}`);
         this.setState({ index, showCountDown: false }, this.questionCountDown);
-      }, 2900);
+      }, 3300);
     });
 
   }
 
   questionCountDown = () => {
-
     setTimeout(() => {
       const progressBox = document.getElementsByClassName('progress')[0];
       progressBox.getElementsByTagName('div')[0].style.width = 0;
