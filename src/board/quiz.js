@@ -9,6 +9,7 @@ import clock from 'public/clock.png';
 import countDownGif from 'public/count_down.gif';
 import countDownAudio from 'public/start_count_down.mp3';
 import timeUp from 'public/time_up.png';
+import timeUpAudio from 'public/time_up.mp3';
 
 class QuizBoard extends React.Component {
   state = {
@@ -226,7 +227,12 @@ class QuizBoard extends React.Component {
               </div>
             </div>
           )}
-          {showTimeUp && <div id="time-up"><img src={timeUp} /></div>}
+          {showTimeUp && (
+            <React.Fragment>
+              <div id="time-up"><img src={timeUp} /></div>
+              <audio src={timeUpAudio} autoPlay />
+            </React.Fragment>
+          )}
           {top && this.makeTopList()}
         </React.Fragment>
       );
