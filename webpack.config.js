@@ -36,7 +36,7 @@ module.exports = {
     //   chunks: ['board'],
     // }),
     new HtmlWebpackPlugin({
-      filename: './checkin/index.html',
+      filename: './checkin/checkin.html',
       template: './src/checkin/checkin.html',
       chunks: ['checkin'],
     }),

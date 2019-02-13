@@ -8,8 +8,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 ReactDom.render((
   <BrowserRouter>
     <Switch>
-      <Route exact path="/checkin" component={AuthCheck} />
-      <Route exact path="/checkin/checkview" component={CheckIn} />
+      {/* <Route exact path="/checkin" component={AuthCheck} /> */}
+      <Route exact path="/checkin/checkin.html" component={CheckIn} />
     </Switch>
   </BrowserRouter>
 ), document.getElementById('root'));
