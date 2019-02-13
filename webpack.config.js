@@ -2,16 +2,19 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+
+
 module.exports = {
   mode: 'development',
   entry: {
-    app: './src/app.js',
-    board: './src/board.js',
+    checkin:  './src/checkin/checkin.js',
+    // app: './src/app.js',
+    // board: './src/board.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: '[name]-[hash:8].js',
+    filename: '[name]/[name]-[hash:8].js',
   },
   module: {
     rules: [
@@ -23,14 +26,19 @@ module.exports = {
     ]
   },
   plugins: [
+    // new HtmlWebpackPlugin({
+    //   template: './src/app.html',
+    //   chunks: ['app'],
+    // }),
+    // new HtmlWebpackPlugin({
+    //   filename: './board.html',
+    //   template: './src/board.html',
+    //   chunks: ['board'],
+    // }),
     new HtmlWebpackPlugin({
-      template: './src/app.html',
-      chunks: ['app'],
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'board/index.html',
-      template: './src/board.html',
-      chunks: ['board'],
+      filename: './checkin/checkin.html',
+      template: './src/checkin/checkin.html',
+      chunks: ['checkin'],
     }),
     new CleanWebpackPlugin(['dist']),
   ],
