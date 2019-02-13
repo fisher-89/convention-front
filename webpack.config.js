@@ -52,13 +52,13 @@ module.exports = {
     contentBase: path.resolve(__dirname, 'dist'),
     host: '0.0.0.0',
     port: 8000,
-    proxy: {
-      '/api': {
-        target: 'http://of.xigemall.com',
-        pathRewrite: { '^/api': '/sign' },
-        changeOrigin: true,
-      },
-    },
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://of.xigemall.com',
+    //     pathRewrite: { '^/api': '/sign' },
+    //     changeOrigin: true,
+    //   },
+    // },
     historyApiFallback: true,
   }
 }
