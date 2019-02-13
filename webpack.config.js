@@ -60,7 +60,7 @@ module.exports = {
     //   },
     // },
     proxy: {
-      '/api': {
+      '': {
         target: '112.74.177.132:8007',
         changeOrigin: true,
       },

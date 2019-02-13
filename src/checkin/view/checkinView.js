@@ -23,7 +23,7 @@ export default class CheckIn extends React.Component {
       // sessionStorage.setItem('check_openid','123');//
     }else{
       const data = {'code':code}
-      axios.post('/openid',
+      axios.post('/api/openid',
         data).then(res => {
           console.log(res,333)
         }).catch(error=>{
