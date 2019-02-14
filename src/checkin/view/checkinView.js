@@ -21,9 +21,9 @@ export default class CheckIn extends React.Component {
       // const openId = sessionStorage.getItem('check_openid');
       console.log(code,333)
       if(!code){
-        const url = encodeURIComponent('http://cs.xigemall.com/checkin/checkin.html');//
+        const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
         const appId = 'wx136539e52b4980bf';
-        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
         // sessionStorage.setItem('check_openid','123');//
       }else{
         const data = {'code':code}
@@ -49,9 +49,9 @@ export default class CheckIn extends React.Component {
   }   
    render(){
     const {code } = this.state;
-    // if(!code){
-    //   return <Loading/>
-    // }
+    if(!code){
+      return <Loading/>
+    }
      return(<React.Fragment>
         <Suspense fallback={<Loading/>}>
           <CheckForm/>
