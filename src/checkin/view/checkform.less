@@ -1,0 +1,68 @@
+.checkinPage{
+  height: 100%;
+  background:url('../../public/checkin/checkinbg.png') 0 0 no-repeat;
+  background-size:100% 100%;
+  .logo{
+    height:5.8%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      height: 100%;
+    }
+  }
+  .xj{
+    height:19.704%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      height: 100%;
+    }
+  }
+  .triangle{
+    height:1.478%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      height: 100%;
+    }
+  }
+  .checkin{
+    height:5.91%;
+    .checkinbtn{
+      margin: 0 auto;
+      display: block;
+      height: 100%;
+    }
+    .smline{
+      height:100%;
+      position: relative;
+      animation: linemove 2s infinite;
+      &>img{
+        display: block;
+        height:2.1%;
+        margin:0 auto;
+      }
+      // display: block;
+      // margin:0 auto;
+      // height:2.04%;
+      // animation: linemove 2s infinite;
+    }
+  }
+  .gxline{
+    height:4.92%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      height: 100%;
+    }
+  }
+
+}
+@keyframes linemove
+{
+  0% {transform: translateY(0)}
+  25% {transform: translateY(-50%)}
+  50% {transform: translateY(-100%)}
+  75% {transform: translateY(-50%)}
+  100% {transform: translateY(0)}
+}

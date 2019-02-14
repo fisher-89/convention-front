@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route } from 'react-router-dom';
+import axios from 'axios'
 
 export default () =>{
   const openId = sessionStorage.getItem('check_openid');

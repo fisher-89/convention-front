@@ -21,7 +21,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.(less|css)$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       { test: /\.html$/, loader: 'html-loader' },
-      { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 8192, name: 'images/[name]-[hash:8].[ext]' } },
+      { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 50000, name: 'images/[name]-[hash:8].[ext]' } },
       { test: /\.(mp3)$/, loader: 'url-loader', options: { limit: 0, name: 'audio/[name]-[hash:8].[ext]' } },
     ]
   },
