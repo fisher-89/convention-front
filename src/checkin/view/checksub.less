@@ -1,32 +1,84 @@
 .checkinPage{
-  font-size:16px;
+  // font-size:16px;
   .lookback{
     width:80%;
+    height:10%;
     margin:0 auto;
     color:#efca9f;
+    .first{
+      width:0;
+      height:33.3%;
+      // height:18px;
+      overflow: hidden;
+      &>img{
+        display: block;
+        height: 58%;
+        margin:0 auto;
+      }
+    }
+    .second{
+      width:0;
+      height:33.3%;
+      // height:18px;
+      overflow: hidden;
+      &>img{
+        display: block;
+        height: 58%;
+        margin:0 auto;
+      }
+    }
+    .three{
+      width:0;
+      height:33.3%;
+      // height:18px;
+      overflow: hidden;
+      &>img{
+        display: block;
+        height: 58%;
+        margin:0 auto;
+      }
+    }
   }
   .form{
-    height:24.63%;
+    max-height:24.63%;
+    height:2rem;
     width:80%;
     margin:  0 auto;
+    padding-top:.4rem;
+    padding-left:.3rem;
     color:#efca9f; 
+    border:.5px solid #e3cb94;
+    // background-color:rgba(0,0,0,.61);
+    opacity: .61;
     h3{
        margin:0;
-       font-size:13px;
+       font-size:.12rem;
+       margin-bottom:.4rem;
      }
      .formname,.formphone{
-       overflow: hidden;
+       font-size:.14rem;
+       height:.135rem;
+      //  overflow: hidden;
        label{
          float: left;
+         margin-right:.075rem;
        }
        .forminput{
          float: left;
-         border-bottom:1px solid #efca9f; 
+         border-bottom:.5px solid #e3cb94; 
+         width:60%;
          &>input{
+           color:#ffffff;
            border:none;
            background-color: transparent;
          }
        }
+     }
+     .formname{
+       margin-bottom:.35rem;
+     }
+     .formphone{
+       margin-bottom:.52rem;
      }
   }
   .submit{
@@ -37,4 +89,9 @@
       height: 100%;
     }
   }
+}
+@keyframes firstword
+{
+  0% {width:0}
+  100% {width:80%}
 }

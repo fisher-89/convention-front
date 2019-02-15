@@ -2,7 +2,7 @@ import React from 'react';
 import './checkform.less';
 import './lookover.less';
 import logo from 'public/checkin/logo.png';
-import xjimg from 'public/checkin/xj.png';
+import xjimg from 'public/checkin/xjimg.png';
 import viewjm from 'public/checkin/viewjm.png';
 import gxline from 'public/checkin/gxline.png';
 import triangle from 'public/checkin/triangle.png';
@@ -24,15 +24,16 @@ export default class LookOver extends React.Component {
           <img src={logo}/>
         </div>
         <div style={{height:'7.407%'}}></div>
-        <div className='xj'>
+        <div className='xjimg'>
           <img src={xjimg}></img>
         </div>
         <div style={{height:'7.39%'}}></div>
         <div className='showavatar'>
            <img src={viewjm}/>
         </div>
+        <div style={{height:'2.46%'}}></div>
         <div className='showname'>
-          章三
+          章鱼
         </div>
         <div style={{height:'14.71%'}}></div>
         <div className='viewjm'>

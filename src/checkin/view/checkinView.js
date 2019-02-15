@@ -10,6 +10,7 @@ export default class CheckIn extends React.Component {
       super(props);
       this.state = {
         code:null,
+        openId:sessionStorage.getItem('check_openid'),
       }
    }
    componentWillMount(){
@@ -17,10 +18,8 @@ export default class CheckIn extends React.Component {
    }
    componentDidMount(){
       console.log(window.location.href); 
-      const {code } = this.state;
-      // const openId = sessionStorage.getItem('check_openid');
-      console.log(code,333)
-      if(!code){
+      const {code,openId } = this.state;
+      if(!code && !openId){
         const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
         const appId = 'wx136539e52b4980bf';
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
@@ -29,15 +28,23 @@ export default class CheckIn extends React.Component {
         const data = {'code':code}
         axios.post('/api/openid',
           data).then(res => {
-            console.log(res,333)
+            if(res.status == '201'){
+               sessionStorage.setItem('checkin_openId',res.data['openid'])
+            }
           }).catch(error=>{
             console.log(error);
           })
       }
    }
 
+  //表单提交之后，页面切换
+  handleChangepage = ()=>{
+    this.setState({
+
+    })
+  } 
   GetCode() {   
-    const url = location.search; //获取url中"?"符后的字串   
+    const url = location.search; 
     let code = null;
     if (url.indexOf("?") != -1) {   
        const str = url.substr(1);   
@@ -48,15 +55,19 @@ export default class CheckIn extends React.Component {
     this.state.code = code;
   }   
    render(){
-    const {code } = this.state;
-    if(!code){
-      return <Loading/>
-    }
-     return(<React.Fragment>
-        <Suspense fallback={<Loading/>}>
-          <CheckForm/>
-        </Suspense>
-     </React.Fragment>)
+    const {code, openId} = this.state;
+    // if(!code){
+    //   return <Loading/>
+    // }
+    return openId?(<React.Fragment>
+          <Suspense fallback={<Loading/>}>
+            <LookOver/>
+          </Suspense>
+        </React.Fragment>):(<React.Fragment>
+                          <Suspense fallback={<Loading/>}>
+                            <CheckForm/>
+                          </Suspense>
+                        </React.Fragment>)
    }
 }
   

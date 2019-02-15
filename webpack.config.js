@@ -54,14 +54,15 @@ module.exports = {
     port: 8000,
     // proxy: {
     //   '/api': {
-    //     target: 'http://of.xigemall.com',
+    //     target: 'http://cs.xigemall.com',
     //     pathRewrite: { '^/api': '/sign' },
     //     changeOrigin: true,
     //   },
     // },
     proxy: {
-      '': {
-        target: '112.74.177.132:8007',
+      '/': {
+        target: 'http://112.74.177.132:8007',
+        // pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
       },
     },
