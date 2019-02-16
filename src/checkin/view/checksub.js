@@ -85,7 +85,7 @@ export default class CheckSub extends React.Component {
     //   return;
     // }
     const data  = {
-      'openid':sessionStorage.getItem('checkin_openId'),
+      'openid':localStorage.getItem('check_openId'),
       'name':acountname,
       'mobile':password
     }
