@@ -14,16 +14,6 @@ import secondword from 'public/checkin/secondword.png';
 import threeword from 'public/checkin/threeword.png';
 import formimg from 'public/checkin/form.png';
 
-axios.interceptors.response.use(
-  function(response){
-    console.log(response,33333)
-    return response;
-},function(error){
-    //对返回的错误进行一些处理
-    const { response } = error;
-    console.log(response,555);
-    return Promise.reject(error);
-})
 export default class CheckSub extends React.Component {
   constructor(props){
     super(props);

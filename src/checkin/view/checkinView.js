@@ -17,7 +17,6 @@ export default class CheckIn extends React.Component {
      this.GetCode();
    }
    componentDidMount(){
-      console.log(window.location.href); 
       const {code,openId } = this.state;
       if(!code && !openId){
         const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
@@ -55,6 +54,7 @@ export default class CheckIn extends React.Component {
   }   
    render(){
     const {code, openId} = this.state;
+    console.log(openId,"openId");
     if(!code){
       return <Loading/>
     }
