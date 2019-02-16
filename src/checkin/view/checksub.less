@@ -1,84 +1,74 @@
 .checkinPage{
   // font-size:16px;
   .lookback{
-    width:80%;
-    height:10%;
+    // width:80%;
+    height:7.7%;
     margin:0 auto;
     color:#efca9f;
     .first{
       width:0;
       height:33.3%;
-      // height:18px;
       overflow: hidden;
       &>img{
         display: block;
-        height: 58%;
-        margin:0 auto;
+        height:67.2%;
       }
     }
     .second{
       width:0;
       height:33.3%;
-      // height:18px;
       overflow: hidden;
       &>img{
         display: block;
-        height: 58%;
-        margin:0 auto;
+        height: 67.2%;
       }
     }
     .three{
-      width:0;
       height:33.3%;
-      // height:18px;
+      width:0;
       overflow: hidden;
       &>img{
         display: block;
-        height: 58%;
-        margin:0 auto;
+        height: 67.2%;
       }
     }
   }
   .form{
-    max-height:24.63%;
-    height:2rem;
-    width:80%;
-    margin:  0 auto;
-    padding-top:.4rem;
-    padding-left:.3rem;
-    color:#efca9f; 
-    border:.5px solid #e3cb94;
-    // background-color:rgba(0,0,0,.61);
-    opacity: .61;
+    height:24.63%;
+    margin:0 auto;
+    .formcontainer{
+      height:100%;
+      width:100%;
+      position: relative;
+      &>img{
+        display: block;
+        width:100%;
+      }
+      .formname{
+        position:absolute;
+        left:34%;
+        top:45%;
+        width:53.3%;
+        height:5.75%;
+        color:#ffffff;
+        border:none;
+        background-color: transparent;
+      }
+      .formphone{
+        position:absolute;
+        left:34%;
+        // top:68.5%;
+        bottom:26.5%;
+        width:53.3%;
+        height:5.75%;
+        color:#ffffff;
+        border:none;
+        background-color: transparent;
+      }
+    }
     h3{
-       margin:0;
-       font-size:.12rem;
-       margin-bottom:.4rem;
-     }
-     .formname,.formphone{
-       font-size:.14rem;
-       height:.135rem;
-      //  overflow: hidden;
-       label{
-         float: left;
-         margin-right:.075rem;
-       }
-       .forminput{
-         float: left;
-         border-bottom:.5px solid #e3cb94; 
-         width:60%;
-         &>input{
-           color:#ffffff;
-           border:none;
-           background-color: transparent;
-         }
-       }
-     }
-     .formname{
-       margin-bottom:.35rem;
-     }
-     .formphone{
-       margin-bottom:.52rem;
+       width:80%; 
+       font-size:.09rem;
      }
   }
   .submit{
@@ -88,10 +78,15 @@
       display: block;
       height: 100%;
     }
+    .smline{
+      height:2.1%;
+      animation: linemove 2s infinite;
+      position: relative;
+      &>img{
+        display: block;
+        height:100%;
+        margin:0 auto;
+      }
+    }
   }
-}
-@keyframes firstword
-{
-  0% {width:0}
-  100% {width:80%}
 }

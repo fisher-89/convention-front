@@ -12,8 +12,18 @@ import smline from 'public/checkin/smline.png';
 import firstword from 'public/checkin/firstword.png';
 import secondword from 'public/checkin/secondword.png';
 import threeword from 'public/checkin/threeword.png';
+import formimg from 'public/checkin/form.png';
 
-
+axios.interceptors.response.use(
+  function(response){
+    console.log(response,33333)
+    return response;
+},function(error){
+    //对返回的错误进行一些处理
+    const { response } = error;
+    console.log(response,555);
+    return Promise.reject(error);
+})
 export default class CheckSub extends React.Component {
   constructor(props){
     super(props);
@@ -21,11 +31,20 @@ export default class CheckSub extends React.Component {
       acountname: null,
       password: null,
       originalHeight:null,
+      formW:null,
+      fontSize:null,
     }
   }
   componentDidMount(){
     document.addEventListener('keypress',this.handelEnter);
+    //动态获取高度
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
+    const formWidth = originalHeight * 0.2463 * 1.5;
+    const fontSize = originalHeight * 0.2463 * 0.06;
+    this.setState({
+      formW:formWidth,
+      fontSize:fontSize,
+    })
     const that = this;
     window.onresize = function(e){
       // alert(that);
@@ -81,25 +100,29 @@ export default class CheckSub extends React.Component {
       'mobile':password
     }
     axios.post('/api/sign',data).then(res=>{
-      
+      //提交成功跳转至，节目单页面
+      console.log(res,"表单提交成功");
     }).catch(err=>{
+      //错误返回码，则openid过期，
       console.log(err,'ddss')
     })
   }
   render() {
-    const {wordAnimate } = this.props;
-    const {originalHeight} = this.state;
+    const {wordAnimate ,clientEle} = this.props;
+    const {originalHeight, formW, fontSize} = this.state;
     // const animate = wordAnimate?{animation:'firstword 1s ease',animationDelay:'1s'}:null;
-    const firstanimate = wordAnimate?{width:'100%',transition: 'width 1s ease',transitionDelay:'1s'}:null;
-    const secondanimate = wordAnimate?{width:'100%',transition: 'width 1s ease',transitionDelay:'1.6s'}:null;
-    const threeanimate = wordAnimate?{width:'100%',transition: 'width .5s ease',transitionDelay:'2.4s'}:null;
+    const firstanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1s'}:null;
+    const secondanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1.7s'}:null;
+    const threeanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'2.7s'}:null;
+    //ref={(instance)=>{getchildRef(instance)}}
     const original = originalHeight?{height:`${originalHeight}px`}:null;
+    console.log(clientEle,333);
     return (
       <div className='checkinPage' style={{...original,backgroundPosition:'0 -60px'}}>
         <div style={{height:'14.77%'}}></div>
-        <div className='lookback'>
+        <div className='lookback' style={{width:formW}}>
            <div className='first' style={firstanimate}>
-              <img src={firstword}/>
+              <img  src={firstword}/> 
            </div>
            <div className='second' style={secondanimate}>
             <img src={secondword}></img>
@@ -109,24 +132,19 @@ export default class CheckSub extends React.Component {
            </div>
         </div>
         <div style={{height:'7.38%'}}></div>
-        <div className='form'>
-          <h3>请填写您的个人信息</h3>
-          <div className='formname'>
-            <label>*您的姓名</label>
-            <div className='forminput'>
-              <input type='text' onChange={this.handlegetName}/>
+        <div className='form'  style={{width:formW,fontSize:fontSize}}>
+            <div className='formcontainer'>
+              <img className='imgCLient' src={formimg}></img>
+              <input className='formname' type='text' onChange={this.handlegetName}/>
+              <input className='formphone' type='text' onChange={this.handlePassword}/>
             </div>
-          </div>
-          <div className='formphone'>
-            <label>*您的电话</label>
-            <div className='forminput'>
-              <input type='text' onChange={this.handlePassword}/>
-            </div>
-          </div>
         </div>
         <div style={{height:'13.54%'}}></div>
         <div className='submit'>
           <img className='submitbtn' src={submit} onClick={this.handleSubmit}></img>
+          <div className='smline'>
+            <img  src={smline} ></img>
+          </div>
         </div>
         <div style={{height:'1.2%'}}></div>
         <div className='gxline'>
