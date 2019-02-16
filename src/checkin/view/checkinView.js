@@ -27,7 +27,8 @@ export default class CheckIn extends React.Component {
         axios.post('/api/openid',
           data).then(res => {
             if(res.status == '201'){
-               localStorage.setItem('checkin_openId',res.data['openid'])
+               localStorage.setItem('checkin_openId',res.data['openid']);
+               console.log(234234324);
             }
           }).catch(error=>{
             console.log(error);
