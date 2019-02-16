@@ -93,12 +93,26 @@ export default class CheckSub extends React.Component {
       console.log(res,"表单提交成功");
       if(res.status == '201'){
         localStorage.setItem('check_name',res.data['name']);
-        localStorage.setItem('check_avatar',res.data['name']);
+        localStorage.setItem('check_avatar',res.data['avatar']);
         //提交成功跳转至，节目单页面
       }
     }).catch(err=>{
-      //错误返回码，则openid过期，
-      console.log(err,'ddss')
+      //错误返回码
+      const {response } = err;
+      console.log(response,33);
+      if(response.state =='422' && response.data['openid']==''){
+        const openid = localStorage.getItem('check_openId')
+        axios.get(`/api/sign?openid=${openid}`)
+          .then(res=>{
+            if(res.status == '201'){
+              localStorage.setItem('check_name',res.data['name']);
+              localStorage.setItem('check_avatar',res.data['avatar']);
+            } 
+          }).catch(err=>{
+            console.log(err);
+          })
+      }
+
     })
   }
   render() {
@@ -108,7 +122,6 @@ export default class CheckSub extends React.Component {
     const firstanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1s'}:null;
     const secondanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1.7s'}:null;
     const threeanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'2.7s'}:null;
-    //ref={(instance)=>{getchildRef(instance)}}
     const original = originalHeight?{height:`${originalHeight}px`}:null;
     console.log(clientEle,333);
     return (
