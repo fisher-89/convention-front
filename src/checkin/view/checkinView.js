@@ -54,7 +54,7 @@ export default class CheckIn extends React.Component {
   }   
    render(){
     const {code, openId} = this.state;
-    console.log(openId,"openId");
+    console.log(openId,"openId",localStorage.getItem('check_openid'));
     if(!code){
       return <Loading/>
     }
