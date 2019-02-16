@@ -10,7 +10,7 @@ export default class CheckIn extends React.Component {
       super(props);
       this.state = {
         code:null,
-        openId:localStorage.getItem('check_openid'),
+        openId:localStorage.getItem('check_openId'),
       }
    }
    componentWillMount(){
@@ -27,7 +27,7 @@ export default class CheckIn extends React.Component {
         axios.post('/api/openid',
           data).then(res => {
             if(res.status == '201'){
-               localStorage.setItem('checkin_openId',res.data['openid']);
+               localStorage.setItem('check_openId',res.data['openid']);
                console.log(234234324);
             }
           }).catch(error=>{
@@ -55,7 +55,7 @@ export default class CheckIn extends React.Component {
   }   
    render(){
     const {code, openId} = this.state;
-    console.log(openId,"openId",localStorage.getItem('check_openid'));
+    console.log(openId,"openId",localStorage.getItem('check_openId'));
     if(!code){
       return <Loading/>
     }
