@@ -16,8 +16,8 @@ export default class LookOver extends React.Component {
   //   }
   // }
   render() {
-    const imageSrc= localStorage.getItem('check_name');
-    const checkName = localStorage.getItem('check_avatar');
+    const imageSrc= localStorage.getItem('check_avatar');
+    const checkName = localStorage.getItem('check_name');
     return (
       <div className='checkinPage'>
         <div style={{height:'7.407%'}}></div>
@@ -30,7 +30,7 @@ export default class LookOver extends React.Component {
         </div>
         <div style={{height:'7.39%'}}></div>
         <div className='showavatar'>
-           <img src={viewjm}/>
+           <img src={imageSrc}/>
         </div>
         <div style={{height:'2.46%'}}></div>
         <div className='showname'>
