@@ -9,14 +9,15 @@ import triangle from 'public/checkin/triangle.png';
 import smline from 'public/checkin/smline.png';
 
 export default class LookOver extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      imageSrc:null,
-    }
-  }
+  // constructor(props){
+  //   super(props);
+  //   this.state = {
+  //     imageSrc:null,
+  //   }
+  // }
   render() {
-    const {imageSrc} = this.state;
+    const imageSrc= localStorage.getItem('check_name');
+    const checkName = localStorage.getItem('check_avatar');
     return (
       <div className='checkinPage'>
         <div style={{height:'7.407%'}}></div>
@@ -33,7 +34,7 @@ export default class LookOver extends React.Component {
         </div>
         <div style={{height:'2.46%'}}></div>
         <div className='showname'>
-          章鱼
+          {checkName}
         </div>
         <div style={{height:'14.71%'}}></div>
         <div className='viewjm'>

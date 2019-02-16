@@ -90,8 +90,12 @@ export default class CheckSub extends React.Component {
       'mobile':password
     }
     axios.post('/api/sign',data).then(res=>{
-      //提交成功跳转至，节目单页面
       console.log(res,"表单提交成功");
+      if(res.status == '201'){
+        localStorage.setItem('check_name',res.data['name']);
+        localStorage.setItem('check_avatar',res.data['name']);
+        //提交成功跳转至，节目单页面
+      }
     }).catch(err=>{
       //错误返回码，则openid过期，
       console.log(err,'ddss')
