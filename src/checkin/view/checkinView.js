@@ -17,6 +17,8 @@ export default class CheckIn extends React.Component {
      this.GetCode();
    }
    componentDidMount(){
+    alert(history.length);
+    alert(window.location.href);
       document.addEventListener("touchmove",this.handleMove);
       const {code } = this.state;
       const openId = localStorage.getItem('check_openId');
@@ -56,7 +58,6 @@ export default class CheckIn extends React.Component {
    render(){
     const {code} = this.state;
     const openId = localStorage.getItem('check_openId');
-    alert(history.length,999);
     return openId?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
             <LookOver/>
