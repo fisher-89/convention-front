@@ -61,7 +61,7 @@ export default class CheckForm extends React.Component {
             </div>
             <div style={{height:'9.23%'}}></div>
             <div className='checkin'>
-              <img className='checkinbtn' src={checkin} onClick={this.handleClick}></img>
+              <img className='checkinbtn' src={checkin} onTouchEnd={this.handleClick}></img>
               <div className='smline'>
                 <img  src={smline} ></img>
               </div>

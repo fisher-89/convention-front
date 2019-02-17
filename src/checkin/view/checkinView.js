@@ -17,12 +17,12 @@ export default class CheckIn extends React.Component {
      this.GetCode();
    }
    componentDidMount(){
+      document.addEventListener("touchmove",this.handleMove);
       const {code } = this.state;
       const openId = localStorage.getItem('check_openId');
       if(!code && !openId){
         const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
         const appId = 'wx136539e52b4980bf';
-        // window.history.replaceState(null,null,`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`)
         window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`);
       }else if(code && !openId){
         const data = {'code':code}
@@ -37,6 +37,10 @@ export default class CheckIn extends React.Component {
       }
    }
 
+  handleMove = (e)=>{
+    e.preventDefault();
+    return;
+  } 
   GetCode() {   
     const url = location.search; 
     let code = null;

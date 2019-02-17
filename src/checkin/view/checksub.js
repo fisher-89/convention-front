@@ -153,7 +153,7 @@ export default class CheckSub extends React.Component {
         </div>
         <div style={{height:'13.54%'}}></div>
         <div className='submit'>
-          <img className='submitbtn' src={submit} onClick={this.handleSubmit}></img>
+          <img className='submitbtn' src={submit} onTouchEnd={this.handleSubmit}></img>
           <div className='smline'>
             <img  src={smline} ></img>
           </div>

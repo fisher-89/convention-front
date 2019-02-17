@@ -42,7 +42,7 @@ export default class LookOver extends React.Component {
           </div>
           <div style={{height:'14.71%'}}></div>
           <div className='viewjm'>
-            <img className='viewjmbtn' onClick={this.handleClick} src={viewjm}></img>
+            <img className='viewjmbtn' onTouchEnd={this.handleClick} src={viewjm}></img>
           </div>
           <div style={{height:'1.2%'}}></div>
           <div className='gxline'>
