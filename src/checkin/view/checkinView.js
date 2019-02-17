@@ -10,19 +10,20 @@ export default class CheckIn extends React.Component {
       super(props);
       this.state = {
         code:null,
-        openId:localStorage.getItem('check_openId'),
+        // openId:localStorage.getItem('check_openId'),
       }
    }
    componentWillMount(){
      this.GetCode();
    }
    componentDidMount(){
-      const {code,openId } = this.state;
+      const {code } = this.state;
+      const openId = localStorage.getItem('check_openId');
       if(!code && !openId){
         const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
         const appId = 'wx136539e52b4980bf';
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-      }else if(!code){
+      }else if(code && !openId){
         const data = {'code':code}
         axios.post('/api/openid',
           data).then(res => {
@@ -47,11 +48,11 @@ export default class CheckIn extends React.Component {
     this.state.code = code;
   }   
    render(){
-    const {code, openId} = this.state;
-    console.log(openId,"openId",localStorage.getItem('check_openId'));
-    if(!code && !openId){
-      return <Loading/>
-    }
+    const {code} = this.state;
+    const openId = localStorage.getItem('check_openId');
+    // if(!code && !openId){
+    //   return <Loading/>
+    // }
     return openId?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
             <CheckForm/>
