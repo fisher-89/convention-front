@@ -50,18 +50,15 @@ export default class CheckIn extends React.Component {
    render(){
     const {code} = this.state;
     const openId = localStorage.getItem('check_openId');
-    // if(!code && !openId){
-    //   return <Loading/>
-    // }
     return openId?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
             <LookOver/>
           </Suspense>
-        </React.Fragment>):(<React.Fragment>
+        </React.Fragment>):(code?(<React.Fragment>
                           <Suspense fallback={<Loading/>}>
                             <CheckForm/>
                           </Suspense>
-                        </React.Fragment>)
+                        </React.Fragment>):(<Loading/>))
    }
 }
   

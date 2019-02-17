@@ -105,7 +105,8 @@ export default class CheckSub extends React.Component {
         const openid = localStorage.getItem('check_openId')
         axios.get(`/api/sign/${openid}`)
           .then(res=>{
-            if(res.status == '201'){
+            console.log(res,456);
+            if(res.status == '200'){
               localStorage.setItem('check_name',res.data['name']);
               localStorage.setItem('check_avatar',res.data['avatar']);
             } 

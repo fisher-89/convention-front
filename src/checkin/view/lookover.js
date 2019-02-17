@@ -18,6 +18,7 @@ export default class LookOver extends React.Component {
   render() {
     const imageSrc= localStorage.getItem('check_avatar');
     const checkName = localStorage.getItem('check_name');
+    console.log(imageSrc,checkName,444);
     return (
       <div className='checkinPage'>
         <div style={{height:'7.407%'}}></div>
