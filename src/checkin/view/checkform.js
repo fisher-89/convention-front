@@ -41,35 +41,38 @@ export default class CheckForm extends React.Component {
     }
   }
   render() {
-    const {pageTranslate} = this.state;
+    const {pageTranslate,wordAnimate} = this.state;
+    const bgstyle = wordAnimate?{transition:'background-position-y 1s ease',backgroundPositionY:'80%'}:null;
     return (
       <React.Fragment>
-      <div className='checkinPage' style={{transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}>
-        <div style={{height:'7.407%'}}></div>
-        <div className='logo'>
-          <img src={logo}/>
-        </div>
-        <div style={{height:'17.241%'}}></div>
-        <div className='xj'>
-          <img src={xj}></img>
-        </div>
-        <div style={{height:'7.39%'}}></div>
-        <div className='triangle'>
-          <img src={triangle}></img>
-        </div>
-        <div style={{height:'9.23%'}}></div>
-        <div className='checkin'>
-          <img className='checkinbtn' src={checkin} onClick={this.handleClick}></img>
-          <div className='smline'>
-            <img  src={smline} ></img>
+        <div className="root-bg" style={bgstyle}>
+          <div className='checkinPage' style={{transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}>
+            <div style={{height:'7.407%'}}></div>
+            <div className='logo'>
+              <img src={logo}/>
+            </div>
+            <div style={{height:'17.241%'}}></div>
+            <div className='xj'>
+              <img src={xj}></img>
+            </div>
+            <div style={{height:'7.39%'}}></div>
+            <div className='triangle'>
+              <img src={triangle}></img>
+            </div>
+            <div style={{height:'9.23%'}}></div>
+            <div className='checkin'>
+              <img className='checkinbtn' src={checkin} onClick={this.handleClick}></img>
+              <div className='smline'>
+                <img  src={smline} ></img>
+              </div>
+            </div>
+            <div style={{height:'1.2%'}}></div>
+            <div className='gxline'>
+              <img src={gxline}></img>
+            </div>
           </div>
+          <div style={{height:'100%',overflowY:'auto',transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}><CheckSub {...this.state} getchildRef={this.getchildRef}/></div>
         </div>
-        <div style={{height:'1.2%'}}></div>
-        <div className='gxline'>
-          <img src={gxline}></img>
-        </div>
-      </div>
-      <div style={{height:'100%',overflowY:'auto',transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}><CheckSub {...this.state} getchildRef={this.getchildRef}/></div>
       </React.Fragment>
     );
   }

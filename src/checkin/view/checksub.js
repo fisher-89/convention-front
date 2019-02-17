@@ -130,7 +130,7 @@ export default class CheckSub extends React.Component {
     const original = originalHeight?{height:`${originalHeight}px`}:null;
     console.log(clientEle,333);
     return (
-      <div className='checkinPage' style={{...original,backgroundPosition:'0 -60px'}}>
+      <div className='checkinPage' style={{...original}}>
         <div style={{height:'14.77%'}}></div>
         <div className='lookback' style={{width:formW}}>
            <div className='first' style={firstanimate}>
