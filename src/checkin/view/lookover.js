@@ -14,7 +14,7 @@ export default class LookOver extends React.Component {
   }
   handleClick = (e)=>{
     e.preventDefault();
-    localStorage.setItem('check_openId',null);
+    localStorage.removeItem('check_openId');
     alert("清除缓存openid");
   }
   render() {
