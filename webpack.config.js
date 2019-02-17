@@ -66,7 +66,7 @@ module.exports = {
     //   },
     // },
     proxy: {
-      '/': {
+      '/api': {
         target: 'http://112.74.177.132:8007',
         // pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
