@@ -8,6 +8,11 @@
 </script>
 </head>
 <body style='height:100%;position: relative;'>
-  <button style='font-size:36px;position:absolute;top:50%;left:50%;translate:50% 50%;color:red;background-color:aqua'>清除缓存</button>
+  <button class="btn" style='font-size:36px;position:absolute;top:50%;left:50%;translate:50% 50%;color:red;background-color:aqua'>清除缓存</button>
 </body>
+<script>
+  document.querySelector('.btn').addEventListener("click",function(){
+    localStorage.setItem('check_openId',null);
+  })
+</script>
 </html>

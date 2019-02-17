@@ -9,12 +9,14 @@ import triangle from 'public/checkin/triangle.png';
 import smline from 'public/checkin/smline.png';
 
 export default class LookOver extends React.Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state = {
-  //     imageSrc:null,
-  //   }
-  // }
+  constructor(props){
+    super(props);
+  }
+  handleClick = (e)=>{
+    e.preventDefault();
+    localStorage.setItem('check_openId',null);
+    alert("清除缓存openid");
+  }
   render() {
     const imageSrc= localStorage.getItem('check_avatar');
     const checkName = localStorage.getItem('check_name');
@@ -40,7 +42,7 @@ export default class LookOver extends React.Component {
           </div>
           <div style={{height:'14.71%'}}></div>
           <div className='viewjm'>
-            <img className='viewjmbtn' src={viewjm}></img>
+            <img className='viewjmbtn' onClick={this.handleClick} src={viewjm}></img>
           </div>
           <div style={{height:'1.2%'}}></div>
           <div className='gxline'>
