@@ -94,6 +94,7 @@ export default class CheckSub extends React.Component {
       if(res.status == '201'){
         localStorage.setItem('check_name',res.data['name']);
         localStorage.setItem('check_avatar',res.data['avatar']);
+        Toast.success('表单提交成功',1);
         //提交成功跳转至，节目单页面
       }
     }).catch(err=>{
