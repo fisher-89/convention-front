@@ -23,7 +23,9 @@ export default class CheckIn extends React.Component {
       if(!code && !openId){
         const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
         const appId = 'wx136539e52b4980bf';
-        window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`);
+        // console.log(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`);
+        // window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`);
+        window.location.replace('https://zhidao.baidu.com/question/1963562072995994220.html');
       }else if(code && !openId){
         const data = {'code':code}
         axios.post('/api/openid',
