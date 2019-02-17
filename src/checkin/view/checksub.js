@@ -85,13 +85,14 @@ export default class CheckSub extends React.Component {
     //   return;
     // }
     const data  = {
-      'openid':localStorage.getItem('check_openId'),
+      'openid':sessionStorage.getItem('check_openId'),
       'name':acountname,
       'mobile':password
     }
     axios.post('/api/sign',data).then(res=>{
       console.log(res,"表单提交成功");
       if(res.status == '201'){
+        localStorage.setItem('check_openId',res.data['openid']);
         localStorage.setItem('check_name',res.data['name']);
         localStorage.setItem('check_avatar',res.data['avatar']);
         Toast.success('表单提交成功',1);
@@ -107,6 +108,8 @@ export default class CheckSub extends React.Component {
           .then(res=>{
             console.log(res,456);
             if(res.status == '200'){
+              Toast.success('表单提交成功',1);
+              localStorage.setItem('check_openId',res.data['openid'])
               localStorage.setItem('check_name',res.data['name']);
               localStorage.setItem('check_avatar',res.data['avatar']);
             } 
