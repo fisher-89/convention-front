@@ -14,7 +14,7 @@ import secondword from 'public/checkin/secondword.png';
 import threeword from 'public/checkin/threeword.png';
 import formimg from 'public/checkin/form.png';
 
-export default class CheckSub extends React.Component {
+export default class CheckSub extends React.PureComponent {
   constructor(props){
     super(props);
     this.state = {

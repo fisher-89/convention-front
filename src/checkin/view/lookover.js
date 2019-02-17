@@ -8,7 +8,7 @@ import gxline from 'public/checkin/gxline.png';
 import triangle from 'public/checkin/triangle.png';
 import smline from 'public/checkin/smline.png';
 
-export default class LookOver extends React.Component {
+export default class LookOver extends React.PureComponent {
   constructor(props){
     super(props);
   }
