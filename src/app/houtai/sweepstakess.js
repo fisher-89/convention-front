@@ -58,23 +58,23 @@ class XX extends PureComponent {
           if (last.winners.length < last.persions) {
             if (last.is_progress) {
               if (last.winners.length) {
-                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                setFieldsValue({ award_id: last.award_id, persions: last.persions });
                 _this.setState({ round: last.round, stop: false, pushable: true, selected: winner, alldata: response.data, tapable: true });
               } else {
-                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                setFieldsValue({ award_id: last.award_id, persions: last.persions });
                 _this.setState({ round: last.round, stop: false, selected: winner, alldata: response.data, tapable: true });
               }
             } else {
               if (last.winners.length) {
-                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                setFieldsValue({ award_id: last.award_id, persions: last.persions });
                 _this.setState({ round: last.round, rechoice: true, pushable: true, selected: winner, alldata: response.data, tapable: true });
               } else {
-                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                setFieldsValue({ award_id: last.award_id, persions: last.persions });
                 _this.setState({ round: last.round, start: false, selected: winner, alldata: response.data, tapable: true });
               }
             }
           } else {
-            setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+            setFieldsValue({ award_id: last.award_id, persions: last.persions });
             _this.setState({ round: last.round, nextround: false, selected: winner, alldata: response.data, tapable: true });
           }
         }
@@ -248,8 +248,7 @@ class XX extends PureComponent {
     };
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const number = getFieldValue('persions');
-    const reSelected = !!!(selected.length.toString() !== number && !!number && rechoice);
-    const nextRd = !!!(nextround && selected.length.toString() === number);
+    const reSelected = !!!(selected.length !== number && !!number && rechoice);
 
     return (
       <div>
@@ -309,7 +308,7 @@ class XX extends PureComponent {
                   <Button onClick={() => this.startChoice()} disabled={start}>开始抽奖</Button>
                   <Button onClick={() => this.reChoice()} disabled={reSelected}>补充抽奖</Button>
                   <Button onClick={() => this.stopChoice()} disabled={stop}>停止抽奖</Button>
-                  <Button onClick={() => this.clear()} disabled={nextRd}>下一轮</Button>
+                  <Button onClick={() => this.clear()} disabled={nextround}>下一轮</Button>
                 </Col>
                 <Col span={10} offset={7}>
                   <div className='aaa'>
