@@ -20,6 +20,9 @@ export default class CheckIn extends React.Component {
       document.addEventListener("touchmove",this.handleMove);
       const {code } = this.state;
       const openId = localStorage.getItem('check_openId');
+      if(code){
+        window.location.replace(window.location.href);
+      }
       if(!code && !openId){
         const url = encodeURIComponent('http://cs.xigemall.com/checkin/index.html');//
         const appId = 'wx136539e52b4980bf';
