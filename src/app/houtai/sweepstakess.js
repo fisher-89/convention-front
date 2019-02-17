@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import axios from 'axios';
-import { Row, Col, Form, Select, Input, Button, Tag, List, Card, Avatar } from 'antd';
+import { Row, Col, Form, Select, Input, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
+import { debounce } from 'lodash';
+import './style.less';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -8,22 +10,74 @@ const Option = Select.Option;
 class XX extends PureComponent {
   state = {
     alldata: [],
-    makesure: false,
+    award: [],
+    tapable: false,
     start: true,
     stop: true,
     nextround: true,
     round: null,
+    inround: 1,
     pushable: false,
     rechoice: false,
     selected: [],
   }
 
+  debounce1 = debounce((params) => {
+    this.makeSure(params)
+  }, 3000)
+
+  debounce2 = debounce((params) => {
+    this.reSure(params)
+  }, 3000)
+
   componentDidMount() {
     const _this = this;
+    const { setFieldsValue } = this.props.form;
+    axios.get('/api/award')
+      .then(function (response) {
+        _this.setState({ award: response.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     axios.get('/api/configuration'
     )
       .then(function (response) {
-        _this.setState({ alldata: response.data });
+        if (response.data.length > 0) {
+          const last = (response.data)[response.data.length - 1];
+          let winner = [];
+
+          if (last) {
+            _this.setState({ inround: last.round });
+            if (last.winners.length) {
+              winner = last.winners.map(item => item.sign);
+            }
+          }
+
+          if (last.winners.length < last.persions) {
+            if (last.is_progress) {
+              if (last.winners.length) {
+                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                _this.setState({ round: last.round, stop: false, pushable: true, selected: winner, alldata: response.data, tapable: true });
+              } else {
+                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                _this.setState({ round: last.round, stop: false, selected: winner, alldata: response.data, tapable: true });
+              }
+            } else {
+              if (last.winners.length) {
+                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                _this.setState({ round: last.round, rechoice: true, pushable: true, selected: winner, alldata: response.data, tapable: true });
+              } else {
+                setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+                _this.setState({ round: last.round, start: false, selected: winner, alldata: response.data, tapable: true });
+              }
+            }
+          } else {
+            setFieldsValue({ award_id: last.award_id.toString(), persions: last.persions });
+            _this.setState({ round: last.round, nextround: false, selected: winner, alldata: response.data, tapable: true });
+          }
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -34,15 +88,49 @@ class XX extends PureComponent {
     const { getFieldsValue } = this.props.form;
     const _this = this;
     const params = getFieldsValue();
-    axios.post('/api/configuration',
-      params
-    )
-      .then(function (response) {
-        _this.setState({ round: response.data.round, makesure: true, start: false });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (params.award_id && params.persions) {
+      axios.post('/api/configuration',
+        params
+      )
+        .then(function (response) {
+          _this.setState({ round: response.data.round, start: false, tapable: true });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
+  reSure = () => {
+    const { getFieldsValue } = this.props.form;
+    const { round } = this.state;
+    const _this = this;
+    const params = getFieldsValue();
+    if (params.persions && params.award_id) {
+      axios.put(`/api/configuration/${round}`,
+        params
+      )
+        .then(function (response) {
+          _this.setState({ start: false, tapable: true });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
+  onChange = () => {
+    const { round } = this.state;
+    if (round) {
+      this.debounce2();
+    } else {
+      this.debounce1();
+    }
+  }
+
+  retap = () => {
+    const _this = this;
+    _this.setState({ tapable: false, start: true });
   }
 
   startChoice = () => {
@@ -126,9 +214,10 @@ class XX extends PureComponent {
 
   clear = () => {
     const { resetFields } = this.props.form;
+    const { inround } = this.state;
     resetFields();
     const _this = this;
-    _this.setState({ makesure: false, nextround: true, selected: [] });
+    _this.setState({ nextround: true, selected: [], round: null, tapable: false, inround: inround + 1 });
     axios.get('/api/configuration'
     )
       .then(function (response) {
@@ -139,8 +228,14 @@ class XX extends PureComponent {
       });
   }
 
+  roundtitle = (item) => { return (
+    <div>
+    第{item.round}轮
+    <span className='ddd'><Avatar size="small" src={item.award.url} />{item.award.name}</span>
+    <span className='ccc'>抽{item.persions}人</span>
+    </div>) }
   render() {
-    const { alldata, start, nextround, stop, makesure, selected, rechoice } = this.state;
+    const { award, inround, alldata, tapable, start, nextround, stop, selected, rechoice } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -154,21 +249,26 @@ class XX extends PureComponent {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const number = getFieldValue('persions');
     const reSelected = !!!(selected.length.toString() !== number && !!number && rechoice);
+
     return (
       <div>
         <Row>
-          <Col span={5}>
+          <Col span={6}>
             <List
               grid={{
-                gutter: 8, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 2,
+                gutter: 8, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 1,
               }}
               dataSource={alldata}
               renderItem={item => (
-                <List.Item>
-                  <Card title={'第' + item.round + '轮'}>
+                <List.Item className='bbb'>
+                  <Card title={this.roundtitle(item)}>
                     {item.winners.map(kids => {
                       return (
-                        <Tag key={kids.openid} ><Avatar size="small" src={kids.sign.avatar} />{kids.sign.name}@{kids.sign.mobile}</Tag>
+                        <Tag key={kids.openid} >
+                          <Tooltip title={kids.sign.mobile}>
+                            <Avatar size="small" src={kids.sign.avatar} />{kids.sign.name}
+                          </Tooltip>
+                        </Tag>
                       )
                     })}
                   </Card>
@@ -180,33 +280,47 @@ class XX extends PureComponent {
             <Form>
               <Row>
                 <Col span={8} offset={6}>
-                  <FormItem {...formItemLayout} label="奖项选择" >
-                    {getFieldDecorator('award_id')(
-                      <Select>
-                        <Option value="1">一等奖</Option>
-                        <Option value="2">二等奖</Option>
-                        <Option value="3">三等奖</Option>
+                  <FormItem {...formItemLayout} label="当前轮次" >{inround}</FormItem>
+                </Col>
+                <Col span={8} offset={6}>
+                  <FormItem {...formItemLayout} label="奖项选择" required>
+                    {getFieldDecorator('award_id',
+                    )(
+                      <Select onChange={() => this.onChange()} disabled={tapable} >
+                        {award.map(item => {
+                          return (
+                            <Option key={item.id} >{item.name}</Option>
+                          )
+                        })}
                       </Select>
                     )}
                   </FormItem>
                 </Col>
                 <Col span={8} offset={6}>
-                  <FormItem {...formItemLayout} label="人数" >
+                  <FormItem {...formItemLayout} label="人数" required>
                     {getFieldDecorator('persions')(
-                      <Input />
+                      <Input onChange={() => this.onChange()} disabled={tapable} />
                     )}
                   </FormItem>
                 </Col>
-                <Col span={8} offset={9}>
-                  <Button onClick={() => this.makeSure()} hidden={makesure}>确定</Button>
-                  <Button onClick={() => this.startChoice()} hidden={start}>开始抽奖</Button>
-                  <Button onClick={() => this.reChoice()} hidden={reSelected}>再次抽奖</Button>
-                  <Button onClick={() => this.stopChoice()} hidden={stop}>停止抽奖</Button>
-                  <Button onClick={() => this.clear()} hidden={nextround}>下一轮</Button>
+                <Col span={8} offset={7}>
+                  <Button onClick={() => this.retap()} disabled={start}>修改</Button>
+                  <Button onClick={() => this.startChoice()} disabled={start}>开始抽奖</Button>
+                  <Button onClick={() => this.reChoice()} disabled={reSelected}>补充抽奖</Button>
+                  <Button onClick={() => this.stopChoice()} disabled={stop}>停止抽奖</Button>
+                  <Button onClick={() => this.clear()} disabled={nextround}>下一轮</Button>
                 </Col>
-                <Col span={12} offset={7}>
-                  <div>
-                    {selected.map(item => { return <Tag key={item.openid} closable={true} afterClose={() => this.delete(item.openid)}>{item.name}</Tag> })}
+                <Col span={10} offset={7}>
+                  <div className='aaa'>
+                    {selected.map(item => {
+                      return (
+                        <Tag key={item.openid} closable={true} afterClose={() => this.delete(item.openid)}>
+                          <Tooltip title={item.mobile}>
+                            <Avatar size="mid" src={item.avatar} />{item.name}
+                          </Tooltip>
+                        </Tag>
+                      )
+                    })}
                   </div>
                 </Col>
               </Row>
