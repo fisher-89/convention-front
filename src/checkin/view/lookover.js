@@ -20,30 +20,32 @@ export default class LookOver extends React.Component {
     const checkName = localStorage.getItem('check_name');
     console.log(imageSrc,checkName,444);
     return (
-      <div className='checkinPage'>
-        <div style={{height:'7.407%'}}></div>
-        <div className='logo'>
-          <img src={logo}/>
-        </div>
-        <div style={{height:'7.407%'}}></div>
-        <div className='xjimg'>
-          <img src={xjimg}></img>
-        </div>
-        <div style={{height:'7.39%'}}></div>
-        <div className='showavatar'>
-           <img src={imageSrc}/>
-        </div>
-        <div style={{height:'2.46%'}}></div>
-        <div className='showname'>
-          {checkName}
-        </div>
-        <div style={{height:'14.71%'}}></div>
-        <div className='viewjm'>
-          <img className='viewjmbtn' src={viewjm}></img>
-        </div>
-        <div style={{height:'1.2%'}}></div>
-        <div className='gxline'>
-          <img src={gxline}></img>
+      <div className='hover-bg'>
+        <div className='checkinPage'>
+          <div style={{height:'7.407%'}}></div>
+          <div className='logo'>
+            <img src={logo}/>
+          </div>
+          <div style={{height:'7.407%'}}></div>
+          <div className='xjimg'>
+            <img src={xjimg}></img>
+          </div>
+          <div style={{height:'7.39%'}}></div>
+          <div className='showavatar'>
+              <img src={imageSrc}/>
+          </div>
+          <div style={{height:'2.46%'}}></div>
+          <div className='showname'>
+            {checkName}
+          </div>
+          <div style={{height:'14.71%'}}></div>
+          <div className='viewjm'>
+            <img className='viewjmbtn' src={viewjm}></img>
+          </div>
+          <div style={{height:'1.2%'}}></div>
+          <div className='gxline'>
+            <img src={gxline}></img>
+          </div>
         </div>
       </div>
     );
