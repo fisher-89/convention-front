@@ -9,7 +9,7 @@ module.exports = {
   entry: {
     checkin:  './src/checkin/checkin.js',
     luckdraw:  './src/luckdraw/luckdraw.js',
-    // app: './src/app.js',
+    app: './src/app.js',
     // board: './src/board.js',
   },
   output: {
@@ -19,8 +19,17 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.(less|css)$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      { test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          presets: ["env", "react", "es2015", "stage-2"],
+          plugins: [
+            [  "import",{libraryName: "antd", style: 'css'}] // antd按需加载
+        ]
+        }, 
+      },
+      { test: /\.(less|css)$/, use: ["style-loader","css-loader", "less-loader"] },
       { test: /\.html$/, loader: 'html-loader' },
       { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 50000, name: 'images/[name]-[hash:8].[ext]' } },
       { test: /\.(mp3)$/, loader: 'url-loader', options: { limit: 0, name: 'audio/[name]-[hash:8].[ext]' } },
@@ -66,11 +75,17 @@ module.exports = {
     //   },
     // },
     proxy: {
-      '/': {
+      '/api': {
+        // target: 'http://192.168.1.16:8007',
         target: 'http://112.74.177.132:8007',
         // pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
       },
+      // '/api': {
+      //   target: 'http://of.xigemall.com',
+      //   pathRewrite: { '^/api': '/sign' },
+      //   changeOrigin: true,
+      // },
     },
     historyApiFallback: true,
   }

@@ -1,12 +1,15 @@
 {
-    "presets": ["es2015", "react", "stage-2"],
+    "presets": ["es2015", "env", "react"],
     "plugins": [
         [
             "import",
             {
-                "libraryName": "antd-mobile",
+                "libraryName": "antd",
                 "style": true
             }
-        ]
+        ],
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        "transform-decorators",
     ]
 }
