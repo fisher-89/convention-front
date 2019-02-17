@@ -103,7 +103,7 @@ export default class CheckSub extends React.Component {
       console.log(response,33);
       if(response.status =='422' && response.data.errors['openid']["0"]=='微信用户 已经存在.'){
         const openid = localStorage.getItem('check_openId')
-        axios.get(`/api/sign?openid=${openid}`)
+        axios.get(`/api/sign/${openid}`)
           .then(res=>{
             if(res.status == '201'){
               localStorage.setItem('check_name',res.data['name']);

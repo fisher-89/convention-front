@@ -55,7 +55,7 @@ export default class CheckIn extends React.Component {
     // }
     return openId?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
-            <CheckForm/>
+            <LookOver/>
           </Suspense>
         </React.Fragment>):(<React.Fragment>
                           <Suspense fallback={<Loading/>}>
