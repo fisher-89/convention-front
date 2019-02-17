@@ -22,15 +22,10 @@ export default class CheckForm extends React.Component {
   handleClick = (e)=>{
     e.preventDefault();
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-    // console.log(this.state.clientEle,444);
-    // const {x,y,width,height}= document.getElementsByClassName('imgCLient')[0];
-    // const clientEle = document.getE
-    // console.log("x,y",x,y,height,width);
     this.setState({
       pageTranslate:'-100%',
       wordAnimate:true,
       originalHeight:originalHeight,
-      // clientEle:width,
     })
   }
   handleResize = (originalHeight) =>{
@@ -44,16 +39,6 @@ export default class CheckForm extends React.Component {
         originalHeight:null
       })
     }
-  }
-  getchildRef = (instance)=>{
-    // const clientEle = instance.getBoundClientRect();
-    // const {width,height} = instance;
-    // this.state.clientEle = clientEle;
-
-    console.log("ce",instance);
-    // this.setState({
-
-    // })
   }
   render() {
     const {pageTranslate} = this.state;

@@ -35,12 +35,6 @@ export default class CheckIn extends React.Component {
       }
    }
 
-  //表单提交之后，页面切换
-  handleChangepage = ()=>{
-    this.setState({
-
-    })
-  } 
   GetCode() {   
     const url = location.search; 
     let code = null;
@@ -55,9 +49,9 @@ export default class CheckIn extends React.Component {
    render(){
     const {code, openId} = this.state;
     console.log(openId,"openId",localStorage.getItem('check_openId'));
-    if(!code){
-      return <Loading/>
-    }
+    // if(!code){
+    //   return <Loading/>
+    // }
     return openId?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
             <CheckForm/>

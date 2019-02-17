@@ -8,6 +8,7 @@ module.exports = {
   mode: 'development',
   entry: {
     checkin:  './src/checkin/checkin.js',
+    luckdraw:  './src/luckdraw/luckdraw.js',
     // app: './src/app.js',
     // board: './src/board.js',
   },
@@ -39,6 +40,11 @@ module.exports = {
       filename: './checkin/index.html',
       template: './src/checkin/checkin.html',
       chunks: ['checkin'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './luckdraw/index.html',
+      template: './src/luckdraw/luckdraw.html',
+      chunks: ['luckdraw'],
     }),
     new CleanWebpackPlugin(['dist']),
   ],
