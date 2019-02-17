@@ -13,7 +13,7 @@ export default class extends PureComponent {
     return (
       <div>
       <Layout>
-        <Header>抽奖</Header>
+        <Header className='up'>喜歌实业年会抽奖后台</Header>
         <Content >
         <div className='all'>
          <Tabs>
@@ -26,7 +26,7 @@ export default class extends PureComponent {
          </Tabs>
          </div>
         </Content>
-        <Footer>喜歌实业</Footer>
+        <Footer className='down'>喜歌实业</Footer>
       </Layout>
       </div>
 

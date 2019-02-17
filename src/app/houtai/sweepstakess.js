@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import axios from 'axios';
-import { Row, Col, Form, Select, Input, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
+import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
 import { debounce } from 'lodash';
 import './style.less';
 
@@ -24,11 +24,11 @@ class XX extends PureComponent {
 
   debounce1 = debounce((params) => {
     this.makeSure(params)
-  }, 3000)
+  }, 1500)
 
   debounce2 = debounce((params) => {
     this.reSure(params)
-  }, 3000)
+  }, 1500)
 
   componentDidMount() {
     const _this = this;
@@ -249,6 +249,7 @@ class XX extends PureComponent {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const number = getFieldValue('persions');
     const reSelected = !!!(selected.length.toString() !== number && !!number && rechoice);
+    const nextRd = !!!(nextround && selected.length.toString() === number);
 
     return (
       <div>
@@ -299,7 +300,7 @@ class XX extends PureComponent {
                 <Col span={8} offset={6}>
                   <FormItem {...formItemLayout} label="人数" required>
                     {getFieldDecorator('persions')(
-                      <Input onChange={() => this.onChange()} disabled={tapable} />
+                      <InputNumber  onChange={() => this.onChange()} disabled={tapable} />
                     )}
                   </FormItem>
                 </Col>
@@ -308,7 +309,7 @@ class XX extends PureComponent {
                   <Button onClick={() => this.startChoice()} disabled={start}>开始抽奖</Button>
                   <Button onClick={() => this.reChoice()} disabled={reSelected}>补充抽奖</Button>
                   <Button onClick={() => this.stopChoice()} disabled={stop}>停止抽奖</Button>
-                  <Button onClick={() => this.clear()} disabled={nextround}>下一轮</Button>
+                  <Button onClick={() => this.clear()} disabled={nextRd}>下一轮</Button>
                 </Col>
                 <Col span={10} offset={7}>
                   <div className='aaa'>
