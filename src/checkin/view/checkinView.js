@@ -20,7 +20,7 @@ export default class CheckIn extends React.Component {
       document.addEventListener("touchmove",this.handleMove);
       const {code } = this.state;
       const openId = localStorage.getItem('check_openId');
-      if(code){
+      if(code && !openId){
         window.location.replace(window.location.href);
       }
       if(!code && !openId){
