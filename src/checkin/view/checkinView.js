@@ -18,9 +18,6 @@ export default class CheckIn extends React.Component {
    }
    componentDidMount(){
       document.addEventListener("touchmove",this.handleMove);
-      window.addEventListener("popState",function(){
-        console.log(window.location.href);
-      })
       const {code } = this.state;
       const openId = localStorage.getItem('check_openId');
       if(!code && !openId){
@@ -59,7 +56,7 @@ export default class CheckIn extends React.Component {
    render(){
     const {code} = this.state;
     const openId = localStorage.getItem('check_openId');
-    console.log(openId,333);
+    alert(history.length,999);
     return openId?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
             <LookOver/>
