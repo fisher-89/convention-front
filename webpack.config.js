@@ -75,16 +75,16 @@ module.exports = {
     //   },
     // },
     proxy: {
+      // '/api': {
+      //   target: 'http://112.74.177.132:8007',
+      //   // pathRewrite: { '^/api': '/sign' },
+      //   changeOrigin: true,
+      // },
       '/api': {
-        target: 'http://112.74.177.132:8007',
+        target: 'http://cs.xigemall.com',//http://cs.xigemall.com/
         // pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
       },
-      // '/api': {
-      //   target: 'http://of.xigemall.com',
-      //   pathRewrite: { '^/api': '/sign' },
-      //   changeOrigin: true,
-      // },
     },
     historyApiFallback: true,
   }

@@ -289,7 +289,7 @@ class XX extends PureComponent {
                       <Select onChange={() => this.onChange()} disabled={tapable} >
                         {award.map(item => {
                           return (
-                            <Option key={item.id} >{item.name}</Option>
+                            <Option key={item.id} value={item.id}>{item.name}</Option>
                           )
                         })}
                       </Select>

@@ -30,7 +30,7 @@ export default class CheckSub extends React.PureComponent {
     //动态获取高度
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
     const formWidth = originalHeight * 0.2463 * 1.5;
-    const fontSize = originalHeight * 0.2463 * 0.06;
+    const fontSize = originalHeight * 0.2463 * 0.05;
     this.setState({
       formW:formWidth,
       fontSize:fontSize,
@@ -147,8 +147,8 @@ export default class CheckSub extends React.PureComponent {
         <div className='form'  style={{width:formW,fontSize:fontSize}}>
             <div className='formcontainer'>
               <img className='imgCLient' src={formimg}></img>
-              <input className='formname' type='text' onChange={this.handlegetName}/>
-              <input className='formphone' type='text' onChange={this.handlePassword}/>
+              <input style={{fontSize:fontSize}} className='formname' type='text' onChange={this.handlegetName}/>
+              <input style={{fontSize:fontSize}} className='formphone' type='text' onChange={this.handlePassword}/>
             </div>
         </div>
         <div style={{height:'13.54%'}}></div>
