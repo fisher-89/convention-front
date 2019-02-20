@@ -125,6 +125,7 @@ export default class CheckSub extends React.PureComponent {
           .catch(err=>{
             Toast.fail('提交表单出错',1);
           })
+          return;
       }
       if(response.status == '422' && response.data.errors['mobile']){
         Toast.fail('请输入正确的手机号',1);
