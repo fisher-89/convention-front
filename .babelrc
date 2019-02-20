@@ -3,10 +3,15 @@
     "plugins": [
         [
             "import",
+            [
             {
                 "libraryName": "antd",
-                "style": true
-            }
+                "style": "css"
+            },
+            {
+                "libraryName": "antd-mobile",
+                "style": "css"
+            }   ]
         ],
         "transform-decorators-legacy",
         "transform-class-properties",

@@ -21,13 +21,15 @@ module.exports = {
       { test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          presets: ["env", "react", "es2015", "stage-2"],
-          plugins: [
-            [  "import",{libraryName: "antd", style: 'css'}] // antd按需加载
-        ]
-        }, 
+        // query: {
+        //   presets: ["env", "react", "es2015", "stage-2"],
+        //   plugins: [
+        //     // [  "import",{libraryName: "antd", style: 'css'}], // antd按需加载
+        //     ["import",{libraryName: "antd", style: 'css'}, { libraryName: "antd-mobile", style: "css" }]
+        // ]
+        // }, 
       },
+      
       { test: /\.(less|css)$/, use: ["style-loader","css-loader", "less-loader"] },
       { test: /\.html$/, loader: 'html-loader' },
       { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 50000, name: 'images/[name]-[hash:8].[ext]' } },

@@ -17,7 +17,7 @@ export default class CheckIn extends React.Component {
     //  this.GetCode();
    }
    componentDidMount(){
-      document.addEventListener("touchmove",this.handleMove);
+      // document.addEventListener("touchmove",this.handleMove);
       // const {code } = this.state;
       // const openId = localStorage.getItem('check_openId');
       // if(!code && !openId){

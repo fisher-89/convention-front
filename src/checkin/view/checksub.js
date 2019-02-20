@@ -1,6 +1,6 @@
 import React from 'react';
-import {Toast} from 'antd-mobile';
 import axios from 'axios';
+import {Toast} from 'antd-mobile';
 import './checkform.less';
 import './checksub.less';
 import logo from 'public/checkin/logo.png';
@@ -75,7 +75,7 @@ export default class CheckSub extends React.PureComponent {
   handleSubmit = (e)=>{
     e.preventDefault();
     const {acountname, password} = this.state;
-    const {openid } = this.props;
+    console.log(acountname,password,11)
     if(!(acountname && password)){
       Toast.fail('所填内容不能为空',1);
       return;
@@ -85,7 +85,6 @@ export default class CheckSub extends React.PureComponent {
     //   return;
     // }
     const data  = {
-      // 'openid':sessionStorage.getItem('check_openId'),
       'name':acountname,
       'mobile':password
     }
@@ -104,6 +103,9 @@ export default class CheckSub extends React.PureComponent {
       if(response.status == '422'){
           Toast.fail(response.data.errors['mobile']['0'],1);
       }
+      if(response.status == '500'){
+        Toast.fail('请在公众号中打开',1);
+    }
       if(response.status =='400'){
         const message = JSON.parse(response.data.message);
         localStorage.setItem('check_name',message['name']);
@@ -121,6 +123,7 @@ export default class CheckSub extends React.PureComponent {
     const secondanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1.7s'}:null;
     const threeanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'2.7s'}:null;
     const original = originalHeight?{height:`${originalHeight}px`}:null;
+    // alert(original);
     console.log(clientEle,333);
     return (
       <div className='checkinPage' style={{...original}}>
