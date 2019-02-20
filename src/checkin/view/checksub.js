@@ -61,12 +61,12 @@ export default class CheckSub extends React.PureComponent {
   handleResize = (originalHeight) =>{
     const resizeHeight=document.documentElement.clientHeight || document.body.clientHeight;
     if(resizeHeight-0<originalHeight-0){
-      // document.removeEventListener('touchmove',this.props.Move)
+      document.removeEventListener('touchmove',this.props.Move)
       this.setState({
         originalHeight:originalHeight
       })
     }else{
-      // document.addEventListener("touchmove",this.props.Move);
+      document.addEventListener("touchmove",this.props.Move);
       this.setState({
         originalHeight:null
       })
@@ -130,8 +130,6 @@ export default class CheckSub extends React.PureComponent {
     const secondanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1.7s'}:null;
     const threeanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'2.7s'}:null;
     const original = originalHeight?{height:`${originalHeight}px`}:null;
-    // alert(original);
-    console.log(clientEle,333);
     return (
       <div className='checkinPage' style={{...original}}>
         <div style={{height:'14.77%'}}></div>
