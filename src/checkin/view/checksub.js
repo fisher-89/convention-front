@@ -115,17 +115,22 @@ export default class CheckSub extends React.PureComponent {
       //错误返回码
       const {response } = err;
       console.log(response);
-      if(response.status == '422'){
-          Toast.fail(response.data.errors['mobile']['0'],1);
+      if(response.status == '422' && response.data.errors['openid']){
+          axios.get(`/api/sign/${this.handleGetOenId()}`)
+          .then(res =>{
+            localStorage.setItem('check_name',res.data['name']);
+            localStorage.setItem('check_avatar',res.data['avatar']);
+            Toast.success('表单提交成功',1);
+          })
+          .catch(err=>{
+            Toast.fail('提交表单出错',1);
+          })
       }
-      if(response.status == '500'){
-        Toast.fail('请在公众号中打开',1);
-    }
+      if(response.status == '422' && response.data.errors['mobile']){
+        Toast.fail('请输入正确的手机号',1);
+      }
       if(response.status =='400'){
-        const message = JSON.parse(response.data.message);
-        localStorage.setItem('check_name',message['name']);
-        localStorage.setItem('check_avatar',message['avatar']);
-        Toast.fail('用户已签到', 1);
+        Toast.fail('请重新关注公众号', 1);
       }
 
     })
