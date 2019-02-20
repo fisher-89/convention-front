@@ -58,6 +58,12 @@ export default class CheckSub extends React.PureComponent {
     return;
   }
 
+  handleGetOenId = () => {
+    const currentUrl = window.location.href;
+    const openId = currentUrl.split('?')['1'].split('=')['1']
+    return openId;
+  }
+
   handleResize = (originalHeight) =>{
     const resizeHeight=document.documentElement.clientHeight || document.body.clientHeight;
     if(resizeHeight-0<originalHeight-0){
@@ -93,9 +99,11 @@ export default class CheckSub extends React.PureComponent {
     // }
     const data  = {
       'name':acountname,
-      'mobile':password
+      'mobile':password,
+      'openid':this.handleGetOenId(),
     }
     axios.post('/api/sign',data).then(res=>{
+      console.log(res);
       if(res.status == '201'){
         // localStorage.setItem('check_openId',res.data['openid']);
         localStorage.setItem('check_name',res.data['name']);

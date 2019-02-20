@@ -13,41 +13,54 @@ export default class DrawView extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      luckName : null,
+      totalName: null,//参与抽奖人员
+      luckName : null,//本轮获奖人员
       luckAvatar: checkin,
       animateRoteId: null,
       arrayNum: [checkin,triangle],
       arraySum: 0,
-      animateCircle : true,//控制圆环动画
+      animateCircle : null,//控制圆环动画
       circleIsvisible : true,//控制圆环显示
+      arrowIsvisible: null,//控制箭头动画
+
     }
   }
   componentDidMount(){
     // this.showAvatar(700); 
     echo.channel('draw')
       .listen('DrawStart', (arg) => {
-        // clearTimeout(this.state.animateRoteId);
-        console.log(arg);
-        // this.state.circleIsvisible = true;
-        // this.state.animateCircle = null;
-        // this.state.arraySum = 0,
-        // this.showLuck(600,arg['users']); 
+        clearTimeout(this.state.animateRoteId);
+        this.state.circleIsvisible = true;
+        this.state.animateCircle = true;
+        this.state.arraySum = 0;
+        this.state.totalName = arg['users'];
+        this.showLuck(400); 
 
-      })
-      .listen('DrawStop', (arg) => {
-        // clearTimeout(this.state.animateRoteId);
-        // this.state.circleIsvisible = null;
-        console.log(arg);
-        // this.showWinluck(700,arg.data['winners']);
+      }).listen('DrawStop', (arg) => {
+        clearTimeout(this.state.animateRoteId);
+        this.state.circleIsvisible = null;
+        this.state.arraySum = 0;
+        this.state.luckName = arg['users'];
+        console.log(arg.data);
+        console.log(this.state.luckName,33);
+        this.showWinluck(700);
       })
       .listen('DrawContinue', (arg) => {
-        // this.state.circleIsvisible = true;
-        // this.state.animateCircle = null;
-          console.log(arg);
-        //   this.showLuck(600,arg['users']); 
+        clearTimeout(this.state.animateRoteId);
+        this.state.circleIsvisible = true;
+        this.state.animateCircle = true;
+        this.state.arraySum = 0;
+        this.state.totalName = arg['users'];
+        this.showLuck(400); 
       });
       echo.channel('winner')
         .listen('WinnerAbandon', (arg) => {
+          console.log(arg);
+          this.state.luckName = arg.data['0'];
+          this.setState({
+            luckAvatar:this.state.luckName[this.state.luckName.length-1]
+          })
+
         })
     
     
@@ -72,43 +85,43 @@ export default class DrawView extends React.Component{
     },timeout);
   }
 
-  showLuck = (timeout, listname) =>{
+  showLuck = (timeout) =>{
     // let imgNum = Math.floor(Math.random()*2)+1;
-    if(this.state.arraySum < listname.length){
-      this.setState({
-        arraySum:this.state.arraySum + 1,
-        luckAvatar:listname[this.state.arraySum]['avatar']
-      });
-      const that = this;
-      this.state.animateRoteId = setTimeout(function(){
-        that.showAvatar(timeout);
-      },timeout);
-    }else{
-      clearTimeout(this.state.animateRoteId)
+    // console.log(this.state.totalName[this.state.arraySum]['avatar'],333);
+    if(this.state.arraySum >=this.state.totalName.length){
+        this.state.arraySum = 0;
     }
+    this.setState({
+      arraySum:this.state.arraySum + 1,
+      luckAvatar:this.state.totalName[this.state.arraySum]['avatar']
+    });
+    const that = this;
+      this.state.animateRoteId = setTimeout(function(){
+        that.showLuck(timeout);
+      },timeout);
   }
 
-   showWinluck = (timeout, listname) => {
-      if(this.state.arraySum < listname.length){
+   showWinluck = (timeout) => {
+      if(this.state.arraySum < this.state.luckName.length){
         this.setState({
           arraySum:this.state.arraySum + 1,
-          luckAvatar:listname[this.state.arraySum]
+          luckAvatar:this.state.luckName[this.state.arraySum]
         });
         const that = this;
         this.state.animateRoteId = setTimeout(function(){
-          that.showAvatar(timeout);
+          that.showWinluck(timeout);
         },timeout);
       }else{
         clearTimeout(this.state.animateRoteId)
       }
    }
 
-  showWineprize = (timeout, listname) =>{
+  showWineprize = (timeout) =>{
     // let imgNum = Math.floor(Math.random()*2)+1;
-    if(this.state.arraySum < listname.length){
+    if(this.state.arraySum < this.state.luckName.length){
       this.setState({
         arraySum:this.state.arraySum + 1,
-        luckAvatar:listname[this.state.arraySum]
+        luckAvatar:this.state.luckName[this.state.arraySum]
       });
       const that = this;
       this.state.animateRoteId = setTimeout(function(){
@@ -137,10 +150,16 @@ export default class DrawView extends React.Component{
     return <img src={arrow}></img>
   }
   render(){
-    const {luckName, luckAvatar ,animateCircle, circleIsvisible} = this.state;
+    const {luckName, luckAvatar ,animateCircle, circleIsvisible, arrowIsvisible} = this.state;
+    console.log(luckAvatar,'render');
     const prizerote = circleIsvisible?(<div className='prizerote-bg' style={{animation:animateCircle?'spin 1s linear infinite':'spin .5s linear infinite'}}>
                 </div>) : null;
-    const  showImg = !circleIsvisible?(<img src={luckAvatar}></img>):(<img style={{animation:'spinrote 2s ease infinite'}} src={luckAvatar}></img>)
+    const  showImg = circleIsvisible?(<img src={luckAvatar}></img>):(<img style={{animation:'spinrote 2s ease infinite'}} src={luckAvatar}></img>)
+    const arrowEle = arrowIsvisible?(<div className='arrow'>
+                      <img src={arrow}></img>
+                      <img src={arrow}></img>
+                      <img src={arrow}></img>
+                  </div>):null;
     return(
       <React.Fragment>
         <div className='prize'>
