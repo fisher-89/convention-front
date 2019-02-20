@@ -61,7 +61,7 @@ export default class CheckForm extends React.PureComponent {
             </div>
             <div style={{height:'9.23%'}}></div>
             <div className='checkin'>
-              <img className='checkinbtn' src={checkin} onClick={this.handleClick}></img>
+              <img className='checkinbtn' src={checkin} onTouchStart={this.handleClick}></img>
               <div className='smline'>
                 <img  src={smline} ></img>
               </div>
@@ -71,7 +71,7 @@ export default class CheckForm extends React.PureComponent {
               <img src={gxline}></img>
             </div>
           </div>
-          <div style={{height:'100%',overflowY:'auto',transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}><CheckSub {...this.state} getchildRef={this.getchildRef}/></div>
+          <div style={{height:'100%',overflowY:'auto',transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}><CheckSub {...this.state} {...this.props} getchildRef={this.getchildRef}/></div>
         </div>
       </React.Fragment>
     );

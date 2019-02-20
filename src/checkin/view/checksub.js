@@ -53,13 +53,20 @@ export default class CheckSub extends React.PureComponent {
     e.preventDefault();
     this.state.password = e.target.value;
   }
+  handleMove = (e) => {
+    e.preventDefault();
+    return;
+  }
+
   handleResize = (originalHeight) =>{
     const resizeHeight=document.documentElement.clientHeight || document.body.clientHeight;
     if(resizeHeight-0<originalHeight-0){
+      // document.removeEventListener('touchmove',this.props.Move)
       this.setState({
         originalHeight:originalHeight
       })
     }else{
+      // document.addEventListener("touchmove",this.props.Move);
       this.setState({
         originalHeight:null
       })
@@ -143,13 +150,13 @@ export default class CheckSub extends React.PureComponent {
         <div className='form'  style={{width:formW,fontSize:fontSize}}>
             <div className='formcontainer'>
               <img className='imgCLient' src={formimg}></img>
-              <input style={{fontSize:fontSize}} className='formname' type='text' onChange={this.handlegetName}/>
+              <input style={{fontSize:fontSize}} className='formname' type='text'  onChange={this.handlegetName}/>
               <input style={{fontSize:fontSize}} className='formphone' type='text' onChange={this.handlePassword}/>
             </div>
         </div>
         <div style={{height:'13.54%'}}></div>
         <div className='submit'>
-          <img className='submitbtn' src={submit} onClick={this.handleSubmit}></img>
+          <img className='submitbtn' src={submit} onTouchStart={this.handleSubmit}></img>
           <div className='smline'>
             <img  src={smline} ></img>
           </div>

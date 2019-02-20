@@ -12,10 +12,14 @@ export default class LookOver extends React.PureComponent {
   constructor(props){
     super(props);
   }
+  componentDidMount(){
+    document.removeEventListener("touchmove",this.props.Move);
+    document.addEventListener("touchmove",this.props.Move);
+  }
+
   handleClick = (e)=>{
     e.preventDefault();
-    localStorage.removeItem('check_openId');
-    alert("清除缓存openid");
+    localStorage.removeItem('check_avatar');
   }
   render() {
     const imageSrc= localStorage.getItem('check_avatar');
