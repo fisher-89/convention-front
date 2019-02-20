@@ -85,14 +85,13 @@ export default class CheckSub extends React.PureComponent {
     //   return;
     // }
     const data  = {
-      'openid':sessionStorage.getItem('check_openId'),
+      // 'openid':sessionStorage.getItem('check_openId'),
       'name':acountname,
       'mobile':password
     }
     axios.post('/api/sign',data).then(res=>{
-      console.log(res,"表单提交成功");
       if(res.status == '201'){
-        localStorage.setItem('check_openId',res.data['openid']);
+        // localStorage.setItem('check_openId',res.data['openid']);
         localStorage.setItem('check_name',res.data['name']);
         localStorage.setItem('check_avatar',res.data['avatar']);
         Toast.success('表单提交成功',1);
@@ -101,21 +100,15 @@ export default class CheckSub extends React.PureComponent {
     }).catch(err=>{
       //错误返回码
       const {response } = err;
-      console.log(response,33);
-      if(response.status =='422' && response.data.errors['openid']["0"]=='微信用户 已经存在.'){
-        const openid = sessionStorage.getItem('check_openId')
-        axios.get(`/api/sign/${openid}`)
-          .then(res=>{
-            console.log(res,456);
-            if(res.status == '200'){
-              Toast.success('表单提交成功',1);
-              localStorage.setItem('check_openId',res.data['openid'])
-              localStorage.setItem('check_name',res.data['name']);
-              localStorage.setItem('check_avatar',res.data['avatar']);
-            } 
-          }).catch(err=>{
-            console.log(err);
-          })
+      console.log(response);
+      if(response.status == '422'){
+          Toast.fail(response.data.errors['mobile']['0'],1);
+      }
+      if(response.status =='400'){
+        const message = JSON.parse(response.data.message);
+        localStorage.setItem('check_name',message['name']);
+        localStorage.setItem('check_avatar',message['avatar']);
+        Toast.fail('用户已签到', 1);
       }
 
     })

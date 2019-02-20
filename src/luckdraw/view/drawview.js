@@ -4,6 +4,7 @@ import Echo from "laravel-echo"
 window.io = require('socket.io-client');
 import checkin from 'public/checkin/checkin.png';
 import triangle from 'public/checkin/triangle.png';
+import arrow from 'public/luckdraw/name.png';
 const echo = new Echo({
   broadcaster: 'socket.io',
   host: '112.74.177.132' + ':6001'
@@ -25,25 +26,25 @@ export default class DrawView extends React.Component{
     // this.showAvatar(700); 
     echo.channel('draw')
       .listen('DrawStart', (arg) => {
-        clearTimeout(this.state.animateRoteId);
+        // clearTimeout(this.state.animateRoteId);
         console.log(arg);
-        this.state.circleIsvisible = true;
-        this.state.animateCircle = null;
-        this.state.arraySum = 0,
-        this.showLuck(600,arg['users']); 
+        // this.state.circleIsvisible = true;
+        // this.state.animateCircle = null;
+        // this.state.arraySum = 0,
+        // this.showLuck(600,arg['users']); 
 
       })
       .listen('DrawStop', (arg) => {
-        clearTimeout(this.state.animateRoteId);
-        this.state.circleIsvisible = null;
+        // clearTimeout(this.state.animateRoteId);
+        // this.state.circleIsvisible = null;
         console.log(arg);
-        this.showWinluck(700,arg.data['winners']);
+        // this.showWinluck(700,arg.data['winners']);
       })
       .listen('DrawContinue', (arg) => {
-        this.state.circleIsvisible = true;
-        this.state.animateCircle = null;
+        // this.state.circleIsvisible = true;
+        // this.state.animateCircle = null;
           console.log(arg);
-          this.showLuck(600,arg['users']); 
+        //   this.showLuck(600,arg['users']); 
       });
       echo.channel('winner')
         .listen('WinnerAbandon', (arg) => {
@@ -130,6 +131,11 @@ export default class DrawView extends React.Component{
     return (<div>{items}</div>)
   }
 
+  makeArrow = () => {
+    let items = [];
+    // for
+    return <img src={arrow}></img>
+  }
   render(){
     const {luckName, luckAvatar ,animateCircle, circleIsvisible} = this.state;
     const prizerote = circleIsvisible?(<div className='prizerote-bg' style={{animation:animateCircle?'spin 1s linear infinite':'spin .5s linear infinite'}}>
@@ -150,12 +156,19 @@ export default class DrawView extends React.Component{
                 </div>
             </div>
             <div className='prizedraw'>
-              <div className='prizerote'>
-                {prizerote}
-                <div className='prizeavatar'>
-                  {showImg}
-                </div>
-              </div>
+               <div className='prizedraw-container'>
+                  <div className='prizerote'>
+                    {prizerote}
+                    <div className='prizeavatar'>
+                      {showImg}
+                    </div>
+                  </div>
+                  <div className='arrow'>
+                      <img src={arrow}></img>
+                      <img src={arrow}></img>
+                      <img src={arrow}></img>
+                  </div>
+               </div>
               <div className="prizename">
                 {/* {luckName} */}
               </div>
