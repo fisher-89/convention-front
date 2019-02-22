@@ -84,7 +84,7 @@ export default class DrawView extends React.Component{
         this.setAnimaterote(false,false,false);
         const luckUsers = luckName?[...luckName,...arg['users']]:arg['users'];
         this.setLucklist(luckUsers,-1);
-        // localStorage.setItem('luckName',this.state.luckName);
+        localStorage.setItem('luckName',this.state.luckName);
         this.state.totalName = null;
         console.log(12313);
         this.showWinluck(2000);
