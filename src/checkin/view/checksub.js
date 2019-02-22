@@ -29,8 +29,8 @@ export default class CheckSub extends React.PureComponent {
     document.addEventListener('keypress',this.handelEnter);
     //动态获取高度
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-    const formWidth = originalHeight * 0.2463 * 1.5;
-    const fontSize = originalHeight * 0.2463 * 0.05;
+    const formWidth = originalHeight * 0.2833 * 1.391;
+    const fontSize = originalHeight * 0.2833 * 0.0326;
     this.setState({
       formW:formWidth,
       fontSize:fontSize,
@@ -146,7 +146,7 @@ export default class CheckSub extends React.PureComponent {
     const original = originalHeight?{height:`${originalHeight}px`}:null;
     return (
       <div className='checkinPage' style={{...original}}>
-        <div style={{height:'14.77%'}}></div>
+        <div style={{height:'7.39%'}}></div>
         <div className='lookback' style={{width:formW}}>
            <div className='first' style={firstanimate}>
               <img  src={firstword}/> 
@@ -166,7 +166,7 @@ export default class CheckSub extends React.PureComponent {
               <input style={{fontSize:fontSize}} className='formphone' type='text' onChange={this.handlePassword}/>
             </div>
         </div>
-        <div style={{height:'13.54%'}}></div>
+        <div style={{height:'11.08%'}}></div>
         <div className='submit'>
           <img className='submitbtn' src={submit} onTouchStart={this.handleSubmit}></img>
           <div className='smline'>

@@ -76,7 +76,7 @@ export default class DrawView extends React.Component{
         //设置中奖name
         this.setLucklist(null,0);
         //设置rote区
-        this.setAnimaterote(true,true,true);
+        this.setAnimaterote(true,false,true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
         this.showLuck(400); 
@@ -96,7 +96,7 @@ export default class DrawView extends React.Component{
       })
       .listen('DrawContinue', (arg) => {
         clearTimeout(this.state.animateRoteId);
-        this.setAnimaterote(true,true,true);
+        this.setAnimaterote(true,false,true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
         this.showLuck(400); 
