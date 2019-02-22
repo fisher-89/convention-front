@@ -178,7 +178,7 @@ export default class CheckSub extends React.PureComponent {
         <div className='submit'>
           <img className='submitbtn' src={submit} onTouchStart={this.handleSubmit}></img>
           <div className='smline'>
-            {/* <img  src={smline} ></img> */}
+            <img  src={smline} ></img>
           </div>
         </div>
         {/* <div style={{height:'1.2%'}}></div>
