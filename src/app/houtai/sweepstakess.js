@@ -253,7 +253,7 @@ class XX extends PureComponent {
     return (
       <div>
         <Row>
-          <Col span={6}>
+          <Col span={6} className='eee'>
             <List
               grid={{
                 gutter: 8, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 1,
