@@ -60,7 +60,13 @@ export default class CheckSub extends React.PureComponent {
 
   handleGetOenId = () => {
     const currentUrl = window.location.href;
-    const openId = currentUrl.split('?')['1'].split('=')['1']
+    let openId = null;
+    try{
+      openId = currentUrl.split('?')['1'].split('=')['1']
+    }catch(err){
+       console.log(err);
+    }
+    
     return openId;
   }
 
@@ -93,10 +99,10 @@ export default class CheckSub extends React.PureComponent {
       Toast.fail('所填内容不能为空',1);
       return;
     }
-    // if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(password))){
-    //   Toast.fail('手机号格式不正确',1);
-    //   return;
-    // }
+    if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(password))){
+      Toast.fail('手机号格式不正确',1);
+      return;
+    }
     const data  = {
       'name':acountname,
       'mobile':password,
@@ -129,11 +135,13 @@ export default class CheckSub extends React.PureComponent {
       }
       if(response.status == '422' && response.data.errors['mobile']){
         Toast.fail('请输入正确的手机号',1);
+        return;
       }
       if(response.status =='400'){
         Toast.fail('请重新关注公众号', 1);
+        return;
       }
-
+      T
     })
   }
   render() {
