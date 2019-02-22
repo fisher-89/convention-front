@@ -26,6 +26,7 @@ export default class DrawView extends React.Component{
       animateCircle : null,//控制圆环动画
       circleIsvisible : null,//控制圆环显示
       arrowIsvisible: null,//控制箭头动画
+      animateRoteNumber: null,
       award: null,//奖品展示
       awardNum: null,
       showLuckImg : null,
@@ -51,6 +52,8 @@ export default class DrawView extends React.Component{
       .listen('ConfigurationSave', (arg) => {
           this.setPrize(arg['data']['award'],arg['data']['persions']); 
           this.setAnimaterote(true,true,false);
+          this.setLucklist(null,0);
+          this.state.showName = null;
           this.state.arraySum = 0;
           this.state.totalName = arg['users'];
           this.showAvatar(700);
@@ -58,6 +61,8 @@ export default class DrawView extends React.Component{
       .listen('ConfigurationUpdate', (arg) =>  {
           this.setPrize(arg['data']['award'],arg['data']['persions']); 
           this.setAnimaterote(true,true,false);
+          this.setLucklist(null,0);
+          this.state.showName = null;
           this.state.arraySum = 0;
           this.state.totalName = arg['users'];
           this.showAvatar(700);
@@ -78,15 +83,15 @@ export default class DrawView extends React.Component{
 
       }).listen('DrawStop', (arg) => {
         clearTimeout(this.state.animateRoteId);
-        console.log(arg);
         let {luckName} = this.state;
         this.state.arraySum = luckName?luckName.length:0;
         this.setAnimaterote(false,false,false);
         const luckUsers = luckName?[...luckName,...arg['users']]:arg['users'];
-        this.setLucklist(luckUsers,-1);
+        const luckNum = luckName ?luckName.length-1 : -1;
+        this.state.animateRoteNumber = arg['users'].length;
+        this.setLucklist(luckUsers,luckNum);
         localStorage.setItem('luckName',this.state.luckName);
         this.state.totalName = null;
-        console.log(12313);
         this.showWinluck(2000);
       })
       .listen('DrawContinue', (arg) => {
@@ -109,11 +114,13 @@ export default class DrawView extends React.Component{
                luckName.splice(i,1)
             }
           }
-          this.state.luckName = luckName;
-          this.state.luckNameSum = luckName.length + 2;
+          this.setLucklist(luckName,luckName.length);
           this.setState({
-            luckAvatar:this.state.luckName[this.state.luckName.length-1]
+            showName: null,
           })
+          // this.setState({
+          //   luckAvatar:this.state.luckName[this.state.luckName.length-1]
+          // })
         })
     
     
@@ -164,12 +171,12 @@ export default class DrawView extends React.Component{
   }
 
    showWinluck = (timeout) => {
-     console.log(this.state,'showwinluck');
       if(this.state.arraySum < this.state.luckName.length){
         this.state.luckNameSum += 1;
         this.setState({
           arraySum:this.state.arraySum + 1,
           luckAvatar:this.state.luckName[this.state.arraySum]['avatar'],
+          showName :this.state.luckName[this.state.arraySum]['name'],
           showLuckImg:!this.state.showLuckImg
         });
         const that = this;
@@ -218,10 +225,10 @@ export default class DrawView extends React.Component{
   render(){
     const  {luckName, showName,luckAvatar ,animateCircle, arraySum,
           circleIsvisible, arrowIsvisible, luckNameSum,
-          award ,awardNum ,showLuckImg} = this.state;
+          award ,awardNum ,showLuckImg,animateRoteNumber } = this.state;
     const  prizerote = circleIsvisible?(<div className='prizerote-bg' style={{animation:animateCircle?'spin 1.5s linear infinite':'spin .5s linear infinite'}}>
                 </div>) : null;
-    const  showImg = circleIsvisible?(<img src={luckAvatar}></img>):(<img style={{animation:`spinrote 2s ease ${arraySum}`}} src={luckAvatar}></img>)
+    const  showImg = circleIsvisible?(<img src={luckAvatar}></img>):(<img style={{animation:`spinrote 2s ease ${animateRoteNumber}`}} src={luckAvatar}></img>)
     const  arrowEle = arrowIsvisible?(<div className='arrow'>
                       <img src={arrow}></img>
                       <img src={arrow}></img>
