@@ -138,6 +138,8 @@
       float: left;
       background:url('../../public/luckdraw/luckavatar.png') 0 0 no-repeat;
       background-size:100% 100%;
+      // animation: listVisibal 0 steps(1,start);
+      // animation-delay: 2s;
       &>img{
         border:none;
         display:block;
@@ -178,5 +180,13 @@
   }
   100% {
     width:225px;
+  }
+}
+@keyframes listVisibal {
+  0% {
+    visibility: hidden
+  }
+  100% {
+    visibility: visible
   }
 }

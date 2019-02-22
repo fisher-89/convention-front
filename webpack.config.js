@@ -83,6 +83,7 @@ module.exports = {
       //   changeOrigin: true,
       // },
       '/api': {
+        // target:'http://192.168.1.16:8007',
         target: 'http://cs.xigemall.com',//http://cs.xigemall.com/
         // pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,

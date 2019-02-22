@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.less';
+import axios from 'axios';
 import Echo from "laravel-echo"
 window.io = require('socket.io-client');
 import checkin from 'public/checkin/checkin.png';
@@ -7,93 +8,154 @@ import triangle from 'public/checkin/triangle.png';
 import arrow from 'public/luckdraw/name.png';
 const echo = new Echo({
   broadcaster: 'socket.io',
-  host: '112.74.177.132' + ':6001'
+  host: '112.74.177.132:6001'
+  // host: '192.168.1.166:6001'
 });
 export default class DrawView extends React.Component{
   constructor(props){
     super(props);
     this.state = {
+      showName:null,
       totalName: null,//参与抽奖人员
-      luckName : null,//本轮获奖人员
-      luckAvatar: checkin,
+      luckName : [],//本轮获奖人员
+      luckAvatar: null,
       animateRoteId: null,
       arrayNum: [checkin,triangle],
       arraySum: 0,
+      luckNameSum:0,
       animateCircle : null,//控制圆环动画
-      circleIsvisible : true,//控制圆环显示
+      circleIsvisible : null,//控制圆环显示
       arrowIsvisible: null,//控制箭头动画
-
+      award: null,//奖品展示
+      awardNum: null,
+      showLuckImg : null,
     }
   }
   componentDidMount(){
-    // this.showAvatar(700); 
+    axios.get('/api/new_configuration')
+      .then(res => {
+        console.log(res.status);
+        if(res.status == '200'){
+          this.setPrize(res['data']['data']['award'],res['data']['data']['persions'])
+          this.state.totalName = res['data']['users'];
+          this.state.arraySum = 0;
+          this.setAnimaterote(true,true,false);
+          this.setLucklist(res['data']['data']['winners'],res['data']['data']['winners'].length);
+          this.showAvatar(800);
+        }
+      })
+      .catch(err => {
+          console.log(err,"请求失败，出现异常，请重新打开网页");
+      })
+    echo.channel('configuration')
+      .listen('ConfigurationSave', (arg) => {
+          this.setPrize(arg['data']['award'],arg['data']['persions']); 
+          this.setAnimaterote(true,true,false);
+          this.state.arraySum = 0;
+          this.state.totalName = arg['users'];
+          this.showAvatar(700);
+      })
+      .listen('ConfigurationUpdate', (arg) =>  {
+          this.setPrize(arg['data']['award'],arg['data']['persions']); 
+          this.setAnimaterote(true,true,false);
+          this.state.arraySum = 0;
+          this.state.totalName = arg['users'];
+          this.showAvatar(700);
+      })
+
     echo.channel('draw')
       .listen('DrawStart', (arg) => {
         clearTimeout(this.state.animateRoteId);
-        this.state.circleIsvisible = true;
-        this.state.animateCircle = true;
+        //设置奖品
+        this.setPrize( arg['data']['award'],arg['data']['persions']);
+        //设置中奖name
+        this.setLucklist(null,0);
+        //设置rote区
+        this.setAnimaterote(true,true,true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
         this.showLuck(400); 
 
       }).listen('DrawStop', (arg) => {
         clearTimeout(this.state.animateRoteId);
-        this.state.circleIsvisible = null;
-        this.state.arraySum = 0;
-        this.state.luckName = arg['users'];
-        console.log(arg.data);
-        console.log(this.state.luckName,33);
-        this.showWinluck(700);
+        console.log(arg);
+        let {luckName} = this.state;
+        this.state.arraySum = luckName?luckName.length:0;
+        this.setAnimaterote(false,false,false);
+        const luckUsers = luckName?[...luckName,...arg['users']]:arg['users'];
+        this.setLucklist(luckUsers,-1);
+        // localStorage.setItem('luckName',this.state.luckName);
+        this.state.totalName = null;
+        console.log(12313);
+        this.showWinluck(2000);
       })
       .listen('DrawContinue', (arg) => {
         clearTimeout(this.state.animateRoteId);
-        this.state.circleIsvisible = true;
-        this.state.animateCircle = true;
+        this.setAnimaterote(true,true,true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
         this.showLuck(400); 
       });
       echo.channel('winner')
         .listen('WinnerAbandon', (arg) => {
-          console.log(arg);
-          this.state.luckName = arg.data['0'];
+          //重新设置luckname
+          //设置arraySum
+          let {luckName } = this.state;
+          if(!luckName.length){
+            luckName = localStorage.getItem('luckName'); 
+          }
+          for(let i = 0; i < luckName.length; i+=1){
+            if(luckName[i]['openid'] == arg['data']['openid']){
+               luckName.splice(i,1)
+            }
+          }
+          this.state.luckName = luckName;
+          this.state.luckNameSum = luckName.length + 2;
           this.setState({
             luckAvatar:this.state.luckName[this.state.luckName.length-1]
           })
-
         })
     
     
   }
 
+  setPrize = (award,persions)=> {
+    this.state.award = award;
+    this.state.awardNum = persions;
+  }
+
+  setLucklist = (luckName, luckNum)=> {
+    this.state.luckName = luckName;
+    this.state.luckNameSum = luckNum;
+  }
+
+  setAnimaterote = (circleIsvisible,animateCircle,arrowIsvisible) => {
+    this.state.circleIsvisible = circleIsvisible;
+    this.state.animateCircle = animateCircle;
+    this.state.arrowIsvisible = arrowIsvisible;
+  }
   showAvatar = (timeout) =>{
-    // let imgNum = Math.floor(Math.random()*2)+1;
-    if(this.state.arraySum < this.state.arrayNum.length){
-      this.setState({
-        arraySum:this.state.arraySum + 1,
-        luckAvatar:this.state.arrayNum[this.state.arraySum]
-      })
-    }else{
-      this.setState({
-        arraySum:1,
-        luckAvatar:this.state.arrayNum[0]
-      })
+    if(this.state.arraySum >=this.state.totalName.length){
+      this.state.arraySum = 0;
     }
+    this.setState({
+      arraySum:this.state.arraySum + 1,
+      luckAvatar:this.state.totalName[this.state.arraySum]['avatar']
+    });
     const that = this;
-    this.state.animateRoteId = setTimeout(function(){
-      that.showAvatar(timeout);
-    },timeout);
+      this.state.animateRoteId = setTimeout(function(){
+        that.showAvatar(timeout);
+      },timeout);
   }
 
   showLuck = (timeout) =>{
-    // let imgNum = Math.floor(Math.random()*2)+1;
-    // console.log(this.state.totalName[this.state.arraySum]['avatar'],333);
     if(this.state.arraySum >=this.state.totalName.length){
         this.state.arraySum = 0;
     }
     this.setState({
       arraySum:this.state.arraySum + 1,
-      luckAvatar:this.state.totalName[this.state.arraySum]['avatar']
+      luckAvatar:this.state.totalName[this.state.arraySum]['avatar'],
+      showName:this.state.totalName[this.state.arraySum]['name']
     });
     const that = this;
       this.state.animateRoteId = setTimeout(function(){
@@ -102,16 +164,23 @@ export default class DrawView extends React.Component{
   }
 
    showWinluck = (timeout) => {
+     console.log(this.state,'showwinluck');
       if(this.state.arraySum < this.state.luckName.length){
+        this.state.luckNameSum += 1;
         this.setState({
           arraySum:this.state.arraySum + 1,
-          luckAvatar:this.state.luckName[this.state.arraySum]
+          luckAvatar:this.state.luckName[this.state.arraySum]['avatar'],
+          showLuckImg:!this.state.showLuckImg
         });
         const that = this;
         this.state.animateRoteId = setTimeout(function(){
           that.showWinluck(timeout);
         },timeout);
       }else{
+        this.setState({
+          circleIsvisible:false,
+          luckNameSum:this.state.luckNameSum + 1
+        })
         clearTimeout(this.state.animateRoteId)
       }
    }
@@ -125,18 +194,20 @@ export default class DrawView extends React.Component{
       });
       const that = this;
       this.state.animateRoteId = setTimeout(function(){
-        that.showAvatar(timeout);
+        that.showWineprize(timeout);
       },timeout);
     }else{
       clearTimeout(this.state.animateRoteId)
     }
   }
 
-  makeShowlist = (listname=[1]) => {
+  makeShowlist = (listname) => {
+    //listname 中奖人数
+    const {awardNum } = this.state;
     let items = [];
-    for(let i = 0; i< 10 ; i+=1){
-       if(i < listname.length){
-          items.push(<div className='hoveritem' key={i}><img src={checkin}></img></div>)
+    for(let i = 0; i< awardNum; i+=1){
+       if(i < listname){
+          items.push(<div className='hoveritem' key={i}><img src={this.state.luckName[i]['avatar'] || this.state.luckName[i]['sign']['avatar']}></img></div>)
        }else{
           items.push(<div className='deafultitem' key={i}></div>)
        }
@@ -144,34 +215,44 @@ export default class DrawView extends React.Component{
     return (<div>{items}</div>)
   }
 
-  makeArrow = () => {
-    let items = [];
-    // for
-    return <img src={arrow}></img>
-  }
   render(){
-    const {luckName, luckAvatar ,animateCircle, circleIsvisible, arrowIsvisible} = this.state;
-    console.log(luckAvatar,'render');
-    const prizerote = circleIsvisible?(<div className='prizerote-bg' style={{animation:animateCircle?'spin 1s linear infinite':'spin .5s linear infinite'}}>
+    const  {luckName, showName,luckAvatar ,animateCircle, arraySum,
+          circleIsvisible, arrowIsvisible, luckNameSum,
+          award ,awardNum ,showLuckImg} = this.state;
+    const  prizerote = circleIsvisible?(<div className='prizerote-bg' style={{animation:animateCircle?'spin 1.5s linear infinite':'spin .5s linear infinite'}}>
                 </div>) : null;
-    const  showImg = circleIsvisible?(<img src={luckAvatar}></img>):(<img style={{animation:'spinrote 2s ease infinite'}} src={luckAvatar}></img>)
-    const arrowEle = arrowIsvisible?(<div className='arrow'>
+    const  showImg = circleIsvisible?(<img src={luckAvatar}></img>):(<img style={{animation:`spinrote 2s ease ${arraySum}`}} src={luckAvatar}></img>)
+    const  arrowEle = arrowIsvisible?(<div className='arrow'>
                       <img src={arrow}></img>
                       <img src={arrow}></img>
                       <img src={arrow}></img>
                   </div>):null;
+    // const  nameList  = this.makeShowlist(luckNameSum);
+    
+    const  awardEle = award?(<div className="explain">
+                <div className='explainimg'>
+                  <img src={award['url']}></img>
+                </div>
+                <div className='explaintext'>
+                   <div className='machine'>
+                   {award['name']}
+                   </div> 
+                    <div className='number'>数量:&nbsp; {awardNum}</div>
+                </div>
+            </div>):null;
+    if(!award) return null;       
     return(
       <React.Fragment>
         <div className='prize'>
             <div className="explain">
                 <div className='explainimg'>
-                  <img src={triangle}></img>
+                  <img src={award['url']}></img>
                 </div>
                 <div className='explaintext'>
                    <div className='machine'>
-                   iPhone XS MAX 512G iPhone XS MAX 512G 
+                   {award['name']}
                    </div> 
-                    <div className='number'>数量:&nbsp; {10}</div>
+                    <div className='number'>数量:&nbsp; {awardNum}</div>
                 </div>
             </div>
             <div className='prizedraw'>
@@ -182,19 +263,15 @@ export default class DrawView extends React.Component{
                       {showImg}
                     </div>
                   </div>
-                  <div className='arrow'>
-                      <img src={arrow}></img>
-                      <img src={arrow}></img>
-                      <img src={arrow}></img>
-                  </div>
+                  {arrowEle}  
                </div>
               <div className="prizename">
-                {/* {luckName} */}
+                {showName}
               </div>
             </div>
         </div>
         <div className='namelist'>
-          {this.makeShowlist()}
+          {this.makeShowlist(luckNameSum)}
         </div>
       </React.Fragment>
     ) 
