@@ -29,8 +29,8 @@ export default class CheckSub extends React.PureComponent {
     document.addEventListener('keypress',this.handelEnter);
     //动态获取高度
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-    const formWidth = originalHeight * 0.2833 * 1.391;
-    const fontSize = originalHeight * 0.2833 * 0.0326;
+    const formWidth = originalHeight * 0.3177 * 1.391;
+    const fontSize = originalHeight * 0.3177 * 0.0652;
     this.setState({
       formW:formWidth,
       fontSize:fontSize,
@@ -99,7 +99,7 @@ export default class CheckSub extends React.PureComponent {
       Toast.fail('所填内容不能为空',1);
       return;
     }
-    if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(password))){
+    if(!(/^1[0-9][0-9]\d{8}$/.test(password))){
       Toast.fail('手机号格式不正确',1);
       return;
     }
@@ -154,7 +154,7 @@ export default class CheckSub extends React.PureComponent {
     const original = originalHeight?{height:`${originalHeight}px`}:null;
     return (
       <div className='checkinPage' style={{...original}}>
-        <div style={{height:'7.39%'}}></div>
+        <div style={{height:'8.287%'}}></div>
         <div className='lookback' style={{width:formW}}>
            <div className='first' style={firstanimate}>
               <img  src={firstword}/> 
@@ -166,25 +166,25 @@ export default class CheckSub extends React.PureComponent {
             <img src={threeword}></img>
            </div>
         </div>
-        <div style={{height:'7.38%'}}></div>
+        <div style={{height:'10.36%'}}></div>
         <div className='form'  style={{width:formW,fontSize:fontSize}}>
             <div className='formcontainer'>
               <img className='imgCLient' src={formimg}></img>
               <input style={{fontSize:fontSize}} className='formname' type='text'  onChange={this.handlegetName}/>
-              <input style={{fontSize:fontSize}} className='formphone' type='text' onChange={this.handlePassword}/>
+              <input style={{fontSize:fontSize}} className='formphone' type='number' onChange={this.handlePassword}/>
             </div>
         </div>
-        <div style={{height:'11.08%'}}></div>
+        <div style={{height:'12.43%'}}></div>
         <div className='submit'>
           <img className='submitbtn' src={submit} onTouchStart={this.handleSubmit}></img>
           <div className='smline'>
-            <img  src={smline} ></img>
+            {/* <img  src={smline} ></img> */}
           </div>
         </div>
-        <div style={{height:'1.2%'}}></div>
+        {/* <div style={{height:'1.2%'}}></div>
         <div className='gxline'>
           <img src={gxline}></img>
-        </div>
+        </div> */}
       </div>
     );
   }
