@@ -10,6 +10,11 @@ export default class CheckIn extends React.Component {
    }
 
    componentDidMount(){
+    window.addEventListener('orientationchange',function(event){
+      console.log(event);
+      event.stopPropagation();
+      event.cancelBubble = true;
+    })
       document.addEventListener("touchmove",this.handleMove);
    }
   

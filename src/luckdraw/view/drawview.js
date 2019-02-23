@@ -127,8 +127,10 @@ export default class DrawView extends React.Component{
   }
 
   setPrize = (award,persions)=> {
-    this.state.award = award;
-    this.state.awardNum = persions;
+    this.setState({
+      award : award ,
+      awardNum : persions,
+    })
   }
 
   setLucklist = (luckName, luckNum)=> {
