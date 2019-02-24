@@ -103,7 +103,6 @@ export default class CheckSub extends React.PureComponent {
   }
   handleSubmit = (e)=>{
     e.preventDefault();
-    this.props.Showlist();
     const {acountname, password} = this.state;
     if(!(acountname && password)){
       Toast.fail('所填内容不能为空',1);
@@ -125,6 +124,7 @@ export default class CheckSub extends React.PureComponent {
         localStorage.setItem('check_name',res.data['name']);
         localStorage.setItem('check_avatar',res.data['avatar']);
         Toast.success('表单提交成功',1);
+        this.props.Showlist();
         //提交成功跳转至，节目单页面
       }
     }).catch(err=>{
@@ -137,6 +137,7 @@ export default class CheckSub extends React.PureComponent {
             localStorage.setItem('check_name',res.data['name']);
             localStorage.setItem('check_avatar',res.data['avatar']);
             Toast.success('表单提交成功',1);
+            this.props.Showlist();
           })
           .catch(err=>{
             Toast.fail('提交表单出错',1);
