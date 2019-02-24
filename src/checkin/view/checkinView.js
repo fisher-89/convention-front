@@ -79,7 +79,7 @@ export default class CheckIn extends React.Component {
     const avatar = localStorage.getItem('check_avatar');
     return name&&avatar?(<React.Fragment>
           <Suspense fallback={<Loading/>}>
-            <LookoverPage Move={this.handleMove} height={this.state.screenHeight}/>
+            <LookoverPage Move={this.handleMove} height={this.state.screenHeight} {...this.state}/>
           </Suspense>
         </React.Fragment>):(<React.Fragment>
                           <Suspense fallback={<Loading/>}>
