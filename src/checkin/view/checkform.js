@@ -23,11 +23,17 @@ export default class CheckForm extends React.PureComponent {
     e.preventDefault();
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
     this.setState({
-      pageTranslate:'-100%',
+      pageTranslate:true,
       wordAnimate:true,
       originalHeight:originalHeight,
     })
   }
+  // componentDidMount(){
+  //   const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
+  //   this.setState({
+  //     originalHeight:originalHeight,
+  //   })
+  // }
   handleResize = (originalHeight) =>{
     const resizeHeight=document.documentElement.clientHeight || document.body.clientHeight;
     if(resizeHeight-0<originalHeight-0){
@@ -40,13 +46,14 @@ export default class CheckForm extends React.PureComponent {
       })
     }
   }
+  //transform:`translateY(${pageTranslate})`,height:`${originalHeight}px`
   render() {
-    const {pageTranslate,wordAnimate} = this.state;
+    const {pageTranslate,wordAnimate, originalHeight } = this.state;
     const bgstyle = wordAnimate?{transition:'background-position-y 1s ease',backgroundPositionY:'80%'}:null;
     return (
       <React.Fragment>
-        <div className="root-bg" style={bgstyle}>
-          <div className='checkinPage' style={{transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}>
+        <div  className="root-bg" style={bgstyle}>
+          <div className='checkinPage' style={{transition:'top 1s ease',top:pageTranslate?'-50%':'50%'}}>
             <div style={{height:'7.407%'}}></div>
             <div className='logo'>
               <img src={logo}/>
@@ -71,7 +78,8 @@ export default class CheckForm extends React.PureComponent {
               <img src={gxline}></img>
             </div>
           </div>
-          <div style={{height:'100%',overflowY:'auto',transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}><CheckSub {...this.state} {...this.props} getchildRef={this.getchildRef}/></div>
+          <CheckSub {...this.state} {...this.props} getchildRef={this.getchildRef} style={{transition:'top 1s ease',top:pageTranslate?'50%':'150%'}}/>
+          {/* <div style={{overflowY:'auto',transition:'transform 1s ease',transform:`translateY(${pageTranslate})`}}><CheckSub {...this.state} {...this.props} getchildRef={this.getchildRef}/></div> */}
         </div>
       </React.Fragment>
     );

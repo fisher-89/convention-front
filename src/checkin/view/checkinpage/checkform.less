@@ -1,0 +1,87 @@
+.checkinPage{
+  box-sizing: border-box;
+  top:50%;
+  left:50%;
+  position: absolute;
+  .logo{
+    position: absolute;
+    width:100%;
+    top:8.33%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      width:41.48%
+    }
+  }
+  .xj{
+    position: absolute;
+    top:33.4%;
+    width: 100%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      width:100%;
+    }
+  }
+  .triangle{
+    position: absolute;
+    top:59.51%;
+    width: 100%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      width:5.92%;
+    }
+  }
+  .checkin{
+    position: absolute;
+    top:73.47%;
+    width:100%;
+    overflow: hidden;
+    .checkin-container{
+      width:48%;
+      margin: 0 auto;
+      .checkinbtn{
+        display: block;
+        width:100%;
+      }
+      .smline{
+        width:43.2%;
+          animation-timing-function:linear;
+          animation: linemove 2s infinite;
+          overflow: hidden;
+          position: absolute;
+          &>img{
+            display: block;
+            width:100%;
+            margin:0 auto;
+          }
+        // display: block;
+        // margin:0 auto;
+        // height:2.04%;
+        // animation: linemove 2s infinite;
+      }
+    } 
+  }
+  .gxline{
+    height:4.92%;
+    &>img{
+      margin: 0 auto;
+      display: block;
+      height: 100%;
+    }
+  }
+
+}
+@keyframes linemove
+{
+  0% {top:0}
+  50% {top:100%}
+  100% {top:0}
+}
+// @keyframes linemove
+// {
+//   0% {transform: translateY(0)}
+//   50% {transform: translateY(-100%)}
+//   100% {transform: translateY(0)}
+// }

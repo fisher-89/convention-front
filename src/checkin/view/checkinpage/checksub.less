@@ -1,0 +1,135 @@
+.submitPage{
+  box-sizing: border-box;
+  top:150%;
+  left:50%;
+  // padding: 0 5%;
+  position: absolute;
+  .lookback{
+    // height:12.43%;
+    position: absolute;
+    width:100%;
+    top:8.125%;
+    // margin:0 auto;
+    color:#efca9f;
+    .container{
+      width:100%;
+      overflow: hidden;
+      position: relative;
+      .first, .second ,.three{
+        width:100%;
+        position: absolute;
+        height:100px;
+        overflow: hidden;
+        padding-right:100%;
+        background-clip: content-box;
+        background-repeat:no-repeat;
+        transition: padding 1s linear;
+        background-size: 100% auto;
+        box-sizing:border-box;
+        // background: url('../../../public/checkin/firstword.png') 0 0 no-repeat;
+        // background-size:100% auto;
+        // &>div{
+        //   height:100%;
+        //   width:100%;
+        //   background-origin:padding-box;
+        //   background: url('../../../public/checkin/firstword.png') 0 0 no-repeat;
+        // background-size:100% auto;
+        // }
+      }
+      .first{
+        background-image: url('../../../public/checkin/firstword.png');
+      }
+      .second{
+        background-image: url('../../../public/checkin/secondword.png');
+      }
+      .three{
+        background-image: url('../../../public/checkin/threeword.png');
+      }
+      &>img{
+        display: block;
+        width:100%;
+      }
+    }
+  }
+  .form{
+    position: absolute;
+    top:27.375%;
+    width:100%;
+    transition: visibility 1s linear;
+    visibility: hidden;
+    // height:31.77%;
+    // margin:0 auto;
+    .formcontainer{
+      height:100%;
+      width:100%;
+      position: relative;
+      &>img{
+        display: block;
+        width:100%;
+      }
+      .formname{
+        position:absolute;
+        left:31.25%;
+        top:36.91%;
+        width:56.25%;
+        // height:7.304%;
+        line-height:1;
+        vertical-align: middle;
+        color:#ffffff;
+        border:none;
+        padding:0;
+        outline: none;
+        background-color: transparent;
+      }
+      .formphone{
+        position:absolute;
+        left:31.25%;
+        // top:68.5%;
+        bottom:27.80%;
+        width:56.25%;
+        // height:7.304%;
+        line-height:1;
+        vertical-align: middle;
+        color:#ffffff;
+        padding:0;
+        border:none;
+        outline: none;
+        background-color: transparent;
+      }
+    }
+    h3{
+       width:80%; 
+       font-size:.09rem;
+     }
+  }
+  .submit{
+    position: absolute;
+    top:73.75%;
+    // height:6.63%;
+    width:100%;
+    transition: visibility 1s linear;
+    visibility: hidden;
+    .submit-container{
+      width:43.2%;
+      margin: 0 auto;
+      .submitbtn{
+        margin: 0 auto;
+        display: block;
+        // height: 100%;
+        width:100%;
+      }
+      .smline{
+        width:43.2%;
+        animation-timing-function:linear;
+        animation: linemove 2s infinite;
+        overflow: hidden;
+        position: absolute;
+        &>img{
+          display: block;
+          width:100%;
+          margin:0 auto;
+        }
+      }
+    }
+  }
+}

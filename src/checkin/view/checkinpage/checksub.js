@@ -13,6 +13,7 @@ import firstword from 'public/checkin/firstword.png';
 import secondword from 'public/checkin/secondword.png';
 import threeword from 'public/checkin/threeword.png';
 import formimg from 'public/checkin/form.png';
+import black from 'public/checkin/black.png';
 
 export default class CheckSub extends React.PureComponent {
   constructor(props){
@@ -47,10 +48,10 @@ export default class CheckSub extends React.PureComponent {
   }
 
   handleBlur = () => {
-    // setTimeout(function() {
-    //   const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0;
-    //   window.scrollTo(0, Math.max(scrollHeight - 1, 0));
-    // }, 100);
+    setTimeout(function() {
+      const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0;
+      window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+    }, 100);
   }
 
   handlegetName = (e) => {
@@ -102,13 +103,13 @@ export default class CheckSub extends React.PureComponent {
   }
   handleSubmit = (e)=>{
     e.preventDefault();
+    this.props.Showlist();
     const {acountname, password} = this.state;
-    console.log(acountname,password,11)
     if(!(acountname && password)){
       Toast.fail('所填内容不能为空',1);
       return;
     }
-    if(!(/^1[0-9][0-9]\d{8}$/.test(password))){
+    if(!(/^1\d{10}$/.test(password))){
       Toast.fail('手机号格式不正确',1);
       return;
     }
@@ -154,46 +155,48 @@ export default class CheckSub extends React.PureComponent {
     })
   }
   render() {
-    const {wordAnimate ,clientEle} = this.props;
-    const {originalHeight, formW, fontSize} = this.state;
+    const {wordAnimate ,clientEle,pageTranslate,pageHeight, pageWidth,pageMargin} = this.props;
+    const {originalHeight, formW} = this.state;
     // const animate = wordAnimate?{animation:'firstword 1s ease',animationDelay:'1s'}:null;
-    const firstanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1s'}:null;
-    const secondanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'1.7s'}:null;
-    const threeanimate = wordAnimate?{width:'100%',transition: 'width 1s linear',transitionDelay:'2.7s'}:null;
-    const original = originalHeight?{height:`${originalHeight}px`}:null;
+    const firstanimate = wordAnimate?{paddingRight:'0',transitionDelay:'1s'}:null;
+    const secondanimate = wordAnimate?{paddingRight:'0',transitionDelay:'1.7s'}:null;
+    const threeanimate = wordAnimate?{paddingRight:'0',transitionDelay:'2.7s'}:null;
+    const formnimate = wordAnimate?{visibility:'visible',transitionDelay:'3.3s'}:null;
+    const submitanimate = wordAnimate?{visibility:'visible',transitionDelay:'3.3s'}:null;
+    const fontSize = pageWidth * .046875 ;
+    // const original = originalHeight?{height:`${originalHeight}px`}:null;
+    const pageStyle = pageWidth?{height:`${pageHeight}px`,width:`${pageWidth}px`,marginLeft:`-${pageWidth/2}px`,marginTop:`-${pageHeight/2}px`}:null;
     return (
-      <div className='submitPage' style={{...original,...this.props.style}}>
-        <div style={{height:'8.287%'}}></div>
+      <div className='submitPage' style={{transition:'top 1s ease',top:pageTranslate?`${50*pageTranslate}%`:null,...pageStyle}}>
         <div className='lookback' style={{width:formW}}>
-           <div className='first' style={firstanimate}>
-              <img  src={firstword}/> 
+           <div className='container' >
+              <div className='first'  style={firstanimate}></div>
+              <img  src={black}/> 
            </div>
-           <div className='second' style={secondanimate}>
-            <img src={secondword}></img>
+           <div className='container'>
+              <div className='second' style={secondanimate}></div>
+              <img src={black}></img>
            </div>
-           <div className='three' style={threeanimate}>
-            <img src={threeword}></img>
+           <div className='container'>
+              <div className='three' style={threeanimate}></div>
+              <img src={black}></img>
            </div>
         </div>
-        <div style={{height:'10.36%'}}></div>
-        <div className='form'  style={{width:formW,fontSize:fontSize}}>
+        <div className='form'  style={{width:formW,fontSize:`${fontSize}px`,...formnimate}}>
             <div className='formcontainer'>
               <img className='imgCLient' src={formimg}></img>
-              <input style={{fontSize:fontSize}}  className='formname' type='text'   onChange={this.handlegetName}/>
-              <input style={{fontSize:fontSize}} className='formphone' type='number'  onChange={this.handlePassword}/>
+              <input style={{fontSize:`${fontSize}px`}}  className='formname' type='text'  onBlur={this.handleBlur} onChange={this.handlegetName}/>
+              <input style={{fontSize:`${fontSize}px`}} className='formphone' type='number'  onBlur={this.handleBlur} onChange={this.handlePassword}/>
             </div>
-        </div>
-        <div style={{height:'12.43%'}}></div>
-        <div className='submit'>
-          <img className='submitbtn' src={submit} onClick={this.handleSubmit}></img>
-          <div className='smline'>
-            <img  src={smline} ></img>
+        </div>  
+        <div className='submit' style={submitanimate}>
+          <div  className='submit-container'>
+            <img className='submitbtn' src={submit} onClick={this.handleSubmit}></img>
+            <div className='smline'>
+              <img  src={smline} ></img>
+            </div>
           </div>
         </div>
-        {/* <div style={{height:'1.2%'}}></div>
-        <div className='gxline'>
-          <img src={gxline}></img>
-        </div> */}
       </div>
     );
   }
