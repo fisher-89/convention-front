@@ -10,6 +10,7 @@ module.exports = {
     checkin:  './src/checkin/checkin.js',
     luckdraw:  './src/luckdraw/luckdraw.js',
     app: './src/app/app.js',
+    supple : './src/supple/supple.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -47,6 +48,11 @@ module.exports = {
     //   template: './src/board.html',
     //   chunks: ['board'],
     // }),
+    new HtmlWebpackPlugin({
+      filename: './supple/index.html',
+      template: './src/supple/supple.html',
+      chunks: ['supple'],
+    }),
     new HtmlWebpackPlugin({
       filename: './checkin/index.html',
       template: './src/checkin/checkin.html',
