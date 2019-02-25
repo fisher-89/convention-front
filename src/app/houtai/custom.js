@@ -36,14 +36,14 @@ class AA extends PureComponent {
     )
       .then(function (response) {
         const midkey = [];
-        custom.forEach(item=> {
+        custom.forEach(item => {
           if (item.openid === response.data.openid) {
             midkey.push(response.data);
           } else {
             midkey.push(item);
           }
         })
-         _this.setState({ visible: false, custom: midkey });
+        _this.setState({ visible: false, custom: midkey });
       })
       .catch(function (error) {
         console.log(error);
@@ -61,7 +61,9 @@ class AA extends PureComponent {
 
   afterClose = () => {
     const _this = this;
-    _this.setState({ initialValue: undefined });
+    const { resetFields } = this.props.form;
+    _this.setState({ initialvalue: undefined });
+    resetFields();
   }
   render() {
     const { custom, visible, initialvalue } = this.state;
@@ -161,13 +163,19 @@ class AA extends PureComponent {
                 <FormItem {...formItemLayout} label="姓名" >{{ ...initialvalue }.name}</FormItem>
               </Col>
               <Col {...colSpan}>
-                <FormItem label="编号" >{{ ...initialvalue }.number}</FormItem>
+                <FormItem {...formItemLayout} label="手机号" >{{ ...initialvalue }.mobile}</FormItem>
               </Col>
             </Row>
 
             <Row >
-              <Col {...colSpan}>
-                <FormItem {...formItemLayout} label="手机号" >{{ ...initialvalue }.mobile}</FormItem>
+              <Col {...colS}>
+                <FormItem {...longFormItemLayout} label="编号" >
+                  {getFieldDecorator('number', {
+                    initialValue: { ...initialvalue }.number || undefined,
+                  })(
+                    <Input />
+                  )}
+                </FormItem>
               </Col>
             </Row>
 
@@ -198,7 +206,7 @@ class AA extends PureComponent {
               <Col {...colS}>
                 <FormItem {...longFormItemLayout} label="身份证号" >
                   {getFieldDecorator('idcard', {
-                    initialValue: { ...initialvalue }.hotel_num || undefined,
+                    initialValue: { ...initialvalue }.idcard || undefined,
                   })(
                     <Input />
                   )}
