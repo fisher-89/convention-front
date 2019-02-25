@@ -25,19 +25,12 @@ export default class LookoverPage extends React.Component {
    }
 
   
-  handleClick = (e)=>{
-    e.preventDefault();
-    const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-    this.setState({
-      pageTranslate:1,
-      wordAnimate:true,
-      // originalHeight:originalHeight,
-    })
-  } 
 
   handleShowlist = () => {
+    const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
     this.setState({
       pageTranslate:-1,
+      wordAnimate:true,
     })
   }
    render(){
