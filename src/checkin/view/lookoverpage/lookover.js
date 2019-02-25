@@ -38,7 +38,7 @@ export default class LookOver extends React.PureComponent {
           <img src={xjimg}></img>
         </div>
         <div className='showavatar'>
-            <img src={logo}/>
+            <img src={imageSrc}/>
         </div>
         <div className='showname' style={{fontSize:`${fontSize}px`}}>
           {checkName}
