@@ -28,6 +28,7 @@ export default class LookOver extends React.PureComponent {
     console.log(imageSrc,checkName,444);
     const {pageTranslate,wordAnimate, originalHeight ,pageHeight, pageWidth} = this.props;
     const pageStyle = pageWidth?{height:`${pageHeight}px`,width:`${pageWidth}px`,marginLeft:`-${pageWidth/2}px`,marginTop:`-${pageHeight/2}px`}:null;
+    const fontSize = pageWidth * 0.0474;
     return (
       <div className='lookoverPage' style={{transition:'top 1s ease',top:pageTranslate=='-1'?'-150%':null,...pageStyle}}>
         <div className='logo'>
@@ -37,9 +38,9 @@ export default class LookOver extends React.PureComponent {
           <img src={xjimg}></img>
         </div>
         <div className='showavatar'>
-            <img src={imageSrc}/>
+            <img src={logo}/>
         </div>
-        <div className='showname'>
+        <div className='showname' style={{fontSize:`${fontSize}px`}}>
           {checkName}
         </div>
         <div className='viewjm'>

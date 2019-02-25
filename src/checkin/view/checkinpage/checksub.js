@@ -123,7 +123,7 @@ export default class CheckSub extends React.PureComponent {
         // localStorage.setItem('check_openId',res.data['openid']);
         localStorage.setItem('check_name',res.data['name']);
         localStorage.setItem('check_avatar',res.data['avatar']);
-        Toast.success('表单提交成功',1);
+        Toast.success('签到成功',1);
         this.props.Showlist();
         //提交成功跳转至，节目单页面
       }
@@ -136,7 +136,7 @@ export default class CheckSub extends React.PureComponent {
           .then(res =>{
             localStorage.setItem('check_name',res.data['name']);
             localStorage.setItem('check_avatar',res.data['avatar']);
-            Toast.success('表单提交成功',1);
+            Toast.success('签到成功',1);
             this.props.Showlist();
           })
           .catch(err=>{

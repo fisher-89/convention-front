@@ -7,9 +7,8 @@ export default ()=>{
     <React.Fragment>
       <div className='loadingPage'>
         <div className='loading-img'>
-          <img src={loading}></img>
         </div>    
-        <p>loading...</p> 
+        <div className='text'>loading...</div> 
       </div> 
     </React.Fragment> 
     )
