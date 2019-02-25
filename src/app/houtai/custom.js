@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import axios from 'axios';
-import { Table, Form, Modal, Input, Row, Col } from 'antd';
+import { Table, Form,Button, Icon, Modal, Input, Row, Col } from 'antd';
+import Highlighter from 'react-highlight-words';
 
 
 const FormItem = Form.Item;
@@ -12,6 +13,7 @@ class AA extends PureComponent {
       custom: [],
       visible: false,
       initialvalue: undefined,
+      searchText: '',
     };
   }
 
@@ -25,6 +27,65 @@ class AA extends PureComponent {
         console.log(error);
       });
   }
+
+  getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys, selectedKeys, confirm, clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => { this.searchInput = node; }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: (text) => (
+      <Highlighter
+        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        searchWords={[this.state.searchText]}
+        autoEscape
+        textToHighlight={text.toString()}
+      />
+    ),
+  })
+
+  handleSearch = (selectedKeys, confirm) => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
+  }
+
+  handleReset = (clearFilters) => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  }
+
 
   handleSubmit = () => {
     const _this = this;
@@ -75,6 +136,7 @@ class AA extends PureComponent {
       }, {
         title: '编号',
         dataIndex: 'number',
+        ...this.getColumnSearchProps('number'),
       }, {
         title: '头像',
         dataIndex: 'avatar',
@@ -88,13 +150,16 @@ class AA extends PureComponent {
       }, {
         title: '姓名',
         dataIndex: 'name',
+        ...this.getColumnSearchProps('name'),
       }, {
         title: '微信昵称',
         dataIndex: 'nickname',
+        ...this.getColumnSearchProps('nickname'),
 
       }, {
         title: '手机号',
         dataIndex: 'mobile',
+        ...this.getColumnSearchProps('mobile'),
       }, {
         title: '酒店名称',
         dataIndex: 'hotel_name',
