@@ -1,134 +1,105 @@
+// @searchInput:.32rem;
+
 .supplePage{
   position: fixed;
   box-sizing: border-box;
   width:100%;
   top:0;
   bottom:0;
-  padding:0 .09rem;
-  .search{
+  overflow:hidden;
+  .listview{
+    height:100%;
+    overflow-y: auto
+  }
+  .items{
     width:100%;
-    height:.3rem;
-    border:1px solid #c0c0c0;
-    margin:0 auto;
-    margin-top:.05rem;
-    margin-bottom:.3rem;
-    &>input{
-      width:100%;
-      height: 100%;
-      font-size:.15rem;
-      text-align: center;
+    &>div{
+      height:100%;
+      text-align: left;
     }
-
-  }
-  .listtitle{
-    font-size:.16rem;
-    margin-bottom: .2rem;
-  }
-  .listname{
-    width:100%;
-    font-size:.13rem;
-    .items{
-      height:.4rem;
-      width:100%;
-      &>div{
-        height:100%;
-        line-height: .4rem;
-        text-align: left;
-      }
-      .name{
-        width:30%;
-        float: left;
-      }
-      .mobile{
-        width:40%;
-        float: left;
-      }
-      .supple{
-        width:30%;
-        float: right;
-        text-align: right;
-        .hover{
-          color:red;
-        }
+    .name{
+      width:30%;
+      float: left;
+      font-size:14px;
+      color:#101010;
+    }
+    .mobile{
+      width:40%;
+      float: left;
+      font-size:14px;
+      color:#101010;
+    }
+    .supple{
+      width:20%;
+      float: right;
+      text-align: left;
+      font-size:14px;
+      color:#999999;
+      .hover{
+        color:#1890FF;
       }
     }
   }
 }
 
 .formpage{
-  position: fixed;
-  top:0;
-  bottom: 0;
-  width: 100%;
+  padding-top:12px;
   .form{
-    width:90%;
     margin:0 auto;
-    margin-top:.2rem;
-    .name,.phone,.number,.hotel_num{
-      height: .35rem;
-      line-height: .35rem;
-      font-size:.13rem;
-      overflow: hidden;
-      margin-bottom:.1rem;
-      border:1px solid #c0c0c0;
-      .lable,.input{
-        float: left;
-        height:100%;
+    .am-list-content{
+      width:85px;
+      margin-right:5px;
+      flex: none;
+    }
+    .am-list-item .am-list-line .am-list-extra{
+      flex: 1;
+      text-align: left;
+    }
+    .hotelname{
+      padding-left: 15px;
+      height: 44px;
+      font-size:14px;
+      line-height: 16.1px;
+      display: flex;
+      .label{
+         width:85px; 
+         line-height: 44px;
+         font-size:17px;
+         margin-right:5px;
       }
-      .lable{
-        width:30%;
-        margin-left:.1rem;
-        line-height: .35rem;
-      }
-      .input{
-        width:60%;
-        text-align: center;
-        background:transparent;
-
-        .inputtext{
-          height: 100%;
-          width:100%;
-          text-align: center;
-          border:none;
-          
+      .select{
+        flex-basis:0%;
+        flex-grow:1;
+        flex-shrink:1;
+        .css-vj8t7z{
+          border:none; 
+          min-height: 44px;
+        }
+        .css-d8oujb{
+          display: none;
+        }
+        .css-1hwfws3{
+          padding:0;
+          font-size:17px;
+          color: #CCCCCC;
         }
       }
     }
     .idcard{
-      height:.6rem;
-      // line-height: .6rem;
-      font-size:.13rem;
-      overflow: hidden;
-      margin-bottom:.1rem;
-      border:1px solid #c0c0c0;
-      .lable,.input{
-        float: left;
-        height:100%;
-      }
-      .lable{
-        width:30%;
-        margin-left:.1rem;
-        margin-top:.1rem;
-        // line-height: .6rem;
-      }
-      .input{
-        width:60%;
-        text-align: center;
-        background:transparent;
-
-        .inputtext{
-          height: 100%;
-          width:100%;
-          text-align: center;
-          
+      .am-list-content{
+        // flex: 1;
+        width:100%;
+        display: flex;
+        // height:88px;
+        .am-image-picker{
+          flex:1; 
         }
+
       }
     }
   }
   .submit{
-    width:60%;
+    width:90%;
     margin: 0 auto;
-    margin-top:1.5rem;
-
   }
 }

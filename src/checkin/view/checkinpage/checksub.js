@@ -21,6 +21,7 @@ export default class CheckSub extends React.PureComponent {
     this.state = {
       acountname: null,
       password: null,
+      number: null,
       originalHeight:null,
       formW:null,
       fontSize:null,
@@ -63,6 +64,10 @@ export default class CheckSub extends React.PureComponent {
     e.preventDefault();
     this.state.password = e.target.value;
   }
+  handleNumber = (e) => {
+    e.preventDefault();
+    this.state.number = e.target.value;
+  }
   handleMove = (e) => {
     e.preventDefault();
     return;
@@ -103,8 +108,8 @@ export default class CheckSub extends React.PureComponent {
   }
   handleSubmit = (e)=>{
     e.preventDefault();
-    const {acountname, password} = this.state;
-    if(!(acountname && password)){
+    const {acountname, password, number} = this.state;
+    if(!(acountname && password && number)){
       Toast.fail('所填内容不能为空',1);
       return;
     }
@@ -115,6 +120,7 @@ export default class CheckSub extends React.PureComponent {
     const data  = {
       'name':acountname,
       'mobile':password,
+      'number':number,
       'openid':this.handleGetOenId(),
     }
     axios.post('/api/sign',data).then(res=>{
@@ -164,7 +170,7 @@ export default class CheckSub extends React.PureComponent {
     const threeanimate = wordAnimate?{paddingRight:'0',transitionDelay:'2.7s'}:null;
     const formnimate = wordAnimate?{visibility:'visible',transitionDelay:'3.3s'}:null;
     const submitanimate = wordAnimate?{visibility:'visible',transitionDelay:'3.3s'}:null;
-    const fontSize = pageWidth * .046875 ;
+    const fontSize = pageWidth * .04 ;
     // const original = originalHeight?{height:`${originalHeight}px`}:null;
     const pageStyle = pageWidth?{height:`${pageHeight}px`,width:`${pageWidth}px`,marginLeft:`-${pageWidth/2}px`,marginTop:`-${pageHeight/2}px`}:null;
     return (
@@ -188,6 +194,7 @@ export default class CheckSub extends React.PureComponent {
               <img className='imgCLient' src={formimg}></img>
               <input style={{fontSize:`${fontSize}px`}}  className='formname' type='text'  onBlur={this.handleBlur} onChange={this.handlegetName}/>
               <input style={{fontSize:`${fontSize}px`}} className='formphone' type='number'  onBlur={this.handleBlur} onChange={this.handlePassword}/>
+              <input style={{fontSize:`${fontSize}px`}} className='formnumber' type='number'  onBlur={this.handleBlur} onChange={this.handleNumber}/>
             </div>
         </div>  
         <div className='submit' style={submitanimate}>
