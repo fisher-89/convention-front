@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import axios from 'axios';
-import { Table, Form,Button, Icon, Modal, Input, Row, Col } from 'antd';
+import { Table, Form, Button, Icon, Modal, Input, Row, Col, Popover, Upload, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 
 
@@ -14,6 +14,8 @@ class AA extends PureComponent {
       visible: false,
       initialvalue: undefined,
       searchText: '',
+      loading: false,
+      imageUrl: undefined,
     };
   }
 
@@ -28,37 +30,71 @@ class AA extends PureComponent {
       });
   }
 
+  customRequest = (file) => {
+    const _this = this;
+    const formData = new FormData();
+    formData.append('idcard', file.file);
+    axios.post('/api/upload',
+      formData
+    )
+      .then(function (response) {
+        _this.setState({ imageUrl: response.data, loading: false });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  beforeUpload = (file) => {
+    const isJPG = file.type === 'image/jpeg';
+    if (!isJPG) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    return isJPG;
+  }
+
+  handleChange = (info) => {
+    console.log(info);
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      this.customRequest(info.file.originFileObj);
+    }
+  }
+
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys, selectedKeys, confirm, clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => { this.searchInput = node; }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type="primary"
-          onClick={() => this.handleSearch(selectedKeys, confirm)}
-          icon="search"
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          Search
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={node => { this.searchInput = node; }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm)}
+            icon="search"
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
         </Button>
-        <Button
-          onClick={() => this.handleReset(clearFilters)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          Reset
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
         </Button>
-      </div>
-    ),
+        </div>
+      ),
     filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
@@ -90,8 +126,14 @@ class AA extends PureComponent {
   handleSubmit = () => {
     const _this = this;
     const { getFieldsValue } = this.props.form;
-    const { custom } = this.state;
-    const params = getFieldsValue();
+    const { custom, imageUrl } = this.state;
+    let params = getFieldsValue();
+    if (imageUrl) {
+      params = {
+        ...params,
+        idcard: imageUrl,
+      };
+    }
     axios.patch(`/api/sign/${params.openid}`,
       params
     )
@@ -123,11 +165,11 @@ class AA extends PureComponent {
   afterClose = () => {
     const _this = this;
     const { resetFields } = this.props.form;
-    _this.setState({ initialvalue: undefined });
+    _this.setState({ initialvalue: undefined, imageUrl: undefined, loading: false });
     resetFields();
   }
   render() {
-    const { custom, visible, initialvalue } = this.state;
+    const { custom, visible, initialvalue, imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
     const columns = [
       {
@@ -169,6 +211,16 @@ class AA extends PureComponent {
       }, {
         title: '身份证',
         dataIndex: 'idcard',
+        render: key => {
+          const IMG = (<img src={key} alt={key} />)
+          return (
+            <Popover content={IMG}>
+              <div>
+                <img style={{ width: 40 }} src={key} alt={key} />
+              </div>
+            </Popover>
+          )
+        },
       }, {
         title: '操作',
         render: (RowData) => {
@@ -202,7 +254,12 @@ class AA extends PureComponent {
     };
     const colSpan = { xs: 24, lg: 12 };
     const colS = { xs: 24, lg: 17 };
-
+    const uploadButton = (
+      <div>
+        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        <div >Upload</div>
+      </div>
+    );
     return (
       <Fragment>
         <Table
@@ -269,12 +326,19 @@ class AA extends PureComponent {
 
             <Row >
               <Col {...colS}>
-                <FormItem {...longFormItemLayout} label="身份证号" >
-                  {getFieldDecorator('idcard', {
-                    initialValue: { ...initialvalue }.idcard || undefined,
-                  })(
-                    <Input />
-                  )}
+                <FormItem {...longFormItemLayout} label="身份证" >
+                  <Upload
+                    name="idcard"
+                    listType="picture-card"
+                    customRequest={(file) => {
+                      this.customRequest(file);
+                    }}
+                    showUploadList={false}
+                    beforeUpload={this.beforeUpload}
+                    onChange={this.handleChange}
+                  >
+                    {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : uploadButton}
+                  </Upload>
                 </FormItem>
               </Col>
             </Row>
