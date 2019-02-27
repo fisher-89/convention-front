@@ -26,7 +26,7 @@ export default class FormSubmit extends React.Component {
   componentWillMount(){
     this.state.formData = this.props.location.query || {};
     console.log(this.props.location.query);
-    if(this.props.location.query.idcard){
+    if(this.props.location.query && this.props.location.query.idcard){
      this.state.files = [{url:this.props.location.query.idcard}]
     }
   }
@@ -48,14 +48,12 @@ export default class FormSubmit extends React.Component {
         })
    }
 
-   handleName = (e)=>{
-     e.preventDefault();
-      this.state.formData['name'] = e.target.value;
+   handleName = (value)=>{
+      this.state.formData['name'] = value;
    }
 
-   handlePhone = (e)=> {
-    e.preventDefault();
-      this.state.formData['mobile'] = e.target.value;
+   handlePhone = (value)=> {
+      this.state.formData['mobile'] = value;
    }
 
    handlehotelname = (val)=> {
@@ -65,14 +63,12 @@ export default class FormSubmit extends React.Component {
      })
    }
 
-   handleNumber = (e) =>{
-      e.preventDefault();
-      this.state.formData['number'] = e.target.value;
+   handleNumber = (value) =>{
+      this.state.formData['number'] = value;
    }
 
-   handleHotelnum = (e)=>{
-      e.preventDefault();
-      this.state.formData['hotel_num'] = e.target.value;
+   handleHotelnum = (value)=>{
+      this.state.formData['hotel_num'] = value;
    }
 
    filesOnchange = (files, type) => {
