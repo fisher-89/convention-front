@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import axios from 'axios';
 import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
 import { debounce } from 'lodash';
+import request from '../../request';
 import './style.less';
 
 const FormItem = Form.Item;
@@ -33,71 +33,60 @@ class XX extends PureComponent {
   componentDidMount() {
     const _this = this;
     const { setFieldsValue } = this.props.form;
-    axios.get('/api/award')
-      .then(function (response) {
-        _this.setState({ award: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const options = {
+      type: 'get',
+      params: {},
+    }
+    request('/api/award', options, (response) => _this.setState({ award: response.data }), (error) => console.log(error));
+    function asd(response) {
+      if (response.data.length > 0) {
+        const last = (response.data)[response.data.length - 1];
+        let winner = [];
 
-    axios.get('/api/configuration'
-    )
-      .then(function (response) {
-        if (response.data.length > 0) {
-          const last = (response.data)[response.data.length - 1];
-          let winner = [];
-
-          if (last) {
-            _this.setState({ inround: last.round });
-            if (last.winners.length) {
-              winner = last.winners.map(item => item.sign);
-            }
-          }
-
-          if (last.winners.length < last.persions) {
-            if (last.is_progress) {
-              if (last.winners.length) {
-                setFieldsValue({ award_id: last.award_id, persions: last.persions });
-                _this.setState({ round: last.round, stop: false, pushable: true, selected: winner, alldata: response.data, tapable: true });
-              } else {
-                setFieldsValue({ award_id: last.award_id, persions: last.persions });
-                _this.setState({ round: last.round, stop: false, selected: winner, alldata: response.data, tapable: true });
-              }
-            } else {
-              if (last.winners.length) {
-                setFieldsValue({ award_id: last.award_id, persions: last.persions });
-                _this.setState({ round: last.round, rechoice: true, pushable: true, selected: winner, alldata: response.data, tapable: true });
-              } else {
-                setFieldsValue({ award_id: last.award_id, persions: last.persions });
-                _this.setState({ round: last.round, start: false, selected: winner, alldata: response.data, tapable: true });
-              }
-            }
-          } else {
-            setFieldsValue({ award_id: last.award_id, persions: last.persions });
-            _this.setState({ round: last.round, nextround: false, selected: winner, alldata: response.data, tapable: true });
+        if (last) {
+          _this.setState({ inround: last.round });
+          if (last.winners.length) {
+            winner = last.winners.map(item => item.sign);
           }
         }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+        if (last.winners.length < last.persions) {
+          if (last.is_progress) {
+            if (last.winners.length) {
+              setFieldsValue({ award_id: last.award_id, persions: last.persions });
+              _this.setState({ round: last.round, stop: false, pushable: true, selected: winner, alldata: response.data, tapable: true });
+            } else {
+              setFieldsValue({ award_id: last.award_id, persions: last.persions });
+              _this.setState({ round: last.round, stop: false, selected: winner, alldata: response.data, tapable: true });
+            }
+          } else {
+            if (last.winners.length) {
+              setFieldsValue({ award_id: last.award_id, persions: last.persions });
+              _this.setState({ round: last.round, rechoice: true, pushable: true, selected: winner, alldata: response.data, tapable: true });
+            } else {
+              setFieldsValue({ award_id: last.award_id, persions: last.persions });
+              _this.setState({ round: last.round, start: false, selected: winner, alldata: response.data, tapable: true });
+            }
+          }
+        } else {
+          setFieldsValue({ award_id: last.award_id, persions: last.persions });
+          _this.setState({ round: last.round, nextround: false, selected: winner, alldata: response.data, tapable: true });
+        }
+      }
+    }
+    request('/api/configuration', options, asd, (error) => console.log(error));
   }
 
   makeSure = () => {
     const { getFieldsValue } = this.props.form;
     const _this = this;
     const params = getFieldsValue();
+    const options = {
+      type: 'post',
+      params,
+    }
     if (params.award_id && params.persions) {
-      axios.post('/api/configuration',
-        params
-      )
-        .then(function (response) {
-          _this.setState({ round: response.data.round, start: false, tapable: true });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      request('/api/configuration', options, (response) => _this.setState({ round: response.data.round, start: false, tapable: true }), (error) => console.log(error));
     }
   }
 
@@ -106,16 +95,12 @@ class XX extends PureComponent {
     const { round } = this.state;
     const _this = this;
     const params = getFieldsValue();
+    const options = {
+      type: 'put',
+      params,
+    }
     if (params.persions && params.award_id) {
-      axios.put(`/api/configuration/${round}`,
-        params
-      )
-        .then(function (response) {
-          _this.setState({ start: false, tapable: true });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      request(`/api/configuration/${round}`, options, () => _this.setState({ start: false, tapable: true }), (error) => console.log(error));
     }
   }
 
@@ -136,80 +121,55 @@ class XX extends PureComponent {
   startChoice = () => {
     const { round } = this.state;
     const _this = this;
-    axios.get('/api/start',
-      {
-        params: {
-          round
-        }
-      }
-    )
-      .then(function (response) {
-        _this.setState({ start: true, stop: false });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const options = {
+      type: 'get',
+      params: { round },
+    }
+    request('/api/start', options, () => _this.setState({ start: true, stop: false }), (error) => console.log(error));
   }
 
   stopChoice = () => {
     const { round, pushable, selected } = this.state;
     const _this = this;
-    axios.get('/api/stop',
-      {
-        params: {
-          round
-        }
+    const options = {
+      type: 'get',
+      params: { round },
+    }
+    function aaa(response) {
+      if (!pushable) {
+        _this.setState({ stop: true, nextround: false, selected: response.data });
+      } else {
+        const partSelected = response.data;
+        partSelected.forEach(item => selected.push(item));
+        _this.setState({ stop: true, nextround: false, selected, pushable: false })
       }
-    )
-      .then(function (response) {
-        if (!pushable) {
-          _this.setState({ stop: true, nextround: false, selected: response.data });
-        } else {
-          const partSelected = response.data;
-          partSelected.forEach(item => selected.push(item));
-          _this.setState({ stop: true, nextround: false, selected, pushable: false })
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    }
+    request('/api/stop', options, aaa, (error) => console.log(error));
   }
 
   reChoice = () => {
     const { round } = this.state;
     const _this = this;
-    axios.get('/api/continue',
-      {
-        params: {
-          round
-        }
-      }
-    )
-      .then(function (response) {
-        _this.setState({ stop: false, nextround: true, pushable: true, rechoice: false });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const options = {
+      type: 'get',
+      params: { round },
+    }
+    request('/api/continue', options, () => _this.setState({ stop: false, nextround: true, pushable: true, rechoice: false }), (error) => console.log(error));
   }
 
   delete = (id) => {
     const { selected, round } = this.state;
     const afterDeleted = selected.filter(item => item.openid !== id);
     const _this = this;
-    _this.setState({ selected: afterDeleted, rechoice: true, nextround: true });
-    axios.patch('/api/abandon_prize',
-      {
+    const options = {
+      type: 'patch',
+      params: {
         round,
         openid: id,
-      }
-    )
-      .then(function (response) {
-
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      },
+    }
+    _this.setState({ selected: afterDeleted, rechoice: true, nextround: true });
+    request('/api/abandon_prize', options, () => _this.setState({ selected: afterDeleted, rechoice: true, nextround: true }), (error) => console.log(error));
   }
 
   clear = () => {
@@ -217,23 +177,22 @@ class XX extends PureComponent {
     const { inround } = this.state;
     resetFields();
     const _this = this;
+    const options = {
+      type: 'get',
+      params: {},
+    }
     _this.setState({ nextround: true, selected: [], round: null, tapable: false, inround: inround + 1 });
-    axios.get('/api/configuration'
-    )
-      .then(function (response) {
-        _this.setState({ alldata: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    request('/api/configuration', options, (response) => _this.setState({ alldata: response.data }), (error) => console.log(error));
   }
 
-  roundtitle = (item) => { return (
-    <div>
-    第{item.round}轮
+  roundtitle = (item) => {
+    return (
+      <div>
+        第{item.round}轮
     <span className='ddd'><Avatar size="small" src={item.award.url} />{item.award.name}</span>
-    <span className='ccc'>抽{item.persions}人</span>
-    </div>) }
+        <span className='ccc'>抽{item.persions}人</span>
+      </div>)
+  }
   render() {
     const { award, inround, alldata, tapable, start, nextround, stop, selected, rechoice } = this.state;
     const formItemLayout = {
@@ -299,7 +258,7 @@ class XX extends PureComponent {
                 <Col span={8} offset={6}>
                   <FormItem {...formItemLayout} label="人数" required>
                     {getFieldDecorator('persions')(
-                      <InputNumber  onChange={() => this.onChange()} disabled={tapable} />
+                      <InputNumber onChange={() => this.onChange()} disabled={tapable} />
                     )}
                   </FormItem>
                 </Col>

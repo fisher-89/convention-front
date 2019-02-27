@@ -7,10 +7,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    checkin:  './src/checkin/checkin.js',
-    luckdraw:  './src/luckdraw/luckdraw.js',
-    // app: './src/app/app.js',
-    supple : './src/supple/supple.js',
+    checkin: './src/checkin/checkin.js',
+    luckdraw: './src/luckdraw/luckdraw.js',
+    app: './src/app/app.js',
+    supple: './src/supple/supple.js',
+    passport: './src/oauth/oauth.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -62,6 +63,11 @@ module.exports = {
       filename: './luckdraw/index.html',
       template: './src/luckdraw/luckdraw.html',
       chunks: ['luckdraw'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './passport/index.html',
+      template: './src/oauth/oauth.html',
+      chunks: ['passport'],
     }),
     new CleanWebpackPlugin(['dist']),
   ],

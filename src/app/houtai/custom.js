@@ -1,8 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
-import axios from 'axios';
 import { Table, Form, Button, Icon, Modal, Input, Row, Col, Popover, Upload, message } from 'antd';
 import Highlighter from 'react-highlight-words';
-
+import request from '../../request';
 
 const FormItem = Form.Item;
 
@@ -21,28 +20,22 @@ class AA extends PureComponent {
 
   componentWillMount() {
     const _this = this;
-    axios.get('/api/sign')
-      .then(function (response) {
-        _this.setState({ custom: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const options = {
+      type: 'get',
+      params: {},
+    }
+    request('/api/sign', options, (response) => _this.setState({ custom: response.data }), (error) => console.log(error));
   }
 
   customRequest = (file) => {
     const _this = this;
     const formData = new FormData();
     formData.append('idcard', file.file);
-    axios.post('/api/upload',
-      formData
-    )
-      .then(function (response) {
-        _this.setState({ imageUrl: response.data, loading: false });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const options = {
+      type: 'post',
+      params: formData,
+    }
+    request('/api/upload', options, (response) => _this.setState({ imageUrl: response.data, loading: false }), (error) => console.log(error));
   }
 
   beforeUpload = (file) => {
@@ -54,7 +47,6 @@ class AA extends PureComponent {
   }
 
   handleChange = (info) => {
-    console.log(info);
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
       return;
@@ -134,23 +126,22 @@ class AA extends PureComponent {
         idcard: imageUrl,
       };
     }
-    axios.patch(`/api/sign/${params.openid}`,
-      params
-    )
-      .then(function (response) {
-        const midkey = [];
-        custom.forEach(item => {
-          if (item.openid === response.data.openid) {
-            midkey.push(response.data);
-          } else {
-            midkey.push(item);
-          }
-        })
-        _this.setState({ visible: false, custom: midkey });
+    const options = {
+      type: 'patch',
+      params,
+    }
+    function aass(response) {
+      const midkey = [];
+      custom.forEach(item => {
+        if (item.openid === response.data.openid) {
+          midkey.push(response.data);
+        } else {
+          midkey.push(item);
+        }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      _this.setState({ visible: false, custom: midkey });
+    }
+    request(`/api/sign/${params.openid}`, options, aass, (error) => console.log(error));
   }
 
   handleModalVisible = () => {

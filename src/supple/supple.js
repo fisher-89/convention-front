@@ -11,7 +11,7 @@ ReactDom.render(
 <Router history={history}>
   <Switch>
     <Route exact path='/' component={CheckIn}/>
-    <Route exact path='/formdata' component={FormSubmit}/>
+    <Route  path='/formdata' component={FormSubmit}/>
 </Switch> 
 </Router>
 , document.getElementById('root'));
