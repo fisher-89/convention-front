@@ -19,7 +19,7 @@ export default class CheckIn extends React.Component {
    }
  
    handlePost = () =>{
-     axios.get('/api/sign/')//?category=mobile
+     axios.get('/api/sign/?category=mobile')//?category=mobile
       .then(res =>{
         console.log(res);
         if(res.status == '200'){
