@@ -154,6 +154,10 @@ export default class CheckSub extends React.PureComponent {
         Toast.fail('请输入正确的手机号',1);
         return;
       }
+      if(response.status == '422' && response.data.errors['number']){
+        Toast.fail('请输入正确的编号',1);
+        return;
+      }
       if(response.status =='400'){
         Toast.fail('请重新关注公众号', 1);
         return;

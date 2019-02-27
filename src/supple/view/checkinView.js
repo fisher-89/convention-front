@@ -19,7 +19,7 @@ export default class CheckIn extends React.Component {
    }
  
    handlePost = () =>{
-     axios.get('/api/sign/')
+     axios.get('/api/sign/')//?category=mobile
       .then(res =>{
         console.log(res);
         if(res.status == '200'){
@@ -47,7 +47,7 @@ export default class CheckIn extends React.Component {
    handleSearchSubmit = () => {
     const {searchtext} = this.state;
     if(!searchtext) return;
-    axios.get(`/api/sign/?category=mobile&&filters=name~${searchtext}|mobile~${searchtext})`)
+    axios.get(`/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`)
       .then(res =>{
         console.log(res);
         if(res.status == '200'){

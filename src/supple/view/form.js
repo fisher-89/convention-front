@@ -1,8 +1,9 @@
 import React,{Suspense } from 'react';
 import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker} from 'antd-mobile';
 import Select from 'react-select';
-import './index.less';
 import axios from 'axios';
+import {history} from '../history';
+import './index.less';
 
 
 
@@ -38,7 +39,10 @@ export default class FormSubmit extends React.Component {
       .then(res => {
         console.log(res)
         if(res.status == '201'){
-          Toast.success('提交成功',1);
+          Toast.success('提交成功',1,function(){
+            history.push('/');
+         }
+          });
         }
       })
       .catch(error => {
