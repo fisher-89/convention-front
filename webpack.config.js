@@ -1,16 +1,16 @@
+const env = require('./.env.json');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-
-
 module.exports = {
   mode: 'development',
   entry: {
-    checkin:  './src/checkin/checkin.js',
-    luckdraw:  './src/luckdraw/luckdraw.js',
+    checkin: './src/checkin/checkin.js',
+    luckdraw: './src/luckdraw/luckdraw.js',
     app: './src/app/app.js',
-    supple : './src/supple/supple.js',
+    supple: './src/supple/supple.js',
+    oauth: './src/oauth/oauth.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -19,7 +19,8 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/,
+      {
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         // query: {
@@ -30,8 +31,7 @@ module.exports = {
         // ]
         // }, 
       },
-      
-      { test: /\.(less|css)$/, use: ["style-loader","css-loader", "less-loader"] },
+      { test: /\.(less|css)$/, use: ["style-loader", "css-loader", "less-loader"] },
       { test: /\.html$/, loader: 'html-loader' },
       { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 50000, name: 'images/[name]-[hash:8].[ext]' } },
       { test: /\.(mp3)$/, loader: 'url-loader', options: { limit: 0, name: 'audio/[name]-[hash:8].[ext]' } },
@@ -43,11 +43,6 @@ module.exports = {
       template: './src/app/app.html',
       chunks: ['app'],
     }),
-    // new HtmlWebpackPlugin({
-    //   filename: './board.html',
-    //   template: './src/board.html',
-    //   chunks: ['board'],
-    // }),
     new HtmlWebpackPlugin({
       filename: './supple/index.html',
       template: './src/supple/supple.html',
@@ -62,6 +57,11 @@ module.exports = {
       filename: './luckdraw/index.html',
       template: './src/luckdraw/luckdraw.html',
       chunks: ['luckdraw'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: './passport/index.html',
+      template: './src/oauth/oauth.html',
+      chunks: ['oauth'],
     }),
     new CleanWebpackPlugin(['dist']),
   ],
@@ -94,7 +94,15 @@ module.exports = {
         // pathRewrite: { '^/api': '/sign' },
         changeOrigin: true,
       },
+      '/oauth': {
+        target: env.OA_PATH,
+        changeOrigin: true,
+      }
     },
-    historyApiFallback: true,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/passport/, to: '/passport/index.html' },
+      ],
+    },
   }
 }
