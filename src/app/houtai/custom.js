@@ -203,8 +203,8 @@ class AA extends PureComponent {
         title: '身份证',
         dataIndex: 'idcard',
         render: key => {
-          const IMG = (<img src={key} alt={key} />)
-          return (
+          const IMG = (<img style={{ maxWidth: 400, maxHeight: 600 }} src={key} alt={key} />)
+          return !!key && (
             <Popover content={IMG}>
               <div>
                 <img style={{ width: 40 }} src={key} alt={key} />

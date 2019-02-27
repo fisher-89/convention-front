@@ -16,6 +16,7 @@ export default class extends PureComponent {
         <Layout>
           <Header className='up'>喜歌实业年会抽奖后台</Header>
           <Content >
+          <div className='openurl'><a  className='aaa' href='http://cs.xigemall.com:8107/luckdraw/' target= '_blank'>打开抽奖大屏</a></div>
             <div className='all'>
               <Tabs>
                 <TabPane
