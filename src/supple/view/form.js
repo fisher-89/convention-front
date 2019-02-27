@@ -40,7 +40,7 @@ export default class FormSubmit extends React.Component {
         .then(res => {
           if(res.status == '201'){
             Toast.success('提交成功',1,function(){
-              history.push('/');
+              history.go(-1);
             });
           }
         })
