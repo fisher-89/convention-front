@@ -97,6 +97,7 @@ export default class CheckIn extends React.Component {
       />
       <List renderHeader={() => '已签到客户'}>
         <PullToRefresh className='listview'
+          damping={50}
           onRefresh={this.handleSearchSubmit}
         >
           {pageList&&this.makeList(pageList)}  

@@ -9,10 +9,14 @@
   overflow:hidden;
   .listview{
     height:100%;
-    overflow-y: auto
+    overflow-y: auto;
+    .am-pull-to-refresh-content-wrapper{
+      min-height: 200px;
+    }
   }
   .items{
     width:100%;
+    padding-top:10px;
     &>div{
       height:100%;
       text-align: left;

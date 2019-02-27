@@ -1,5 +1,5 @@
 import React,{Suspense } from 'react';
-import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker} from 'antd-mobile';
+import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker, ActivityIndicator} from 'antd-mobile';
 import Select from 'react-select';
 import axios from 'axios';
 import {history} from '../history';
@@ -20,12 +20,11 @@ export default class FormSubmit extends React.Component {
     this.state = {
       formData:{},
       files:[],
-      selectedOption: null
+      selectedOption: null,
     }
   }
   componentWillMount(){
     this.state.formData = this.props.location.query || {};
-    console.log(this.props.location.query);
     if(this.props.location.query && this.props.location.query.idcard){
      this.state.files = [{url:this.props.location.query.idcard}]
     }
@@ -84,26 +83,33 @@ export default class FormSubmit extends React.Component {
         //   files : [{url:files[files.length-1].url}]
         // })   
         const that = this;
+        Toast.loading('上传中...', 0, null, true)
         axios.post('/api/upload',imgformData)
           .then( res => {
             if(res.status == '201'){
+              Toast.hide();
               this.state.formData['idcard'] = res.data;
               that.setState({
-                files : [{url:res.data}]
+                files : [{url:res.data}],
+                fileupload: null,
               })   
             }
           })
           .catch( err => {
             console.log(err);
+            Toast.hide();
+            Toast.fail('图片上传失败',1);
           })
       }
     }
 
+    handleAddimage = () => {
+
+    }
 
    render(){
-     const {name,mobile, number, hotel_name,hotel_num, idcard} = this.state.formData;
-     let {files,selectedOption } = this.state;
-
+    const {name,mobile, number, hotel_name,hotel_num, idcard } = this.state.formData;
+    let {files,selectedOption ,fileupload} = this.state;
     if(!selectedOption && hotel_name){
       let items = [];
       items.push(hotel_name)
@@ -128,15 +134,12 @@ export default class FormSubmit extends React.Component {
                 <div style={{width:'85px',marginRight:'5px'}}>身份证信息</div> 
                 <ImagePicker
                   files={files}
-                  // multiple = {true}
                   length={2}
+                  onImageClick={(index, fs) => console.log(index, fs)}
                   selectable={files.length <1}
                   onChange={ (file,type)=>{
                     this.filesOnchange(file, type)
                   }}
-                  onImageClick={
-                    (index,file)=>{ this.onImageClick(index,file)}
-                  }
                   accept="image/gif,image/jpeg,image/jpg,image/png"
                   />  
               </List.Item>
