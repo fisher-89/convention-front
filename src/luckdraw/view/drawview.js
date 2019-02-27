@@ -82,7 +82,7 @@ export default class DrawView extends React.Component{
         this.setAnimaterote(true,false,true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
-        this.showLuck(400); 
+        this.showLuck(100); 
 
       }).listen('DrawStop', (arg) => {
         clearTimeout(this.state.animateRoteId);
@@ -131,6 +131,7 @@ export default class DrawView extends React.Component{
   }
 
   setPrize = (award,persions)=> {
+    console.log(award,persions);
     this.setState({
       award : award ,
       awardNum : persions,
@@ -222,7 +223,6 @@ export default class DrawView extends React.Component{
     let items = [];
     for(let i = 0; i< awardNum; i+=1){
        if(i < listname){
-        console.log(this.state.luckName[i]);
           items.push(<div className='hoveritem' key={i}><div className='itemimg'><img src={this.state.luckName[i]['avatar'] || this.state.luckName[i]['sign']['avatar']}></img></div><div className='itemtext'>{this.state.luckName[i]['name'] || this.state.luckName[i]['sign']['name']}<br/>{this.state.luckName[i]['number'] || this.state.luckName[i]['sign']['number']}</div></div>)
        }else{
           items.push(<div className='deafultitem' key={i}></div>)
