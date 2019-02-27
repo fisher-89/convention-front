@@ -83,7 +83,7 @@ export default class CheckIn extends React.Component {
           </Suspense>
         </React.Fragment>):(<React.Fragment>
                           <Suspense fallback={<Loading/>}>
-                            <CheckinPage Move={this.handleMove} {...this.state} height={this.state.screenHeight}/>
+                            <LookoverPage Move={this.handleMove} {...this.state} height={this.state.screenHeight}/>
                           </Suspense>
                         </React.Fragment>)
    }

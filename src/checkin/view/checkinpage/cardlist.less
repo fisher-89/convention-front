@@ -31,7 +31,19 @@
       background:linear-gradient(to bottom,#FCDDB2,#F7B765,#FCDEB4);
       color: transparent;
       -webkit-background-clip: text;
-      text-align: center;
+      display: flex;
+      .number{
+        flex: 2;
+        text-align: center;
+      }
+      .time{
+        flex: 1;
+        text-align: left;
+      }
+      .content{
+        flex: 3;
+        // margin-left:10px;
+      }
       // box-shadow:0 2px rgba(111, 0, 0, 0.41);
     }
   }
