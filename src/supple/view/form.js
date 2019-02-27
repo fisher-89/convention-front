@@ -30,7 +30,9 @@ export default class FormSubmit extends React.Component {
     }
   }
 
-
+  componentWillUnmount(){
+    Toast.hide();
+  }
    handleSubmit = (e)=>{
       e.preventDefault();
       const {formData} = this.state;
@@ -103,9 +105,6 @@ export default class FormSubmit extends React.Component {
       }
     }
 
-    handleAddimage = () => {
-
-    }
 
    render(){
     const {name,mobile, number, hotel_name,hotel_num, idcard } = this.state.formData;
@@ -140,7 +139,7 @@ export default class FormSubmit extends React.Component {
                   onChange={ (file,type)=>{
                     this.filesOnchange(file, type)
                   }}
-                  accept="image/gif,image/jpeg,image/jpg,image/png"
+                  // accept="image/gif,image/jpeg,image/jpg,image/png"
                   />  
               </List.Item>
                 <Button className="submit" type="primary" style={{marginTop:'100px'}} onClick={this.handleSubmit}>提交</Button>
