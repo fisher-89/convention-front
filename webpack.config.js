@@ -10,7 +10,7 @@ module.exports = {
     luckdraw: './src/luckdraw/luckdraw.js',
     app: './src/app/app.js',
     supple: './src/supple/supple.js',
-    oauth: './src/oauth/oauth.js',
+    passport: './src/oauth/oauth.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -61,7 +61,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: './passport/index.html',
       template: './src/oauth/oauth.html',
-      chunks: ['oauth'],
+      chunks: ['passport'],
     }),
     new CleanWebpackPlugin(['dist']),
   ],
