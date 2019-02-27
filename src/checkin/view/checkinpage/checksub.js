@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import {Toast} from 'antd-mobile';
-import './checkform.less';
 import './checksub.less';
 import logo from 'public/checkin/logo.png';
 import xjimg from 'public/checkin/xj.png';
@@ -29,15 +28,8 @@ export default class CheckSub extends React.PureComponent {
   }
   componentDidMount(){
     document.addEventListener('keypress',this.handelEnter);
-    // document.querySelectorAll('input').addEventListener('blur',this.handleBlur);
     //动态获取高度
     const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-    const formWidth = originalHeight * 0.3177 * 1.391;
-    const fontSize = originalHeight * 0.3177 * 0.0652;
-    // this.setState({
-    //   formW:formWidth,
-    //   fontSize:fontSize,
-    // })
     const that = this;
     window.onresize = function(e){
       // alert(that);
@@ -136,7 +128,6 @@ export default class CheckSub extends React.PureComponent {
     }).catch(err=>{
       //错误返回码
       const {response } = err;
-      console.log(response);
       if(response.status == '422' && response.data.errors['openid']){
           axios.get(`/api/sign/${this.handleGetOenId()}`)
           .then(res =>{
@@ -155,7 +146,7 @@ export default class CheckSub extends React.PureComponent {
         return;
       }
       if(response.status == '422' && response.data.errors['number']){
-        Toast.fail('请输入正确的编号',1);
+        Toast.fail('签到码输入错误',1);
         return;
       }
       if(response.status =='400'){

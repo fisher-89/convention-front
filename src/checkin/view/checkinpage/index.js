@@ -12,19 +12,6 @@ export default class CheckinPage extends React.Component {
     }  
   }
 
-   componentDidMount(){
-    // window.addEventListener('orientationchange',function(event){
-    //   console.log(event);
-    //   event.stopPropagation();
-    //   event.cancelBubble = true;
-    // })
-      document.addEventListener("touchmove",this.handleMove);
-   }
-  
-   componentWillUnmount(){
-      document.removeEventListener("touchmove",this.handleMove);
-   }
-
   
   handleClick = (e)=>{
     e.preventDefault();

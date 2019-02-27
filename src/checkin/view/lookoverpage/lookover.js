@@ -19,7 +19,6 @@ export default class LookOver extends React.PureComponent {
 
   handleClick = (e)=>{
     e.preventDefault();
-    localStorage.removeItem('check_avatar');
     this.props.Showlist();
   }
   render() {

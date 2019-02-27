@@ -9,13 +9,6 @@ import triangle from 'public/checkin/triangle.png';
 import smline from 'public/checkin/smline.png';
 
 export default class CheckForm extends React.PureComponent {
-  // componentDidMount(){
-  //   const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-  //   this.setState({
-  //     originalHeight:originalHeight,
-  //   })
-  // }
-  //transform:`translateY(${pageTranslate})`,height:`${originalHeight}px`
   render() {
     const {pageTranslate,wordAnimate, originalHeight ,pageHeight, pageWidth} = this.props;
     const pageStyle = pageWidth?{height:`${pageHeight}px`,width:`${pageWidth}px`,marginLeft:`-${pageWidth/2}px`,marginTop:`-${pageHeight/2}px`}:null;
