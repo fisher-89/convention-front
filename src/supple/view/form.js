@@ -25,7 +25,7 @@ export default class FormSubmit extends React.Component {
   }
   componentWillMount(){
     this.state.formData = this.props.location.query || {};
-    console.log(this.props.location.query,this.props.location.query.idcard,12);
+    console.log(this.props.location.query);
     if(this.props.location.query.idcard){
      this.state.files = [{url:this.props.location.query.idcard}]
     }
