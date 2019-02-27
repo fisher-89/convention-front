@@ -35,7 +35,7 @@ export default class CheckIn extends React.Component {
    handleHover = (e) =>{
     e.preventDefault();
     const {pageList} = this.state; 
-    const index = parseInt(e.target.getAttribute('index'));
+    const index = parseInt(e.currentTarget.getAttribute('index'));
     history.push({pathname:'/formdata',
       query:pageList[index] })
    }
