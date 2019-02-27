@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack -p"
+    "build": "webpack  --mode development/production"
   },
   "dependencies": {
     "ant-design": "^1.0.0",
