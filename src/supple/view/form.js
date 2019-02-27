@@ -1,8 +1,9 @@
 import React,{Suspense } from 'react';
 import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker} from 'antd-mobile';
 import Select from 'react-select';
-import './index.less';
 import axios from 'axios';
+import {history} from '../history';
+import './index.less';
 
 
 
@@ -23,59 +24,55 @@ export default class FormSubmit extends React.Component {
     }
   }
   componentWillMount(){
-    console.log(this.props.location.query,9999999);
     this.state.formData = this.props.location.query || {};
-    if(this.props.location.query.idcard){
+    console.log(this.props.location.query);
+    if(this.props.location.query && this.props.location.query.idcard){
      this.state.files = [{url:this.props.location.query.idcard}]
     }
   }
 
 
    handleSubmit = (e)=>{
-     e.preventDefault();
-     const {formData} = this.state;
-    axios.patch( `/api/sign/${formData['openid']}`,formData)
-      .then(res => {
-        console.log(res)
-        if(res.status == '201'){
-          Toast.success('提交成功',1);
-        }
-      })
-      .catch(error => {
-        Toast.success('提交失败',1); 
-      })
+      e.preventDefault();
+      const {formData} = this.state;
+      axios.patch( `/api/sign/${formData['openid']}`,formData)
+        .then(res => {
+          if(res.status == '201'){
+            Toast.success('提交成功',1,function(){
+              history.push('/');
+            });
+          }
+        })
+        .catch(error => {
+          Toast.success('提交失败',1); 
+        })
    }
-   handleName = (e)=>{
-     e.preventDefault();
-      this.state.formData['name'] = e.target.value;
-      console.log(this.state.formData);
+
+   handleName = (value)=>{
+      this.state.formData['name'] = value;
    }
-   handlePhone = (e)=> {
-    e.preventDefault();
-      this.state.formData['mobile'] = e.target.value;
-      console.log(this.state.formData);
+
+   handlePhone = (value)=> {
+      this.state.formData['mobile'] = value;
    }
+
    handlehotelname = (val)=> {
-     console.log(val);
      this.state.formData['hotel_name'] = val[0];
      this.setState({
       selectedOption: val
      })
    }
-   handleNumber = (e) =>{
-    e.preventDefault();
-    this.state.formData['number'] = e.target.value;
-    console.log(this.state.formData);
-   }
-   handleHotelnum = (e)=>{
-    e.preventDefault();
-    this.state.formData['hotel_num'] = e.target.value;
+
+   handleNumber = (value) =>{
+      this.state.formData['number'] = value;
    }
 
+   handleHotelnum = (value)=>{
+      this.state.formData['hotel_num'] = value;
+   }
 
    filesOnchange = (files, type) => {
       const imgformData = new FormData();
-      console.log(files,type,333,imgformData);
       if(type == 'remove'){
          this.setState({
           files : []
@@ -90,7 +87,6 @@ export default class FormSubmit extends React.Component {
         axios.post('/api/upload',imgformData)
           .then( res => {
             if(res.status == '201'){
-              console.log(res,333);
               this.state.formData['idcard'] = res.data;
               that.setState({
                 files : [{url:res.data}]
@@ -103,9 +99,6 @@ export default class FormSubmit extends React.Component {
       }
     }
 
-  onImageClick = (index,files) => {
-    console.log(3333,index,files);
-  }
 
    render(){
      const {name,mobile, number, hotel_name,hotel_num, idcard} = this.state.formData;
