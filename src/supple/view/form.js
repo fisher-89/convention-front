@@ -25,6 +25,7 @@ export default class FormSubmit extends React.Component {
   }
   componentWillMount(){
     this.state.formData = this.props.location.query || {};
+    console.log(this.props.location.query,this.props.location.query.idcard,12);
     if(this.props.location.query.idcard){
      this.state.files = [{url:this.props.location.query.idcard}]
     }
@@ -36,10 +37,8 @@ export default class FormSubmit extends React.Component {
       const {formData} = this.state;
       axios.patch( `/api/sign/${formData['openid']}`,formData)
         .then(res => {
-          console.log(res)
           if(res.status == '201'){
             Toast.success('提交成功',1,function(){
-              console.log(344);
               history.push('/');
             });
           }
@@ -52,17 +51,14 @@ export default class FormSubmit extends React.Component {
    handleName = (e)=>{
      e.preventDefault();
       this.state.formData['name'] = e.target.value;
-      console.log(this.state.formData);
    }
 
    handlePhone = (e)=> {
     e.preventDefault();
       this.state.formData['mobile'] = e.target.value;
-      console.log(this.state.formData);
    }
 
    handlehotelname = (val)=> {
-     console.log(val);
      this.state.formData['hotel_name'] = val[0];
      this.setState({
       selectedOption: val
@@ -95,7 +91,6 @@ export default class FormSubmit extends React.Component {
         axios.post('/api/upload',imgformData)
           .then( res => {
             if(res.status == '201'){
-              console.log(res,333);
               this.state.formData['idcard'] = res.data;
               that.setState({
                 files : [{url:res.data}]
@@ -108,9 +103,6 @@ export default class FormSubmit extends React.Component {
       }
     }
 
-  onImageClick = (index,files) => {
-    console.log(3333,index,files);
-  }
 
    render(){
      const {name,mobile, number, hotel_name,hotel_num, idcard} = this.state.formData;
