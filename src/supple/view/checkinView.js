@@ -33,6 +33,7 @@ export default class CheckIn extends React.Component {
    } 
 
    handleHover = (e) =>{
+    e.preventDefault();
     const {pageList} = this.state; 
     const index = parseInt(e.target.getAttribute('index'));
     history.push({pathname:'/formdata',
