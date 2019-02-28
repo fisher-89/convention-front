@@ -13,9 +13,10 @@
 <script>
   document.querySelector('.btn').addEventListener("click",function(){
     var name = localStorage.getItem('check_name');
+    var avatar = localStorage.getItem('check_aavtar');
     localStorage.removeItem('check_name');
     localStorage.removeItem('check_avatar');
-    alert("清除成功");
+    alert(avatar,name);
   })
 </script>
 </html>
