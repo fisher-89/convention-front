@@ -8,12 +8,14 @@
 </script>
 </head>
 <body style='height:100%;position: relative;'>
-  fef
   <button class="btn" style='font-size:36px;position:absolute;top:50%;left:50%;translate:50% 50%;color:red;background-color:aqua'>清除缓存</button>
 </body>
 <script>
   document.querySelector('.btn').addEventListener("click",function(){
-    localStorage.setItem('check_openId',null);
+    var name = localStorage.getItem('check_name');
+    localStorage.removeItem('check_name');
+    localStorage.removeItem('check_avatar');
+    alert("清除成功");
   })
 </script>
 </html>

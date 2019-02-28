@@ -60,6 +60,11 @@ module.exports = {
       chunks: ['checkin'],
     }),
     new HtmlWebpackPlugin({
+      filename: './checkin/clear.html',
+      template: './src/checkin/clear.html',
+      chunks: ['checkin'],
+    }),
+    new HtmlWebpackPlugin({
       filename: './luckdraw/index.html',
       template: './src/luckdraw/luckdraw.html',
       chunks: ['luckdraw'],

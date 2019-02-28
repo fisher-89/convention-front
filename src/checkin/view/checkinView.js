@@ -34,7 +34,7 @@ export default class CheckIn extends React.Component {
        }) 
      }else{
        const that = this;
-      axios.get(`/api/check/${this.handleGetOenId}`)
+      axios.get(`/api/check/${this.handleGetOenId()}`)
         .then( res =>{
           console.log(res);
           if(res.status == '200'){
