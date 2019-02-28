@@ -318,6 +318,9 @@ class AA extends PureComponent {
             <Row >
               <Col {...colS}>
                 <FormItem {...longFormItemLayout} label="身份证" >
+                {getFieldDecorator('idcard', {
+                  initialValue: { ...initialvalue }.idcard || undefined,
+                })(
                   <Upload
                     name="idcard"
                     listType="picture-card"
@@ -328,8 +331,9 @@ class AA extends PureComponent {
                     beforeUpload={this.beforeUpload}
                     onChange={this.handleChange}
                   >
-                    {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : uploadButton}
+                    {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : ({ ...initialvalue }.idcard? <img src={{ ...initialvalue }.idcard} style={{ width: 300 }} alt="idcard" /> : uploadButton)}
                   </Upload>
+                )}
                 </FormItem>
               </Col>
             </Row>
