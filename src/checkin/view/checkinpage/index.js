@@ -44,7 +44,6 @@ export default class CheckinPage extends React.Component {
      const {wordAnimate} = this.state;
      const {screenHeight } = this.props;
     const bgstyle = wordAnimate?{transition:'background-position-y 1s ease',backgroundPositionY:'bottom'}:null;
-    console.log(this.props,333);
     return (<div  className="root-bg" style={{...bgstyle,height:`${screenHeight}px`}}>
         <CheckForm handleClick={this.handleClick}  {...this.state} {...this.props}/>
         <CheckSub  Showlist={this.handleShowlist} {...this.props} {...this.state}/>
