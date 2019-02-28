@@ -1,5 +1,6 @@
 import React from 'react';
 import './cardlist.less';
+import listpng  from 'public/checkin/list.png';
 
 const listName = [
   ['01/','14:00','开场白'],
@@ -40,6 +41,7 @@ export default class CardList extends React.PureComponent{
          <div className='title' style={{fontSize:`${tileFontsize}px`}}>—— 节目单 ——</div>
          <div className='list' style={{fontSize:`${fontsize}px`}}>
             {this.makeList()}
+            {/* <img src={listpng}></img> */}
          </div>
       </div>
     )
