@@ -33,7 +33,7 @@ export default class CheckIn extends React.Component {
     //     Toast.fail('获取数据失败',1);
     //   })
     const that = this;
-    request('/api/sign/',{},res =>{//?category=mobile
+    request('/api/sign/?category=mobile',{},res =>{//?category=mobile
         if(res.status == '200'){
           console.log(res,333);
           sessionStorage.setItem('globalData', JSON.stringify(res['data']));
@@ -53,8 +53,6 @@ export default class CheckIn extends React.Component {
     e.preventDefault();
     const {pageList} = this.state; 
     const index = parseInt(e.currentTarget.getAttribute('index'));
-    // history.push({pathname:'/formdata',
-    //   query:pageList[index] })
     history.push(`/formdata/${index}`);
    }
 
@@ -65,18 +63,6 @@ export default class CheckIn extends React.Component {
    handleSearchSubmit = () => {
     const {searchtext} = this.state;
     if(!searchtext) return;
-
-    // axios.get(`/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`)
-    //   .then(res =>{
-    //     if(res.status == '200'){
-    //       this.setState({
-    //         pageList:res['data'],
-    //       })
-    //     }
-    //   })
-    // .catch(err=>{
-    //   Toast.fail('获取数据失败',1);
-    // })
     const url = `/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`;
     const that = this;
     request(url, {}, res =>{

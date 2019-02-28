@@ -25,13 +25,7 @@ export default class FormSubmit extends React.Component {
     }
   }
   componentWillMount(){
-    console.log(this.props,3333);
-    // this.state.formData = this.props.location.query || {};
-    // if(this.props.location.query && this.props.location.query.idcard){
-    //  this.state.files = [{url:this.props.location.query.idcard}]
-    // }
     const id = this.handleGetID();
-    // console.log(globalData);
     const globalData = JSON.parse(sessionStorage.getItem('globalData'));
     if(globalData){
       this.state.formData = globalData[id];
@@ -98,9 +92,6 @@ export default class FormSubmit extends React.Component {
       }
       if(type == 'add'){
         imgformData.append('idcard',files[files.length-1].file);
-        // this.setState({
-        //   files : [{url:files[files.length-1].url}]
-        // })   
         const that = this;
         Toast.loading('上传中...', 0, null, true)
         request('/api/upload', {type: 'post',params: imgformData},

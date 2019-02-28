@@ -7,7 +7,7 @@ import FormSubmit from './view/form';
 import './index.less';
 import { checkOauthPermission } from '../util';
 
-// if (checkOauthPermission()) {
+if (checkOauthPermission()) {
   ReactDom.render(
     <Router history={history}>
       <Switch>
@@ -16,4 +16,4 @@ import { checkOauthPermission } from '../util';
       </Switch>
     </Router>
     , document.getElementById('root'));
-// }
+}
