@@ -38,7 +38,7 @@ export default class CheckIn extends React.Component {
         .then( res =>{
           console.log(res);
           if(res.status == '200'){
-            if(res.data.openId){
+            if(res.data.openid){
               console.log(res);
               localStorage.setItem('check_name',res.data['name']);
               localStorage.setItem('check_avatar',res.data['avatar']);
