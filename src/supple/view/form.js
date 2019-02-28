@@ -4,6 +4,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import {history} from '../history';
 import './index.less';
+import { request } from 'http';
 
 
 
@@ -33,20 +34,32 @@ export default class FormSubmit extends React.Component {
   componentWillUnmount(){
     Toast.hide();
   }
-   handleSubmit = (e)=>{
-      e.preventDefault();
-      const {formData} = this.state;
-      axios.patch( `/api/sign/${formData['openid']}`,formData)
-        .then(res => {
-          if(res.status == '201'){
-            Toast.success('提交成功',1,function(){
-              history.go(-1);
-            });
-          }
-        })
-        .catch(error => {
+
+  handleSubmit = (e)=>{
+    e.preventDefault();
+    const {formData} = this.state;
+    // axios.patch( `/api/sign/${formData['openid']}`,formData)
+    //   .then(res => {
+    //     if(res.status == '201'){
+    //       Toast.success('提交成功',1,function(){
+    //         history.go(-1);
+    //       });
+    //     }
+    //   })
+    //   .catch(error => {
+    //     Toast.success('提交失败',1); 
+    //   })
+    const url = `/api/sign/${formData['openid']}`
+    request(url, {type:'patch', params: {formData}},
+      res => {
+        if(res.status == '201'){
+          Toast.success('提交成功',1,function(){
+            history.go(-1);
+          });
+        }},
+        error => {
           Toast.success('提交失败',1); 
-        })
+        })  
    }
 
    handleName = (value)=>{
@@ -86,22 +99,38 @@ export default class FormSubmit extends React.Component {
         // })   
         const that = this;
         Toast.loading('上传中...', 0, null, true)
-        axios.post('/api/upload',imgformData)
-          .then( res => {
-            if(res.status == '201'){
+        // axios.post('/api/upload',imgformData)
+        //   .then( res => {
+        //     if(res.status == '201'){
+        //       Toast.hide();
+        //       this.state.formData['idcard'] = res.data;
+        //       that.setState({
+        //         files : [{url:res.data}],
+        //         fileupload: null,
+        //       })   
+        //     }
+        //   })
+        //   .catch( err => {
+        //     console.log(err);
+        //     Toast.hide();
+        //     Toast.fail('图片上传失败',1);
+        //   })
+        request('/api/upload', {type: 'post',params: {imgformData}},
+            res => {
+              if(res.status == '201'){
+                Toast.hide();
+                that.state.formData['idcard'] = res.data;
+                that.setState({
+                  files : [{url:res.data}],
+                  fileupload: null,
+                })   
+              }
+            },
+            err => {
+              console.log(err);
               Toast.hide();
-              this.state.formData['idcard'] = res.data;
-              that.setState({
-                files : [{url:res.data}],
-                fileupload: null,
-              })   
-            }
-          })
-          .catch( err => {
-            console.log(err);
-            Toast.hide();
-            Toast.fail('图片上传失败',1);
-          })
+              Toast.fail('图片上传失败',1);
+            })
       }
     }
 

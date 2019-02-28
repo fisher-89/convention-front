@@ -1,6 +1,7 @@
 import React,{Suspense } from 'react';
 import {SearchBar , List, PullToRefresh,Toast} from 'antd-mobile';
 import axios from 'axios';
+import request from '../../request';
 import {history} from '../history';
 import './index.less';
 
@@ -19,17 +20,28 @@ export default class CheckIn extends React.Component {
    }
  
    handlePost = () =>{
-     axios.get('/api/sign/?category=mobile')//?category=mobile
-      .then(res =>{
+    //  axios.get('/api/sign/?category=mobile')//?category=mobile
+    //   .then(res =>{
+    //     if(res.status == '200'){
+    //       this.setState({
+    //         pageList:res['data'],
+    //       })
+    //     }
+    //   })
+    //   .catch(err=>{
+    //     Toast.fail('获取数据失败',1);
+    //   })
+    const that = this;
+    request('/api/sign/?category=mobile',{},res =>{
         if(res.status == '200'){
-          this.setState({
+          that.setState({
             pageList:res['data'],
           })
         }
-      })
-      .catch(err=>{
+      },err=>{
         Toast.fail('获取数据失败',1);
-      })
+      }
+    )
    } 
 
    handleHover = (e) =>{
@@ -47,15 +59,27 @@ export default class CheckIn extends React.Component {
    handleSearchSubmit = () => {
     const {searchtext} = this.state;
     if(!searchtext) return;
-    axios.get(`/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`)
-      .then(res =>{
-        if(res.status == '200'){
-          this.setState({
-            pageList:res['data'],
-          })
-        }
-      })
-    .catch(err=>{
+
+    // axios.get(`/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`)
+    //   .then(res =>{
+    //     if(res.status == '200'){
+    //       this.setState({
+    //         pageList:res['data'],
+    //       })
+    //     }
+    //   })
+    // .catch(err=>{
+    //   Toast.fail('获取数据失败',1);
+    // })
+    const url = `/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`;
+    const that = this;
+    request(url, {}, res =>{
+      if(res.status == '200'){
+        that.setState({
+          pageList:res['data'],
+        })
+      }
+    },err=>{
       Toast.fail('获取数据失败',1);
     })
    }
