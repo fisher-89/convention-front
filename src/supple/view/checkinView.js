@@ -3,6 +3,7 @@ import {SearchBar , List, PullToRefresh,Toast} from 'antd-mobile';
 import axios from 'axios';
 import request from '../../request';
 import {history} from '../history';
+// import {globalData } from './globalData';
 import './index.less';
 
 const Item = List.Item;
@@ -32,13 +33,17 @@ export default class CheckIn extends React.Component {
     //     Toast.fail('获取数据失败',1);
     //   })
     const that = this;
-    request('/api/sign/?category=mobile',{},res =>{
+    request('/api/sign/',{},res =>{//?category=mobile
         if(res.status == '200'){
+          console.log(res,333);
+          sessionStorage.setItem('globalData', JSON.stringify(res['data']));
+          // window.a = 234;
           that.setState({
             pageList:res['data'],
           })
         }
       },err=>{
+        console.log(err);
         Toast.fail('获取数据失败',1);
       }
     )
@@ -48,8 +53,9 @@ export default class CheckIn extends React.Component {
     e.preventDefault();
     const {pageList} = this.state; 
     const index = parseInt(e.currentTarget.getAttribute('index'));
-    history.push({pathname:'/formdata',
-      query:pageList[index] })
+    // history.push({pathname:'/formdata',
+    //   query:pageList[index] })
+    history.push(`/formdata/${index}`);
    }
 
    handleSearch = (val) =>{

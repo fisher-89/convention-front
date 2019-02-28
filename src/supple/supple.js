@@ -7,13 +7,13 @@ import FormSubmit from './view/form';
 import './index.less';
 import { checkOauthPermission } from '../util';
 
-if (checkOauthPermission()) {
+// if (checkOauthPermission()) {
   ReactDom.render(
     <Router history={history}>
       <Switch>
         <Route exact path='/' component={CheckIn} />
-        <Route exact path='/formdata' component={FormSubmit} />
+        <Route exact path='/formdata/:userId' component={FormSubmit} />
       </Switch>
     </Router>
     , document.getElementById('root'));
-}
+// }

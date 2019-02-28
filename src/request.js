@@ -5,7 +5,7 @@ export default function request(url, options, onSuccess, onError) {
   const defaultOptions = { type: 'get', params: {} };
   let { type, params } = { ...defaultOptions, ...options };
   const accessToken = localStorage.getItem(`${env('TOKEN_PREFIX')}access_token`);
-  if (checkOauthPermission()) {
+  // if (checkOauthPermission()) {
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     };
@@ -26,5 +26,5 @@ export default function request(url, options, onSuccess, onError) {
       }
     }
     axios[type](url, params, { headers }).then(onSuccess).catch(onError);
-  }
+  // }
 }

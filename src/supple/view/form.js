@@ -3,6 +3,7 @@ import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker, ActivityInd
 import request  from '../../request';
 import axios from 'axios';
 import {history} from '../history';
+// import {globalData } from './globalData';
 import './index.less';
 
 
@@ -24,9 +25,19 @@ export default class FormSubmit extends React.Component {
     }
   }
   componentWillMount(){
-    this.state.formData = this.props.location.query || {};
-    if(this.props.location.query && this.props.location.query.idcard){
-     this.state.files = [{url:this.props.location.query.idcard}]
+    console.log(this.props,3333);
+    // this.state.formData = this.props.location.query || {};
+    // if(this.props.location.query && this.props.location.query.idcard){
+    //  this.state.files = [{url:this.props.location.query.idcard}]
+    // }
+    const id = this.handleGetID();
+    // console.log(globalData);
+    const globalData = JSON.parse(sessionStorage.getItem('globalData'));
+    if(globalData){
+      this.state.formData = globalData[id];
+      if(globalData[id] && globalData[id].idcard){
+        this.state.files = [{url:globalData[id]['idcard']}]
+      } 
     }
   }
 
@@ -34,22 +45,16 @@ export default class FormSubmit extends React.Component {
     Toast.hide();
   }
 
+  handleGetID = () =>{
+    const id = this.props.match.params['userId'];
+    return id;
+  }
+
   handleSubmit = (e)=>{
     e.preventDefault();
     const {formData} = this.state;
-    // axios.patch( `/api/sign/${formData['openid']}`,formData)
-    //   .then(res => {
-    //     if(res.status == '201'){
-    //       Toast.success('提交成功',1,function(){
-    //         history.go(-1);
-    //       });
-    //     }
-    //   })
-    //   .catch(error => {
-    //     Toast.success('提交失败',1); 
-    //   })
     const url = `/api/sign/${formData['openid']}`
-    request(url, {type:'patch', params: {formData}},
+    request(url, {type:'patch', params: formData},
       res => {
         if(res.status == '201'){
           Toast.success('提交成功',1,function(){
@@ -98,23 +103,7 @@ export default class FormSubmit extends React.Component {
         // })   
         const that = this;
         Toast.loading('上传中...', 0, null, true)
-        // axios.post('/api/upload',imgformData)
-        //   .then( res => {
-        //     if(res.status == '201'){
-        //       Toast.hide();
-        //       this.state.formData['idcard'] = res.data;
-        //       that.setState({
-        //         files : [{url:res.data}],
-        //         fileupload: null,
-        //       })   
-        //     }
-        //   })
-        //   .catch( err => {
-        //     console.log(err);
-        //     Toast.hide();
-        //     Toast.fail('图片上传失败',1);
-        //   })
-        request('/api/upload', {type: 'post',params: {imgformData}},
+        request('/api/upload', {type: 'post',params: imgformData},
             res => {
               if(res.status == '201'){
                 Toast.hide();
