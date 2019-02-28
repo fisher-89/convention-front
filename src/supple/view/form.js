@@ -1,10 +1,9 @@
 import React,{Suspense } from 'react';
 import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker, ActivityIndicator} from 'antd-mobile';
-import Select from 'react-select';
+import request  from '../../request';
 import axios from 'axios';
 import {history} from '../history';
 import './index.less';
-import { request } from 'http';
 
 
 
