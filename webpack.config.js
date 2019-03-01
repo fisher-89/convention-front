@@ -20,7 +20,8 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/,
+      {
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         // query: {
@@ -31,8 +32,8 @@ module.exports = {
         // ]
         // }, 
       },
-      
-      { test: /\.(less|css)$/, use: ["style-loader","css-loader", "less-loader"] },
+
+      { test: /\.(less|css)$/, use: ["style-loader", "css-loader", "less-loader"] },
       { test: /\.html$/, loader: 'html-loader' },
       { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 50000, name: 'images/[name]-[hash:8].[ext]' } },
       { test: /\.(mp3)$/, loader: 'url-loader', options: { limit: 0, name: 'audio/[name]-[hash:8].[ext]' } },
@@ -99,6 +100,10 @@ module.exports = {
       //   // pathRewrite: { '^/api': '/sign' },
       //   changeOrigin: true,
       // },
+      '/oauth': {
+        target: 'http://112.74.177.132:8002',
+        changeOrigin: true,
+      },
       '/api': {
         // target:'http://192.168.1.16:8007',
         target: 'http://cs.xigemall.com',//http://cs.xigemall.com/
@@ -106,6 +111,10 @@ module.exports = {
         changeOrigin: true,
       },
     },
-    historyApiFallback: true,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/passport/, to: '/passport/index.html' },
+      ]
+    },
   }
 }
