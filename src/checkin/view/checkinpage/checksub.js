@@ -164,8 +164,8 @@ export default class CheckSub extends React.PureComponent {
     const firstanimate = wordAnimate ? { paddingRight: '0', transitionDelay: '1s' } : null;
     const secondanimate = wordAnimate ? { paddingRight: '0', transitionDelay: '1.7s' } : null;
     const threeanimate = wordAnimate ? { paddingRight: '0', transitionDelay: '2.4s' } : null;
-    const formnimate = wordAnimate ? { visibility: 'visible', transitionDelay: '3.3s' } : null;
-    const submitanimate = wordAnimate ? { visibility: 'visible', transitionDelay: '3.3s' } : null;
+    const formnimate = wordAnimate ? { opacity: 1, transitionDelay: '2.5s' } : null;
+    const submitanimate = wordAnimate ? { opacity: 1, transitionDelay: '2.5s' } : null;
     const fontSize = pageWidth * .04;
     const pageStyle = pageWidth ? {
       height: `${pageHeight}px`,

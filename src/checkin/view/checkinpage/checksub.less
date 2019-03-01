@@ -1,127 +1,127 @@
-.submitPage{
+.submitPage {
   box-sizing: border-box;
-  top:150%;
-  left:50%;
+  top: 150%;
+  left: 50%;
   position: absolute;
-  .lookback{
+  .lookback {
     position: absolute;
-    width:100%;
-    top:9.8%;
-    color:#efca9f;
-    .container{
-      width:100%;
+    width: 100%;
+    top: 9.8%;
+    color: #efca9f;
+    .container {
+      width: 100%;
       overflow: hidden;
       position: relative;
-      .first, .second ,.three{
-        width:100%;
+      .first, .second, .three {
+        width: 100%;
         position: absolute;
-        height:100px;
+        height: 100px;
         overflow: hidden;
-        padding-right:100%;
+        padding-right: 100%;
         background-clip: content-box;
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
         transition: padding 1s linear;
         background-size: 100% auto;
-        box-sizing:border-box;
+        box-sizing: border-box;
       }
-      .first{
+      .first {
         background-image: url('../../../public/checkin/firstword.png');
       }
-      .second{
+      .second {
         background-image: url('../../../public/checkin/secondword.png');
       }
-      .three{
+      .three {
         background-image: url('../../../public/checkin/threeword.png');
       }
-      &>img{
+      & > img {
         display: block;
-        width:100%;
+        width: 100%;
       }
     }
   }
-  .form{
+  .form {
     position: absolute;
-    top:28.5%;
-    width:100%;
-    transition: visibility 1s linear;
-    visibility: hidden;
-    .formcontainer{
-      height:100%;
-      width:100%;
+    top: 28.5%;
+    width: 100%;
+    transition: opacity 1s linear;
+    opacity: 0;
+    .formcontainer {
+      height: 100%;
+      width: 100%;
       position: relative;
-      &>img{
+      & > img {
         display: block;
-        width:100%;
+        width: 100%;
       }
-      .formname{
-        position:absolute;
-        left:31.25%;
-        bottom:63%;
-        width:56.25%;
-        line-height:1;
+      .formname {
+        position: absolute;
+        left: 31.25%;
+        bottom: 63%;
+        width: 56.25%;
+        line-height: 1;
         vertical-align: middle;
-        color:#ffffff;
-        border:none;
-        padding:0;
+        color: #ffffff;
+        border: none;
+        padding: 0;
         outline: none;
         background-color: transparent;
       }
-      .formphone{
-        position:absolute;
-        left:31.25%;
-        bottom:40%;
-        width:56.25%;
-        line-height:1;
+      .formphone {
+        position: absolute;
+        left: 31.25%;
+        bottom: 40%;
+        width: 56.25%;
+        line-height: 1;
         vertical-align: middle;
-        color:#ffffff;
-        padding:0;
-        border:none;
+        color: #ffffff;
+        padding: 0;
+        border: none;
         outline: none;
         background-color: transparent;
       }
-      .formnumber{
-        position:absolute;
-        left:31.25%;
-        bottom:16.75%;
-        width:56.25%;
-        line-height:1;
+      .formnumber {
+        position: absolute;
+        left: 31.25%;
+        bottom: 16.75%;
+        width: 56.25%;
+        line-height: 1;
         vertical-align: middle;
-        color:#ffffff;
-        padding:0;
-        border:none;
+        color: #ffffff;
+        padding: 0;
+        border: none;
         outline: none;
         background-color: transparent;
       }
     }
-    h3{
-       width:80%; 
-       font-size:.09rem;
-     }
+    h3 {
+      width: 80%;
+      font-size: .09rem;
+    }
   }
-  .submit{
+  .submit {
     position: absolute;
-    top:75.5%;
-    width:100%;
-    transition: visibility 1s linear;
-    visibility: hidden;
-    .submit-container{
-      width:43.2%;
+    top: 75.5%;
+    width: 100%;
+    transition: opacity 1s linear;
+    opacity: 0;
+    .submit-container {
+      width: 43.2%;
       margin: 0 auto;
-      .submitbtn{
+      .submitbtn {
         margin: 0 auto;
         display: block;
-        width:100%;
+        width: 100%;
       }
-      .smline{
-        width:43.2%;
-        animation-timing-function:linear;
+      .smline {
+        width: 43.2%;
+        animation-timing-function: linear;
         animation: linemove 2s infinite;
         overflow: hidden;
         position: absolute;
-        &>img{
+        & > img {
           display: block;
-          width:100%;
-          margin:0 auto;
+          width: 100%;
+          margin: 0 auto;
         }
       }
     }
