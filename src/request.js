@@ -25,6 +25,6 @@ export default function request(url, options, onSuccess, onError) {
         url += `&${paramsArray.join('&')}`;
       }
     }
-    axios[type](url, params, { headers }).then(onSuccess).catch(onError);
+    axios[type](url, { headers, params }).then(onSuccess).catch(onError);
   }
 }
