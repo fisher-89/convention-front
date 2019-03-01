@@ -10,13 +10,21 @@ import smline from 'public/checkin/smline.png';
 
 export default class CheckForm extends React.PureComponent {
   render() {
-    const {pageTranslate,wordAnimate, originalHeight ,pageHeight, pageWidth} = this.props;
-    const pageStyle = pageWidth?{height:`${pageHeight}px`,width:`${pageWidth}px`,marginLeft:`-${pageWidth/2}px`,marginTop:`-${pageHeight/2}px`}:null;
+    const { pageTranslate, pageHeight, pageWidth } = this.props;
+    const pageStyle = pageWidth ? {
+      height: `${pageHeight}px`,
+      width: `${pageWidth}px`,
+      marginLeft: `-${pageWidth / 2}px`,
+      marginTop: `-${pageHeight / 2}px`
+    } : null;
     return (
       <React.Fragment>
-        <div className='checkinPage' style={{transition:'top 1s ease',top:pageTranslate?`-${50*pageTranslate}%`:null,...pageStyle}}>
+        <div
+          className='checkinPage'
+          style={{ transition: 'top 1s ease', top: pageTranslate ? `-${50 * pageTranslate}%` : null, ...pageStyle }}
+        >
           <div className='logo'>
-            <img src={logo}/>
+            <img src={logo} />
           </div>
           <div className='xj'>
             <img src={xj}></img>
@@ -28,9 +36,9 @@ export default class CheckForm extends React.PureComponent {
             <div className='checkin-container'>
               <img className='checkinbtn' src={checkin} onClick={this.props.handleClick}></img>
               <div className='smline'>
-                <img  src={smline} ></img>
+                <img src={smline}></img>
               </div>
-            </div>  
+            </div>
           </div>
         </div>
       </React.Fragment>
