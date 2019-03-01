@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 
-
 module.exports = {
   mode: 'development',
   entry: {
@@ -20,19 +19,7 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        // query: {
-        //   presets: ["env", "react", "es2015", "stage-2"],
-        //   plugins: [
-        //     // [  "import",{libraryName: "antd", style: 'css'}], // antd按需加载
-        //     ["import",{libraryName: "antd", style: 'css'}, { libraryName: "antd-mobile", style: "css" }]
-        // ]
-        // }, 
-      },
-
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       { test: /\.(less|css)$/, use: ["style-loader", "css-loader", "less-loader"] },
       { test: /\.html$/, loader: 'html-loader' },
       { test: /\.(png|gif)$/, loader: 'url-loader', options: { limit: 50000, name: 'images/[name]-[hash:8].[ext]' } },
@@ -45,11 +32,6 @@ module.exports = {
       template: './src/app/app.html',
       chunks: ['app'],
     }),
-    // new HtmlWebpackPlugin({
-    //   filename: './board.html',
-    //   template: './src/board.html',
-    //   chunks: ['board'],
-    // }),
     new HtmlWebpackPlugin({
       filename: './supple/index.html',
       template: './src/supple/supple.html',
@@ -87,27 +69,13 @@ module.exports = {
     contentBase: path.resolve(__dirname, 'dist'),
     host: '0.0.0.0',
     port: 8000,
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://cs.xigemall.com',
-    //     pathRewrite: { '^/api': '/sign' },
-    //     changeOrigin: true,
-    //   },
-    // },
     proxy: {
-      // '/api': {
-      //   target: 'http://112.74.177.132:8007',
-      //   // pathRewrite: { '^/api': '/sign' },
-      //   changeOrigin: true,
-      // },
       '/oauth': {
         target: 'http://112.74.177.132:8002',
         changeOrigin: true,
       },
       '/api': {
-        // target:'http://192.168.1.16:8007',
-        target: 'http://cs.xigemall.com',//http://cs.xigemall.com/
-        // pathRewrite: { '^/api': '/sign' },
+        target: 'http://cs.xigemall.com',
         changeOrigin: true,
       },
     },
