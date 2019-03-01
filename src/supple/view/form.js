@@ -1,12 +1,8 @@
-import React,{Suspense } from 'react';
-import {SearchBar,List,InputItem ,Button, Toast,ImagePicker, Picker, ActivityIndicator} from 'antd-mobile';
-import request  from '../../request';
-import axios from 'axios';
-import {history} from '../history';
-// import {globalData } from './globalData';
+import React, { Suspense } from 'react';
+import { List, InputItem, Button, Toast, ImagePicker, Picker } from 'antd-mobile';
+import request from '../../request';
+import { history } from '../history';
 import './index.less';
-
-
 
 
 const options = [
@@ -16,143 +12,145 @@ const options = [
   { value: '桐乡璞遇智慧酒店', label: '桐乡璞遇智慧酒店' }
 ];
 export default class FormSubmit extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      formData:{},
-      files:[],
+      formData: {},
+      files: [],
       selectedOption: null,
     }
   }
-  componentWillMount(){
+
+  componentWillMount() {
     const id = this.handleGetID();
     const globalData = JSON.parse(sessionStorage.getItem('globalData'));
-    if(globalData){
+    if (globalData) {
       this.state.formData = globalData[id];
-      if(globalData[id] && globalData[id].idcard){
-        this.state.files = [{url:globalData[id]['idcard']}]
-      } 
+      if (globalData[id] && globalData[id].idcard) {
+        this.state.files = [{ url: globalData[id]['idcard'] }]
+      }
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     Toast.hide();
   }
 
-  handleGetID = () =>{
+  handleGetID = () => {
     const id = this.props.match.params['userId'];
     return id;
   }
 
-  handleSubmit = (e)=>{
+  handleSubmit = (e) => {
     e.preventDefault();
-    const {formData} = this.state;
+    const { formData } = this.state;
     const url = `/api/sign/${formData['openid']}`
-    request(url, {type:'patch', params: formData},
+    request(url, { type: 'patch', params: formData },
       res => {
-        if(res.status == '201'){
-          Toast.success('提交成功',1,function(){
+        if (res.status == '201') {
+          Toast.success('提交成功', 1, function () {
             history.go(-1);
           });
-        }},
-        error => {
-          Toast.success('提交失败',1); 
-        })  
-   }
+        }
+      },
+      error => {
+        Toast.success('提交失败', 1);
+      })
+  }
 
-   handleName = (value)=>{
-      this.state.formData['name'] = value;
-   }
+  handleName = (value) => {
+    this.state.formData['name'] = value;
+  }
 
-   handlePhone = (value)=> {
-      this.state.formData['mobile'] = value;
-   }
+  handlePhone = (value) => {
+    this.state.formData['mobile'] = value;
+  }
 
-   handlehotelname = (val)=> {
-     this.state.formData['hotel_name'] = val[0];
-     this.setState({
+  handlehotelname = (val) => {
+    this.state.formData['hotel_name'] = val[0];
+    this.setState({
       selectedOption: val
-     })
-   }
+    })
+  }
 
-   handleNumber = (value) =>{
-      this.state.formData['number'] = value;
-   }
+  handleNumber = (value) => {
+    this.state.formData['number'] = value;
+  }
 
-   handleHotelnum = (value)=>{
-      this.state.formData['hotel_num'] = value;
-   }
+  handleHotelnum = (value) => {
+    this.state.formData['hotel_num'] = value;
+  }
 
-   filesOnchange = (files, type) => {
-      const imgformData = new FormData();
-      if(type == 'remove'){
-         this.setState({
-          files : []
-         })
-      }
-      if(type == 'add'){
-        imgformData.append('idcard',files[files.length-1].file);
-        const that = this;
-        Toast.loading('上传中...', 0, null, true)
-        request('/api/upload', {type: 'post',params: imgformData},
-            res => {
-              if(res.status == '201'){
-                Toast.hide();
-                that.state.formData['idcard'] = res.data;
-                that.setState({
-                  files : [{url:res.data}],
-                  fileupload: null,
-                })   
-              }
-            },
-            err => {
-              console.log(err);
-              Toast.hide();
-              Toast.fail('图片上传失败',1);
-            })
-      }
+  filesOnchange = (files, type) => {
+    const imgformData = new FormData();
+    if (type == 'remove') {
+      this.setState({
+        files: []
+      })
     }
+    if (type == 'add') {
+      imgformData.append('idcard', files[files.length - 1].file);
+      const that = this;
+      Toast.loading('上传中...', 0, null, true)
+      request('/api/upload', { type: 'post', params: imgformData },
+        res => {
+          if (res.status == '201') {
+            Toast.hide();
+            that.state.formData['idcard'] = res.data;
+            that.setState({
+              files: [{ url: res.data }],
+              fileupload: null,
+            })
+          }
+        },
+        err => {
+          console.log(err);
+          Toast.hide();
+          Toast.fail('图片上传失败', 1);
+        })
+    }
+  }
 
 
-   render(){
-    const {name,mobile, number, hotel_name,hotel_num, idcard } = this.state.formData;
-    let {files,selectedOption ,fileupload} = this.state;
-    if(!selectedOption && hotel_name){
+  render() {
+    const { name, mobile, number, hotel_name, hotel_num, idcard } = this.state.formData;
+    let { files, selectedOption, fileupload } = this.state;
+    if (!selectedOption && hotel_name) {
       let items = [];
       items.push(hotel_name)
-       selectedOption = items;
+      selectedOption = items;
     }
-    return(
+    return (
       <div className='formpage'>
-         <div className='form'>
-            <List>
-              <InputItem placeholder='请输入客户姓名' defaultValue={name} onChange={this.handleName}>客户姓名</InputItem>
-              <InputItem placeholder='请输入客户电话' defaultValue={mobile} onChange={this.handlePhone}>客户电话</InputItem>
-              <InputItem placeholder='请输入邀请函编号' defaultValue={number} onChange={this.handleNumber}>邀请函编号</InputItem>
-              <Picker 
-                  extra='请选择入住酒店'
-                  data={options} cols={1}
-                  value={selectedOption || hotel_name}
-                  onChange={this.handlehotelname}>
-                <List.Item arrow="horizontal">入住酒店</List.Item>
-              </Picker>
-              <InputItem placeholder='请输入酒店房间号' defaultValue={hotel_num} onChange={this.handleHotelnum}>酒店房间号</InputItem>
-              <List.Item className='idcard'>
-                <div style={{width:'85px',marginRight:'5px'}}>身份证信息</div> 
-                <ImagePicker
-                  files={files}
-                  length={2}
-                  onImageClick={(index, fs) => console.log(index, fs)}
-                  selectable={files.length <1}
-                  onChange={ (file,type)=>{
-                    this.filesOnchange(file, type)
-                  }}
-                  // accept="image/gif,image/jpeg,image/jpg,image/png"
-                  />  
-              </List.Item>
-                <Button className="submit" type="primary" style={{marginTop:'100px'}} onClick={this.handleSubmit}>提交</Button>
-            </List>
-          </div>  
+        <div className='form'>
+          <List>
+            <InputItem placeholder='请输入客户姓名' defaultValue={name} onChange={this.handleName}>客户姓名</InputItem>
+            <InputItem placeholder='请输入客户电话' defaultValue={mobile} onChange={this.handlePhone}>客户电话</InputItem>
+            <InputItem placeholder='请输入邀请函编号' defaultValue={number} onChange={this.handleNumber}>邀请函编号</InputItem>
+            <Picker
+              extra='请选择入住酒店'
+              data={options} cols={1}
+              value={selectedOption || hotel_name}
+              onChange={this.handlehotelname}>
+              <List.Item arrow="horizontal">入住酒店</List.Item>
+            </Picker>
+            <InputItem placeholder='请输入酒店房间号' defaultValue={hotel_num} onChange={this.handleHotelnum}>酒店房间号</InputItem>
+            <List.Item className='idcard'>
+              <div style={{ width: '85px', marginRight: '5px' }}>身份证信息</div>
+              <ImagePicker
+                files={files}
+                length={2}
+                onImageClick={(index, fs) => console.log(index, fs)}
+                selectable={files.length < 1}
+                onChange={(file, type) => {
+                  this.filesOnchange(file, type)
+                }}
+              />
+            </List.Item>
+            <Button className="submit" type="primary" style={{ marginTop: '100px' }}
+                    onClick={this.handleSubmit}>提交</Button>
+          </List>
+        </div>
       </div>
     )
   }
