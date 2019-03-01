@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
+import { withRouter } from 'react-router-dom';
 import { List, InputItem, Button, Toast, ImagePicker, Picker } from 'antd-mobile';
 import request from '../../request';
-import { history } from '../history';
 import './index.less';
 
 
@@ -11,7 +11,8 @@ const options = [
   { value: '桐乡市美高大酒店', label: '桐乡市美高大酒店' },
   { value: '桐乡璞遇智慧酒店', label: '桐乡璞遇智慧酒店' }
 ];
-export default class FormSubmit extends React.Component {
+
+class FormSubmit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +50,7 @@ export default class FormSubmit extends React.Component {
       res => {
         if (res.status == '201') {
           Toast.success('提交成功', 1, function () {
-            history.go(-1);
+            window.history.go(-1);
           });
         }
       },
@@ -155,4 +156,6 @@ export default class FormSubmit extends React.Component {
     )
   }
 }
-  
+
+
+export default withRouter(FormSubmit);

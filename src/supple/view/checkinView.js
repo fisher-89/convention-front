@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react';
+import { withRouter } from 'react-router-dom';
 import { SearchBar, List, PullToRefresh, Toast } from 'antd-mobile';
 import request from '../../request';
-import { history } from '../history';
 import './index.less';
 
 const Item = List.Item;
-export default class CheckIn extends React.Component {
+
+class CheckIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +39,7 @@ export default class CheckIn extends React.Component {
   handleHover = (e) => {
     e.preventDefault();
     const index = parseInt(e.currentTarget.getAttribute('index'));
-    history.push(`/formdata/${index}`);
+    this.props.history.push(`/supple/formdata/${index}`);
   }
 
   handleSearch = (val) => {
@@ -78,11 +79,13 @@ export default class CheckIn extends React.Component {
       let idcard = list[i]['idcard'];
       let supple = hotel_name && hotel_num && !idcard ? (<span>已补录</span>) : (
         <span index={i} onClick={this.handleHover} className='hover'>点击补录</span>);
-      items.push(<Item className='items' key={i}>
-        <div className='name'>{list[i]['name']}</div>
-        <div className='mobile'>{list[i]['mobile']}</div>
-        <div className='supple'>{supple}</div>
-      </Item>)
+      items.push(
+        <Item className='items' key={i}>
+          <div className='name'>{list[i]['name']}</div>
+          <div className='mobile'>{list[i]['mobile']}</div>
+          <div className='supple'>{supple}</div>
+        </Item>
+      );
     }
     return items;
   }
@@ -100,9 +103,10 @@ export default class CheckIn extends React.Component {
           onBlur={this.handleBlur}
         />
         <List renderHeader={() => '已签到客户'}>
-          <PullToRefresh className='listview'
-                         damping={50}
-                         onRefresh={this.handleSearchSubmit}
+          <PullToRefresh
+            className='listview'
+            damping={50}
+            onRefresh={this.handleSearchSubmit}
           >
             {pageList && this.makeList(pageList)}
           </PullToRefresh>
@@ -111,4 +115,5 @@ export default class CheckIn extends React.Component {
     )
   }
 }
-  
+
+export default withRouter(CheckIn)

@@ -82,6 +82,7 @@ module.exports = {
     historyApiFallback: {
       rewrites: [
         { from: /^\/passport/, to: '/passport/index.html' },
+        { from: /^\/supple/, to: '/supple/index.html' },
       ]
     },
   }
