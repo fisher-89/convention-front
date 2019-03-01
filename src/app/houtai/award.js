@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Table, Form, Button, Divider, Icon, Modal, Input, Row, Col, Popover, Upload, message } from 'antd';
+import { Table, Form, Button, Divider, Icon, Modal, Input, Row, Col, Popover, Upload, message, Drawer } from 'antd';
 import lrz from 'lrz';
+import Cropper from 'react-cropper';
 import '../../../node_modules/cropperjs/dist/cropper.css';
 import request from '../../request';
 
@@ -15,6 +16,10 @@ class BB extends PureComponent {
       awards: [],
       loading: false,
       imageUrl: undefined,
+      drawervisible: false,
+      selectImgSize: '',
+      selectImgName: '',
+      srcCropper: '',
     };
   }
 
@@ -36,11 +41,24 @@ class BB extends PureComponent {
     if (!isJPG) {
       message.error('You can only upload JPG/PNG file!');
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      console.log(e, file);
+      this.setState({
+        srcCropper: e.target.result, //cropper的图片路径
+        selectImgName: file.name, //文件名称
+        selectImgSize: (file.size / 1024 / 1024), //文件大小
+        selectImgSuffix: file.type.split("/")[1], //文件类型
+        drawervisible: true,
+      })
+    }
     return isJPG;
   }
 
   customRequest = (file) => {
     const _this = this;
+    this.showDrawer();
     const formData = new FormData();
     formData.append('url', file.file);
     const options = {
@@ -57,7 +75,7 @@ class BB extends PureComponent {
       type: 'delete',
       params: {},
     }
-    function deleteA () {
+    function deleteA() {
       const midkey = awards.filter(item => item.id !== id);
       _this.setState({ awards: midkey });
     }
@@ -85,13 +103,13 @@ class BB extends PureComponent {
 
   handleSubmit = () => {
     const _this = this;
-    const { awards, imageUrl, initialvalue } = this.state; 
+    const { awards, imageUrl, initialvalue } = this.state;
     const { getFieldsValue } = this.props.form;
     const params = getFieldsValue();
     const payload = { ...params };
     delete payload.id;
     if (params.id) {
-      function editA (res) {
+      function editA(res) {
         const midkey = awards.filter(item => item.id !== res.data.id);
         midkey.push(res.data);
         _this.setState({ awards: midkey, visible: false });
@@ -105,7 +123,7 @@ class BB extends PureComponent {
       }
       request(`/api/award/${params.id}`, options, editA, (error) => console.log(error));
     } else {
-      function addA (res) {
+      function addA(res) {
         const midkey = awards;
         midkey.push(res.data);
         _this.setState({ awards: midkey, visible: false });
@@ -119,28 +137,42 @@ class BB extends PureComponent {
       }
       request('/api/award', options, addA, (error) => console.log(error));
     }
-
   }
 
-  imageDiminution = (files01, type, index) => {
-    console.log(files01, type, index);
-    if (type === 'add') {
-      lrz(files01[0].url, { quality: 0.1 })
-        .then((rst) => {
-          // 处理成功会执行
-          console.log('压缩成功')
-          console.log(rst.base64);
-          this.setState({
-            imagesrc01: rst.base64.split(',')[1],
-          })
-        })
-    } else {
-      this.setState({ imagesrc01: '' })
-    }
-    this.setState({
-      files01,
-    });
+  saveImg() {
+    const _this = this;
+    // lrz压缩
+    // this.refs.cropper.getCroppedCanvas().toDataURL() 为裁剪框的base64的值
+    lrz(this.refs.cropper.getCroppedCanvas().toDataURL(), { width: 260 }).then((results) => {
+      console.log(results, 'res');
+      // results为压缩后的结果
+      // _this.props.uploadImgByBase64({ //uploadImgByBase64为连接后台的接口
+      //   imgbase: results.base64, //取base64的值传值
+      //   imgsize: results.fileLen, //压缩后的图片大下
+      //   suffix: _this.state.selectImgSuffix, //文件类型
+      //   filename: _this.state.selectImgName, //文件名
+      // })
+    })
   }
+  // imageDiminution = (files01, type, index) => {
+  //   console.log(files01, type, index);
+  //   if (type === 'add') {
+  //     lrz(files01[0].url, { quality: 0.1 })
+  //       .then((rst) => {
+  //         // 处理成功会执行
+  //         console.log('压缩成功')
+  //         console.log(rst.base64);
+  //         this.setState({
+  //           imagesrc01: rst.base64.split(',')[1],
+  //         })
+  //       })
+  //   } else {
+  //     this.setState({ imagesrc01: '' })
+  //   }
+  //   this.setState({
+  //     files01,
+  //   });
+  // }
 
 
   makeNew = () => {
@@ -148,8 +180,16 @@ class BB extends PureComponent {
     _this.setState({ initialvalue: {}, visible: true });
   }
 
+  showDrawer = () => {
+    this.setState({ drawervisible: true });
+  };
+
+  onClose = () => {
+    this.setState({ drawervisible: false });
+  };
+
   render() {
-    const { visible, initialvalue, imageUrl, awards } = this.state;
+    const { visible, initialvalue, imageUrl, awards, drawervisible, srcCropper } = this.state;
     const columns = [
       {
         title: 'ID',
@@ -270,7 +310,9 @@ class BB extends PureComponent {
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange}
                     >
-                    {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="url" /> : ({ ...initialvalue }.url? <img src={{ ...initialvalue }.url} style={{ width: 300 }} alt="url" /> : uploadButton)}
+                      {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="url" /> :
+                        ({ ...initialvalue }.url ? <img src={{ ...initialvalue }.url} style={{ width: 300 }} alt="url" /> :
+                          uploadButton)}
                     </Upload>
                   )}
                 </FormItem>
@@ -278,6 +320,32 @@ class BB extends PureComponent {
             </Row>
           </Form>
         </Modal>
+        <Drawer
+          title="裁剪图片"
+          placement="right"
+          closable={false}
+          onClose={this.onClose}
+          visible={drawervisible}
+          width='1400'
+        >
+          <Cropper
+            src={srcCropper} //图片路径，即是base64的值，在Upload上传的时候获取到的
+            ref="cropper"
+            style={{ height: 600 }}
+            preview='.cropper-preview'
+            className="company-logo-cropper"
+            viewMode={1} //定义cropper的视图模式
+            zoomable={false} //是否允许放大图像
+            aspectRatio={1 / 1} //image的纵横比
+            guides={true} //显示在裁剪框上方的虚线
+            background={true} //是否显示背景的马赛克
+            rotatable={false} //是否旋转
+          />
+          <Button
+            onClick={() => this.saveImg()}
+            icon='scissor'
+          >裁剪</Button>
+        </Drawer>
       </Fragment>
     )
   }
