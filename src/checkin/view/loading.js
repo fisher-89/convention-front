@@ -1,6 +1,5 @@
 import React from 'react';
 import './loading.less';
-import loading from 'public/checkin/loading.png'
 
 export default ()=>{
   return(
