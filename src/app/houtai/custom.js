@@ -284,7 +284,7 @@ class AA extends PureComponent {
               <Col {...colS}>
                 <FormItem {...longFormItemLayout} label="编号" >
                   {getFieldDecorator('number', {
-                    initialValue: { ...initialvalue }.number || undefined,
+                    initialValue: { ...initialvalue }.number || '',
                   })(
                     <Input />
                   )}
@@ -296,7 +296,7 @@ class AA extends PureComponent {
               <Col {...colS}>
                 <FormItem {...longFormItemLayout} label="酒店名称" >
                   {getFieldDecorator('hotel_name', {
-                    initialValue: { ...initialvalue }.hotel_name || undefined,
+                    initialValue: { ...initialvalue }.hotel_name || '',
                   })(
                     <Input />
                   )}
@@ -307,7 +307,7 @@ class AA extends PureComponent {
               <Col {...colS}>
                 <FormItem {...longFormItemLayout} label="房间号" >
                   {getFieldDecorator('hotel_num', {
-                    initialValue: { ...initialvalue }.hotel_num || undefined,
+                    initialValue: { ...initialvalue }.hotel_num || '',
                   })(
                     <Input />
                   )}
@@ -318,22 +318,22 @@ class AA extends PureComponent {
             <Row >
               <Col {...colS}>
                 <FormItem {...longFormItemLayout} label="身份证" >
-                {getFieldDecorator('idcard', {
-                  initialValue: { ...initialvalue }.idcard || undefined,
-                })(
-                  <Upload
-                    name="idcard"
-                    listType="picture-card"
-                    customRequest={(file) => {
-                      this.customRequest(file);
-                    }}
-                    showUploadList={false}
-                    beforeUpload={this.beforeUpload}
-                    onChange={this.handleChange}
-                  >
-                    {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : ({ ...initialvalue }.idcard? <img src={{ ...initialvalue }.idcard} style={{ width: 300 }} alt="idcard" /> : uploadButton)}
-                  </Upload>
-                )}
+                  {getFieldDecorator('idcard', {
+                    initialValue: { ...initialvalue }.idcard || '',
+                  })(
+                    <Upload
+                      name="idcard"
+                      listType="picture-card"
+                      customRequest={(file) => {
+                        this.customRequest(file);
+                      }}
+                      showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                      beforeUpload={this.beforeUpload}
+                      onChange={this.handleChange}
+                    >
+                      {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : ({ ...initialvalue }.idcard ? <img src={{ ...initialvalue }.idcard} style={{ width: 300 }} alt="idcard" /> : uploadButton)}
+                    </Upload>
+                  )}
                 </FormItem>
               </Col>
             </Row>
