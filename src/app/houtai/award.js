@@ -84,7 +84,7 @@ class BB extends PureComponent {
 
   handleSubmit = () => {
     const _this = this;
-    const { awards, imageUrl } = this.state; 
+    const { awards, imageUrl, initialvalue } = this.state; 
     const { getFieldsValue } = this.props.form;
     const params = getFieldsValue();
     if (params.id) {
@@ -97,7 +97,7 @@ class BB extends PureComponent {
         type: 'put',
         params: {
           ...params,
-          url: imageUrl,
+          url: imageUrl || initialvalue.url,
         },
       }
       request(`api/award/${params.id}`, options, editA, (error) => console.log(error));

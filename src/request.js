@@ -24,7 +24,11 @@ export default function request(url, options, onSuccess, onError) {
       } else if (paramsArray.length > 0) {
         url += `&${paramsArray.join('&')}`;
       }
+      axios[type](url, { headers, params }).then(onSuccess).catch(onError);
+    } else if (type === 'delete') {
+      axios[type](url, { headers }).then(onSuccess).catch(onError);
+    } else {
+      axios[type](url, params, { headers }).then(onSuccess).catch(onError);
     }
-    axios[type](url, { headers, params }).then(onSuccess).catch(onError);
   }
 }
