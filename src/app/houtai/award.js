@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Form, Button, Divider, Icon, Modal, Input, Row, Col, Popover, Upload, message } from 'antd';
-// import lrz from 'lrz';
+import lrz from 'lrz';
 import request from '../../request';
 
 const FormItem = Form.Item;
@@ -119,25 +119,25 @@ class BB extends PureComponent {
 
   }
 
-  // imageDiminution = (files01, type, index) => {
-  //   console.log(files01, type, index);
-  //   if (type === 'add') {
-  //     lrz(files01[0].url, { quality: 0.1 })
-  //       .then((rst) => {
-  //         // 处理成功会执行
-  //         console.log('压缩成功')
-  //         console.log(rst.base64);
-  //         this.setState({
-  //           imagesrc01: rst.base64.split(',')[1],
-  //         })
-  //       })
-  //   } else {
-  //     this.setState({ imagesrc01: '' })
-  //   }
-  //   this.setState({
-  //     files01,
-  //   });
-  // }
+  imageDiminution = (files01, type, index) => {
+    console.log(files01, type, index);
+    if (type === 'add') {
+      lrz(files01[0].url, { quality: 0.1 })
+        .then((rst) => {
+          // 处理成功会执行
+          console.log('压缩成功')
+          console.log(rst.base64);
+          this.setState({
+            imagesrc01: rst.base64.split(',')[1],
+          })
+        })
+    } else {
+      this.setState({ imagesrc01: '' })
+    }
+    this.setState({
+      files01,
+    });
+  }
 
 
   makeNew = () => {
