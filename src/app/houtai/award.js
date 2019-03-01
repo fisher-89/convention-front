@@ -61,7 +61,7 @@ class BB extends PureComponent {
       const midkey = awards.filter(item => item.id !== id);
       _this.setState({ awards: midkey });
     }
-    request(`api/award/${id}`, options, deleteA, (error) => console.log(error));
+    request(`/api/award/${id}`, options, deleteA, (error) => console.log(error));
   }
 
   editAward = (rowData) => {
@@ -103,7 +103,7 @@ class BB extends PureComponent {
           url: imageUrl || initialvalue.url,
         },
       }
-      request(`api/award/${params.id}`, options, editA, (error) => console.log(error));
+      request(`/api/award/${params.id}`, options, editA, (error) => console.log(error));
     } else {
       function addA (res) {
         const midkey = awards;
@@ -117,7 +117,7 @@ class BB extends PureComponent {
           url: imageUrl,
         },
       }
-      request('api/award', options, addA, (error) => console.log(error));
+      request('/api/award', options, addA, (error) => console.log(error));
     }
 
   }
