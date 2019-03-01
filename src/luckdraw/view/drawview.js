@@ -1,7 +1,8 @@
 import React from 'react';
 import './index.less';
 import axios from 'axios';
-import Echo from "laravel-echo"
+import Echo from "laravel-echo";
+import { env } from '../../util';
 
 window.io = require('socket.io-client');
 import checkin from 'public/checkin/checkin.png';
@@ -10,8 +11,7 @@ import arrow from 'public/luckdraw/name.png';
 
 const echo = new Echo({
   broadcaster: 'socket.io',
-  host: '112.74.177.132:6001'
-  // host: '192.168.1.166:6001'
+  host: env('SOCKET_HOST'),
 });
 export default class DrawView extends React.Component {
   constructor(props) {
