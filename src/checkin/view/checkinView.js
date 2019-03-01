@@ -27,8 +27,7 @@ export default class CheckIn extends React.Component {
   componentDidMount() {
     document.addEventListener("touchmove", this.handleMove);
     const name = localStorage.getItem('check_name');
-    const avatar = localStorage.getItem('check_avatar');
-    if (name && avatar) {
+    if (name) {
       this.setState({
         isCheck: true,
         isLoading: null,
@@ -42,7 +41,6 @@ export default class CheckIn extends React.Component {
             if (res.data.openid && res.data.name) {
               console.log(res);
               localStorage.setItem('check_name', res.data['name']);
-              localStorage.setItem('check_avatar', res.data['avatar']);
               that.setState({
                 isLoading: null,
                 isCheck: true,
