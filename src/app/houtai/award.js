@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Form, Button, Divider, Icon, Modal, Input, Row, Col, Popover, Upload, message } from 'antd';
 import lrz from 'lrz';
+import '../../../node_modules/cropperjs/dist/cropper.css';
 import request from '../../request';
 
 const FormItem = Form.Item;
@@ -60,7 +61,7 @@ class BB extends PureComponent {
       const midkey = awards.filter(item => item.id !== id);
       _this.setState({ awards: midkey });
     }
-    request(`api/award/${id}`, options, deleteA, (error) => console.log(error));
+    request(`/api/award/${id}`, options, deleteA, (error) => console.log(error));
   }
 
   editAward = (rowData) => {
@@ -87,6 +88,8 @@ class BB extends PureComponent {
     const { awards, imageUrl, initialvalue } = this.state; 
     const { getFieldsValue } = this.props.form;
     const params = getFieldsValue();
+    const payload = { ...params };
+    delete payload.id;
     if (params.id) {
       function editA (res) {
         const midkey = awards.filter(item => item.id !== res.data.id);
@@ -96,11 +99,11 @@ class BB extends PureComponent {
       const options = {
         type: 'put',
         params: {
-          ...params,
+          ...payload,
           url: imageUrl || initialvalue.url,
         },
       }
-      request(`api/award/${params.id}`, options, editA, (error) => console.log(error));
+      request(`/api/award/${params.id}`, options, editA, (error) => console.log(error));
     } else {
       function addA (res) {
         const midkey = awards;
@@ -110,11 +113,11 @@ class BB extends PureComponent {
       const options = {
         type: 'post',
         params: {
-          ...params,
+          ...payload,
           url: imageUrl,
         },
       }
-      request('api/award', options, addA, (error) => console.log(error));
+      request('/api/award', options, addA, (error) => console.log(error));
     }
 
   }
