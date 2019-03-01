@@ -159,6 +159,16 @@ class BB extends PureComponent {
       {
         title: '照片',
         dataIndex: 'url',
+        render: key => {
+          const IMG = (<img style={{ maxWidth: 400, maxHeight: 600 }} src={key} alt={key} />)
+          return !!key && (
+            <Popover content={IMG}>
+              <div>
+                <img style={{ width: 40 }} src={key} alt={key} />
+              </div>
+            </Popover>
+          )
+        },
       },
       {
         title: '操作',
