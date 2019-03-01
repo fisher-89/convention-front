@@ -327,7 +327,7 @@ class AA extends PureComponent {
                       customRequest={(file) => {
                         this.customRequest(file);
                       }}
-                      showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
+                      showUploadList={false}
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange}
                     >
