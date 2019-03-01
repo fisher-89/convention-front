@@ -39,33 +39,39 @@ class BB extends PureComponent {
   beforeUpload = (file) => {
     const isJPG = file.type === 'image/jpeg';
     if (!isJPG) {
-      message.error('You can only upload JPG/PNG file!');
+      message.error('You can only upload JPG/JPEG file!');
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
-      console.log(e, file);
       this.setState({
         srcCropper: e.target.result, //cropper的图片路径
         selectImgName: file.name, //文件名称
-        selectImgSize: (file.size / 1024 / 1024), //文件大小
-        selectImgSuffix: file.type.split("/")[1], //文件类型
         drawervisible: true,
       })
     }
     return isJPG;
   }
 
+  base64ToFile = (dataurl, filename) => {
+    let arr = dataurl.split(',');
+    let mime = arr[0].match(/:(.*?);/)[1];
+    let bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+
   customRequest = (file) => {
-    const _this = this;
-    this.showDrawer();
     const formData = new FormData();
     formData.append('url', file.file);
     const options = {
       type: 'post',
       params: formData,
     }
-    request('/api/upload_award', options, (response) => _this.setState({ imageUrl: response.data, loading: false }), (error) => console.log(error));
   }
 
   deleted = (id) => {
@@ -141,39 +147,18 @@ class BB extends PureComponent {
 
   saveImg() {
     const _this = this;
-    // lrz压缩
-    // this.refs.cropper.getCroppedCanvas().toDataURL() 为裁剪框的base64的值
+    const { selectImgName } = this.state;
     lrz(this.refs.cropper.getCroppedCanvas().toDataURL(), { width: 260 }).then((results) => {
-      console.log(results, 'res');
-      // results为压缩后的结果
-      // _this.props.uploadImgByBase64({ //uploadImgByBase64为连接后台的接口
-      //   imgbase: results.base64, //取base64的值传值
-      //   imgsize: results.fileLen, //压缩后的图片大下
-      //   suffix: _this.state.selectImgSuffix, //文件类型
-      //   filename: _this.state.selectImgName, //文件名
-      // })
+      const file = this.base64ToFile(results.base64, selectImgName);
+      const formData = new FormData();
+      formData.append('url', file);
+      const options = {
+        type: 'post',
+        params: formData,
+      }
+      request('/api/upload_award', options, (response) => _this.setState({ imageUrl: response.data, loading: false, drawervisible: false }), (error) => console.log(error));
     })
   }
-  // imageDiminution = (files01, type, index) => {
-  //   console.log(files01, type, index);
-  //   if (type === 'add') {
-  //     lrz(files01[0].url, { quality: 0.1 })
-  //       .then((rst) => {
-  //         // 处理成功会执行
-  //         console.log('压缩成功')
-  //         console.log(rst.base64);
-  //         this.setState({
-  //           imagesrc01: rst.base64.split(',')[1],
-  //         })
-  //       })
-  //   } else {
-  //     this.setState({ imagesrc01: '' })
-  //   }
-  //   this.setState({
-  //     files01,
-  //   });
-  // }
-
 
   makeNew = () => {
     const _this = this;
