@@ -159,8 +159,7 @@ class XX extends PureComponent {
         round,
         openid: id,
       },
-    }
-    _this.setState({ selected: afterDeleted, rechoice: true, nextround: true });
+    };
     request('/api/abandon_prize', options, () => _this.setState({ selected: afterDeleted, rechoice: true, nextround: true }), (error) => console.log(error));
   }
 
