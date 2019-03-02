@@ -139,20 +139,11 @@ export default class CheckSub extends React.PureComponent {
             Toast.fail('提交表单出错', 1);
           })
         return;
+      } else if (response.status == '422') {
+        const key = Object.keys(response.data.errors)[0];
+        const error = response.data.errors[key];
+        Toast.fail(error[0], 1);
       }
-      if (response.status == '422' && response.data.errors['mobile']) {
-        Toast.fail('请输入正确的手机号', 1);
-        return;
-      }
-      if (response.status == '422' && response.data.errors['number']) {
-        Toast.fail('签到码输入错误', 1);
-        return;
-      }
-      if (response.status == '400') {
-        Toast.fail('请重新关注公众号', 1);
-        return;
-      }
-      T
     })
   }
 
