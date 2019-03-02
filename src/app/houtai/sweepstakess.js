@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
-import { debounce } from 'lodash';
 import request from '../../request';
 import './style.less';
+import { relative } from 'path';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -11,24 +11,17 @@ class XX extends PureComponent {
   state = {
     alldata: [],
     award: [],
-    tapable: false,
-    start: true,
-    stop: true,
-    nextround: true,
-    round: null,
     inround: 1,
+    makesure: false,
+    nextround: true,
     pushable: false,
     rechoice: false,
+    round: null,
     selected: [],
+    start: true,
+    stop: true,
+    tapable: false,
   }
-
-  debounce1 = debounce((params) => {
-    this.makeSure(params)
-  }, 1500)
-
-  debounce2 = debounce((params) => {
-    this.reSure(params)
-  }, 1500)
 
   componentDidMount() {
     const _this = this;
@@ -42,7 +35,6 @@ class XX extends PureComponent {
       if (response.data.length > 0) {
         const last = (response.data)[response.data.length - 1];
         let winner = [];
-
         if (last) {
           _this.setState({ inround: last.round });
           if (last.winners.length) {
@@ -54,23 +46,23 @@ class XX extends PureComponent {
           if (last.is_progress) {
             if (last.winners.length) {
               setFieldsValue({ award_id: last.award_id, persions: last.persions });
-              _this.setState({ round: last.round, stop: false, pushable: true, selected: winner, alldata: response.data, tapable: true });
+              _this.setState({ round: last.round, stop: false, pushable: true, selected: winner, alldata: response.data, tapable: true, makesure: true });
             } else {
               setFieldsValue({ award_id: last.award_id, persions: last.persions });
-              _this.setState({ round: last.round, stop: false, selected: winner, alldata: response.data, tapable: true });
+              _this.setState({ round: last.round, stop: false, selected: winner, alldata: response.data, tapable: true, makesure: true });
             }
           } else {
             if (last.winners.length) {
               setFieldsValue({ award_id: last.award_id, persions: last.persions });
-              _this.setState({ round: last.round, rechoice: true, pushable: true, selected: winner, alldata: response.data, tapable: true });
+              _this.setState({ round: last.round, rechoice: true, pushable: true, selected: winner, alldata: response.data, tapable: true, makesure: true });
             } else {
               setFieldsValue({ award_id: last.award_id, persions: last.persions });
-              _this.setState({ round: last.round, start: false, selected: winner, alldata: response.data, tapable: true });
+              _this.setState({ round: last.round, start: false, selected: winner, alldata: response.data, tapable: true, makesure: true });
             }
           }
         } else {
           setFieldsValue({ award_id: last.award_id, persions: last.persions });
-          _this.setState({ round: last.round, nextround: false, selected: winner, alldata: response.data, tapable: true });
+          _this.setState({ round: last.round, nextround: false, selected: winner, alldata: response.data, tapable: true, makesure: true });
         }
       }
     }
@@ -86,7 +78,7 @@ class XX extends PureComponent {
       params,
     }
     if (params.award_id && params.persions) {
-      request('/api/configuration', options, (response) => _this.setState({ round: response.data.round, start: false, tapable: true }), (error) => console.log(error));
+      request('/api/configuration', options, (response) => _this.setState({ round: response.data.round, start: false, tapable: true, makesure: true }), (error) => console.log(error));
     }
   }
 
@@ -100,22 +92,22 @@ class XX extends PureComponent {
       params,
     }
     if (params.persions && params.award_id) {
-      request(`/api/configuration/${round}`, options, () => _this.setState({ start: false, tapable: true }), (error) => console.log(error));
+      request(`/api/configuration/${round}`, options, () => _this.setState({ start: false, tapable: true, makesure: true }), (error) => console.log(error));
     }
   }
 
-  onChange = () => {
+  sureClick = () => {
     const { round } = this.state;
     if (round) {
-      this.debounce2();
+      this.reSure();
     } else {
-      this.debounce1();
+      this.makeSure();
     }
   }
 
   retap = () => {
     const _this = this;
-    _this.setState({ tapable: false, start: true });
+    _this.setState({ tapable: false, start: true, makesure: false });
   }
 
   startChoice = () => {
@@ -182,7 +174,7 @@ class XX extends PureComponent {
       params: {},
     }
     _this.setState({ nextround: true, selected: [], round: null, tapable: false, inround: inround + 1 });
-    request('/api/configuration', options, (response) => _this.setState({ alldata: response.data }), (error) => console.log(error));
+    request('/api/configuration', options, (response) => _this.setState({ alldata: response.data, makesure: false }), (error) => console.log(error));
   }
 
   roundtitle = (item) => {
@@ -194,7 +186,7 @@ class XX extends PureComponent {
       </div>)
   }
   render() {
-    const { award, inround, alldata, tapable, start, nextround, stop, selected, rechoice } = this.state;
+    const { award, inround, alldata, tapable, start, nextround, stop, selected, rechoice, makesure } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -245,24 +237,25 @@ class XX extends PureComponent {
                   <FormItem {...formItemLayout} label="奖项选择" required>
                     {getFieldDecorator('award_id',
                     )(
-                      <Select onChange={() => this.onChange()} disabled={tapable} >
-                        {award.map(item => {
-                          return (
-                            <Option key={item.id} value={item.id}>{item.name}</Option>
-                          )
-                        })}
-                      </Select>
+                        <Select disabled={tapable} >
+                          {award.map(item => {
+                            return (
+                              <Option key={item.id} value={item.id}>{item.name}</Option>
+                            )
+                          })}
+                        </Select>
                     )}
                   </FormItem>
                 </Col>
                 <Col span={8} offset={6}>
                   <FormItem {...formItemLayout} label="人数" required>
                     {getFieldDecorator('persions')(
-                      <InputNumber onChange={() => this.onChange()} disabled={tapable} />
+                      <InputNumber disabled={tapable} />
                     )}
                   </FormItem>
                 </Col>
-                <Col span={8} offset={7}>
+                <Col span={10} offset={7}>
+                  <Button onClick={() => this.sureClick()} disabled={makesure}>确定</Button>
                   <Button onClick={() => this.retap()} disabled={start}>修改</Button>
                   <Button onClick={() => this.startChoice()} disabled={start}>开始抽奖</Button>
                   <Button onClick={() => this.reChoice()} disabled={reSelected}>补充抽奖</Button>
