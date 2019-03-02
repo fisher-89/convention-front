@@ -163,6 +163,15 @@ class XX extends PureComponent {
     request('/api/abandon_prize', options, () => _this.setState({ selected: afterDeleted, rechoice: true, nextround: true }), (error) => console.log(error));
   }
 
+  fetchAwards = () => {
+    const _this = this;
+    const options = {
+      type: 'get',
+      params: {},
+    }
+    request('/api/award', options, (response) => _this.setState({ award: response.data }), (error) => console.log(error));
+  }
+
   clear = () => {
     const { resetFields } = this.props.form;
     const { inround } = this.state;
@@ -236,16 +245,17 @@ class XX extends PureComponent {
                   <FormItem {...formItemLayout} label="奖项选择" required>
                     {getFieldDecorator('award_id',
                     )(
-                        <Select disabled={tapable} >
-                          {award.map(item => {
-                            return (
-                              <Option key={item.id} value={item.id}>{item.name}</Option>
-                            )
-                          })}
-                        </Select>
+                      <Select disabled={tapable} >
+                        {award.map(item => {
+                          return (
+                            <Option key={item.id} value={item.id}>{item.name}</Option>
+                          )
+                        })}
+                      </Select>
                     )}
                   </FormItem>
                 </Col>
+                <Col><Button onClick={() => this.fetchAwards()} icon='sync' style={{ float: "right", position: "absolute", marginTop: 67 }} /></Col>
                 <Col span={8} offset={6}>
                   <FormItem {...formItemLayout} label="人数" required>
                     {getFieldDecorator('persions')(
