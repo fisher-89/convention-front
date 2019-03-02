@@ -35,7 +35,10 @@ class AA extends PureComponent {
       type: 'post',
       params: formData,
     }
-    request('/api/upload', options, (response) => _this.setState({ imageUrl: response.data, loading: false }), (error) => console.log(error));
+    request('/api/upload', options, (response) => _this.setState({
+      imageUrl: response.data,
+      loading: false
+    }), (error) => console.log(error));
   }
 
   beforeUpload = (file) => {
@@ -58,35 +61,37 @@ class AA extends PureComponent {
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
-      setSelectedKeys, selectedKeys, confirm, clearFilters,
-    }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={node => { this.searchInput = node; }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm)}
-            icon="search"
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >
-            Search
+                       setSelectedKeys, selectedKeys, confirm, clearFilters,
+                     }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          搜索
         </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          重置
         </Button>
-        </div>
-      ),
+      </div>
+    ),
     filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
@@ -99,7 +104,7 @@ class AA extends PureComponent {
         highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
         searchWords={[this.state.searchText]}
         autoEscape
-        textToHighlight={text.toString()}
+        textToHighlight={text && text.toString()}
       />
     ),
   })
@@ -130,6 +135,7 @@ class AA extends PureComponent {
       type: 'patch',
       params,
     }
+
     function aass(response) {
       const midkey = [];
       custom.forEach(item => {
@@ -141,6 +147,7 @@ class AA extends PureComponent {
       })
       _this.setState({ visible: false, custom: midkey });
     }
+
     request(`/api/sign/${params.openid}`, options, aass, (error) => console.log(error));
   }
 
@@ -159,6 +166,7 @@ class AA extends PureComponent {
     _this.setState({ initialvalue: undefined, imageUrl: undefined, loading: false });
     resetFields();
   }
+
   render() {
     const { custom, visible, initialvalue, imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
@@ -196,9 +204,16 @@ class AA extends PureComponent {
       }, {
         title: '酒店名称',
         dataIndex: 'hotel_name',
+        filters: [
+          { value: '铂爵大酒店', text: '铂爵大酒店' },
+          { value: '嘉悦酒店', text: '嘉悦酒店' },
+          { value: '桐乡市美高大酒店', text: '桐乡市美高大酒店' },
+          { value: '桐乡璞遇智慧酒店', text: '桐乡璞遇智慧酒店' },
+        ],
       }, {
         title: '酒店房间号',
         dataIndex: 'hotel_num',
+        ...this.getColumnSearchProps('hotel_num'),
       }, {
         title: '身份证',
         dataIndex: 'idcard',
@@ -217,7 +232,7 @@ class AA extends PureComponent {
         render: (RowData) => {
           return (
             <Fragment>
-              <a onClick={() => this.change(RowData)} >修改</a>
+              <a onClick={() => this.change(RowData)}>修改</a>
             </Fragment>
           )
 
@@ -248,7 +263,7 @@ class AA extends PureComponent {
     const uploadButton = (
       <div>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div >Upload</div>
+        <div>Upload</div>
       </div>
     );
     return (
@@ -265,24 +280,24 @@ class AA extends PureComponent {
           visible={visible}
           onOk={this.handleSubmit}
         >
-          <Form >
+          <Form>
             {getFieldDecorator('openid', {
               initialValue: { ...initialvalue }.openid || undefined,
             })(
               <Input type="hidden" />
             )}
-            <Row >
+            <Row>
               <Col {...colSpan}>
-                <FormItem {...formItemLayout} label="姓名" >{{ ...initialvalue }.name}</FormItem>
+                <FormItem {...formItemLayout} label="姓名">{{ ...initialvalue }.name}</FormItem>
               </Col>
               <Col {...colSpan}>
-                <FormItem {...formItemLayout} label="手机号" >{{ ...initialvalue }.mobile}</FormItem>
+                <FormItem {...formItemLayout} label="手机号">{{ ...initialvalue }.mobile}</FormItem>
               </Col>
             </Row>
 
-            <Row >
+            <Row>
               <Col {...colS}>
-                <FormItem {...longFormItemLayout} label="编号" >
+                <FormItem {...longFormItemLayout} label="编号">
                   {getFieldDecorator('number', {
                     initialValue: { ...initialvalue }.number || '',
                   })(
@@ -292,9 +307,9 @@ class AA extends PureComponent {
               </Col>
             </Row>
 
-            <Row >
+            <Row>
               <Col {...colS}>
-                <FormItem {...longFormItemLayout} label="酒店名称" >
+                <FormItem {...longFormItemLayout} label="酒店名称">
                   {getFieldDecorator('hotel_name', {
                     initialValue: { ...initialvalue }.hotel_name || '',
                   })(
@@ -303,9 +318,9 @@ class AA extends PureComponent {
                 </FormItem>
               </Col>
             </Row>
-            <Row >
+            <Row>
               <Col {...colS}>
-                <FormItem {...longFormItemLayout} label="房间号" >
+                <FormItem {...longFormItemLayout} label="房间号">
                   {getFieldDecorator('hotel_num', {
                     initialValue: { ...initialvalue }.hotel_num || '',
                   })(
@@ -315,9 +330,9 @@ class AA extends PureComponent {
               </Col>
             </Row>
 
-            <Row >
+            <Row>
               <Col {...colS}>
-                <FormItem {...longFormItemLayout} label="身份证" >
+                <FormItem {...longFormItemLayout} label="身份证">
                   {getFieldDecorator('idcard', {
                     initialValue: { ...initialvalue }.idcard || '',
                   })(
@@ -331,7 +346,9 @@ class AA extends PureComponent {
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange}
                     >
-                      {imageUrl ? <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : ({ ...initialvalue }.idcard ? <img src={{ ...initialvalue }.idcard} style={{ width: 300 }} alt="idcard" /> : uploadButton)}
+                      {imageUrl ?
+                        <img src={imageUrl} style={{ width: 300 }} alt="idcard" /> : ({ ...initialvalue }.idcard ?
+                          <img src={{ ...initialvalue }.idcard} style={{ width: 300 }} alt="idcard" /> : uploadButton)}
                     </Upload>
                   )}
                 </FormItem>
