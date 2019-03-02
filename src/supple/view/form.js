@@ -83,16 +83,21 @@ class FormSubmit extends React.Component {
   }
 
   filesOnchange = (files, type) => {
-    const imgformData = new FormData();
     if (type == 'remove') {
+      const { formData } = this.state;
       this.setState({
-        files: []
-      })
+        files: [],
+        formData: {
+          ...formData,
+          idcard: '',
+        },
+      });
     }
     if (type == 'add') {
+      const imgformData = new FormData();
       imgformData.append('idcard', files[files.length - 1].file);
       const that = this;
-      Toast.loading('上传中...', 0, null, true)
+      Toast.loading('上传中...', 0, null, true);
       request('/api/upload', { type: 'post', params: imgformData },
         res => {
           if (res.status == '201') {
@@ -101,7 +106,7 @@ class FormSubmit extends React.Component {
             that.setState({
               files: [{ url: res.data }],
               fileupload: null,
-            })
+            });
           }
         },
         err => {
@@ -114,8 +119,8 @@ class FormSubmit extends React.Component {
 
 
   render() {
-    const { name, mobile, number, hotel_name, hotel_num, idcard } = this.state.formData;
-    let { files, selectedOption, fileupload } = this.state;
+    const { name, mobile, number, hotel_name, hotel_num } = this.state.formData;
+    let { files, selectedOption } = this.state;
     if (!selectedOption && hotel_name) {
       let items = [];
       items.push(hotel_name)
