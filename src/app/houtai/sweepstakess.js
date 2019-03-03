@@ -156,7 +156,7 @@ class XX extends PureComponent {
       type: 'get',
       params: { round },
     }
-    request('/api/continue', options, () => _this.setState({ stop: false, nextround: true, pushable: true, rechoice: false }), (error) => console.log(error));
+    request('/api/continue', options, () => _this.setState({ stop: false, nextround: true, pushable: true, rechoice: false }), (error) => this.errors(error));
   }
 
   delete = (id) => {
@@ -186,7 +186,7 @@ class XX extends PureComponent {
       type: 'get',
       params: {},
     }
-    request('/api/award', options, (response) => _this.setState({ award: response.data }), (error) => console.log(error));
+    request('/api/award', options, (response) => _this.setState({ award: response.data }), (error) => this.errors(error));
   }
 
   clear = () => {
