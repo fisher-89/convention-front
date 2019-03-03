@@ -26,7 +26,7 @@ class BB extends PureComponent {
   componentWillMount() {
     const options = {};
     const _this = this;
-    request('/api/award', options, (response) => _this.setState({ awards: response.data }), (error) => console.log(error));
+    request('/api/award', options, (response) => _this.setState({ awards: response.data }), (error) => this.errors(error));
   }
 
   afterClose = () => {
@@ -85,12 +85,23 @@ class BB extends PureComponent {
       const midkey = awards.filter(item => item.id !== id);
       _this.setState({ awards: midkey });
     }
-    request(`/api/award/${id}`, options, deleteA, (error) => console.log(error));
+    request(`/api/award/${id}`, options, deleteA, (error) => this.errors(error));
   }
 
   editAward = (rowData) => {
     const _this = this;
     _this.setState({ initialvalue: rowData, visible: true });
+  }
+
+  errors = (error) => {
+    if (error.response.status === 500) {
+      message.error('服务器错误!');
+    } else if (error.response.status === 403 || error.response.status === 400) {
+      message.error(error.response.data.message);
+    } else if (error.response.status === 422) {
+      const miderr = Object.values(error.response.data.errors);
+      message.error(miderr);
+    }
   }
 
   handleModalVisible = () => {
@@ -127,7 +138,7 @@ class BB extends PureComponent {
           url: imageUrl || initialvalue.url,
         },
       }
-      request(`/api/award/${params.id}`, options, editA, (error) => console.log(error));
+      request(`/api/award/${params.id}`, options, editA, (error) => this.errors(error));
     } else {
       function addA(res) {
         const midkey = awards;
@@ -141,7 +152,7 @@ class BB extends PureComponent {
           url: imageUrl,
         },
       }
-      request('/api/award', options, addA, (error) => console.log(error));
+      request('/api/award', options, addA, (error) => this.errors(error));
     }
   }
 
@@ -156,7 +167,7 @@ class BB extends PureComponent {
         type: 'post',
         params: formData,
       }
-      request('/api/upload_award', options, (response) => _this.setState({ imageUrl: response.data, loading: false, drawervisible: false }), (error) => console.log(error));
+      request('/api/upload_award', options, (response) => _this.setState({ imageUrl: response.data, loading: false, drawervisible: false }), (error) => this.errors(error));
     })
   }
 
@@ -281,7 +292,7 @@ class BB extends PureComponent {
             </Row>
             <Row >
               <Col {...colS}>
-                <FormItem {...longFormItemLayout} label="图片" >
+                <FormItem {...longFormItemLayout} label="图片" required>
                   {getFieldDecorator('url', {
                     initialValue: { ...initialvalue }.url || undefined,
                   })(

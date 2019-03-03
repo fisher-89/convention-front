@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
 import request from '../../request';
 import './style.less';
-import { relative } from 'path';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -30,7 +29,7 @@ class XX extends PureComponent {
       type: 'get',
       params: {},
     }
-    request('/api/award', options, (response) => _this.setState({ award: response.data }), (error) => console.log(error));
+    request('/api/award', options, (response) => _this.setState({ award: response.data }), (error) => this.errors(error));
     function asd(response) {
       if (response.data.length > 0) {
         const last = (response.data)[response.data.length - 1];
@@ -66,7 +65,18 @@ class XX extends PureComponent {
         }
       }
     }
-    request('/api/configuration', options, asd, (error) => console.log(error));
+    request('/api/configuration', options, asd, (error) => this.errors(error));
+  }
+
+  errors = (error) => {
+    if (error.response.status === 500) {
+      message.error('服务器错误!');
+    } else if (error.response.status === 403 || error.response.status === 400) {
+      message.error(error.response.data.message);
+    } else if (error.response.status === 422) {
+      const miderr = Object.values(error.response.data.errors);
+      message.error(miderr);
+    }
   }
 
   makeSure = () => {
@@ -78,7 +88,7 @@ class XX extends PureComponent {
       params,
     }
     if (params.award_id && params.persions) {
-      request('/api/configuration', options, (response) => _this.setState({ round: response.data.round, start: false, tapable: true, makesure: true }), (error) => console.log(error));
+      request('/api/configuration', options, (response) => _this.setState({ round: response.data.round, start: false, tapable: true, makesure: true }), (error) => this.errors(error));
     }
   }
 
@@ -92,7 +102,7 @@ class XX extends PureComponent {
       params,
     }
     if (params.persions && params.award_id) {
-      request(`/api/configuration/${round}`, options, () => _this.setState({ start: false, tapable: true, makesure: true }), (error) => console.log(error));
+      request(`/api/configuration/${round}`, options, () => _this.setState({ start: false, tapable: true, makesure: true }), (error) => this.errors(error));
     }
   }
 
@@ -117,7 +127,7 @@ class XX extends PureComponent {
       type: 'get',
       params: { round },
     }
-    request('/api/start', options, () => _this.setState({ start: true, stop: false }), (error) => console.log(error));
+    request('/api/start', options, () => _this.setState({ start: true, stop: false }), (error) => this.errors(error));
   }
 
   stopChoice = () => {
@@ -136,7 +146,7 @@ class XX extends PureComponent {
         _this.setState({ stop: true, nextround: false, selected, pushable: false })
       }
     }
-    request('/api/stop', options, aaa, (error) => console.log(error));
+    request('/api/stop', options, aaa, (error) => this.errors(error));
   }
 
   reChoice = () => {
@@ -160,7 +170,14 @@ class XX extends PureComponent {
         openid: id,
       },
     };
-    request('/api/abandon_prize', options, () => _this.setState({ selected: afterDeleted, rechoice: true, nextround: true }), (error) => console.log(error));
+    function gkd() {
+      if (afterDeleted.length) {
+        _this.setState({ selected: afterDeleted, rechoice: true, nextround: true })
+      } else {
+        _this.setState({ selected: afterDeleted, rechoice: false, nextround: true, start: false })
+      }
+    }
+    request('/api/abandon_prize', options, gkd, (error) => this.errors(error));
   }
 
   fetchAwards = () => {
@@ -182,7 +199,7 @@ class XX extends PureComponent {
       params: {},
     }
     _this.setState({ nextround: true, selected: [], round: null, tapable: false, inround: inround + 1 });
-    request('/api/configuration', options, (response) => _this.setState({ alldata: response.data, makesure: false }), (error) => console.log(error));
+    request('/api/configuration', options, (response) => _this.setState({ alldata: response.data, makesure: false }), (error) => this.errors(error));
   }
 
   roundtitle = (item) => {

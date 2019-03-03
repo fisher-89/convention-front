@@ -24,7 +24,7 @@ class AA extends PureComponent {
       type: 'get',
       params: {},
     }
-    request('/api/sign', options, (response) => _this.setState({ custom: response.data }), (error) => console.log(error));
+    request('/api/sign', options, (response) => _this.setState({ custom: response.data }), (error) => this.errors(error));
   }
 
   customRequest = (file) => {
@@ -38,7 +38,7 @@ class AA extends PureComponent {
     request('/api/upload', options, (response) => _this.setState({
       imageUrl: response.data,
       loading: false
-    }), (error) => console.log(error));
+    }), (error) => this.errors(error));
   }
 
   beforeUpload = (file) => {
@@ -47,6 +47,17 @@ class AA extends PureComponent {
       message.error('You can only upload JPG/PNG file!');
     }
     return isJPG;
+  }
+
+  errors = (error) => {
+    if (error.response.status === 500) {
+      message.error('服务器错误!');
+    } else if (error.response.status === 403 || error.response.status === 400) {
+      message.error(error.response.data.message);
+    } else if (error.response.status === 422) {
+      const miderr = Object.values(error.response.data.errors);
+      message.error(miderr);
+    }
   }
 
   handleChange = (info) => {
@@ -61,37 +72,37 @@ class AA extends PureComponent {
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
-                       setSelectedKeys, selectedKeys, confirm, clearFilters,
-                     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type="primary"
-          onClick={() => this.handleSearch(selectedKeys, confirm)}
-          icon="search"
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          搜索
+      setSelectedKeys, selectedKeys, confirm, clearFilters,
+    }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={node => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm)}
+            icon="search"
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            搜索
         </Button>
-        <Button
-          onClick={() => this.handleReset(clearFilters)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          重置
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            重置
         </Button>
-      </div>
-    ),
+        </div>
+      ),
     filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
@@ -104,7 +115,7 @@ class AA extends PureComponent {
         highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
         searchWords={[this.state.searchText]}
         autoEscape
-        textToHighlight={text && text.toString()}
+        textToHighlight={text && text.toString() || ''}
       />
     ),
   })
@@ -148,7 +159,7 @@ class AA extends PureComponent {
       _this.setState({ visible: false, custom: midkey });
     }
 
-    request(`/api/sign/${params.openid}`, options, aass, (error) => console.log(error));
+    request(`/api/sign/${params.openid}`, options, aass, (error) => this.errors(error));
   }
 
   handleModalVisible = () => {
