@@ -52,7 +52,12 @@ export default class DrawView extends React.Component {
           this.state.arraySum = 0;
           this.setAnimaterote(true, true, false);
           this.setLucklist(res['data']['data']['winners'], res['data']['data']['winners'].length);
-          this.showAvatar();
+          if (res.data.data.is_progress) {
+            this.circle = { type: 'showLuck', interval: 200, delay: 0 };
+            this.showLuck();
+          } else {
+            this.showAvatar();
+          }
         }
       })
       .catch(err => {
@@ -97,7 +102,7 @@ export default class DrawView extends React.Component {
       .listen(
         'DrawStop',
         (arg) => {
-          this.circle = { type: 'showLuck', interval: 300, delay: 300 };
+          this.circle = { type: 'showLuck', interval: 300, delay: 400 };
           setTimeout(() => {
             let { luckName } = this.state;
             this.state.arraySum = luckName ? luckName.length : 0;
@@ -109,7 +114,7 @@ export default class DrawView extends React.Component {
             localStorage.setItem('luckName', this.state.luckName);
             this.state.totalName = null;
             this.circle = { type: 'showWinluck', interval: 2000, delay: 0 };
-          }, 2900);
+          }, 1000);
         }
       )
       .listen('DrawContinue', (arg) => {
