@@ -2,17 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import { Toast } from 'antd-mobile';
 import './checksub.less';
-import logo from 'public/checkin/logo.png';
-import xjimg from 'public/checkin/xj.png';
 import submit from 'public/checkin/submit.png';
-import gxline from 'public/checkin/gxline.png';
-import triangle from 'public/checkin/triangle.png';
 import smline from 'public/checkin/smline.png';
-import firstword from 'public/checkin/firstword.png';
-import secondword from 'public/checkin/secondword.png';
-import threeword from 'public/checkin/threeword.png';
 import formimg from 'public/checkin/form.png';
-import black from 'public/checkin/black.png';
 
 export default class CheckSub extends React.PureComponent {
   constructor(props) {
@@ -168,15 +160,12 @@ export default class CheckSub extends React.PureComponent {
         <div className='lookback' style={{ width: formW }}>
           <div className='container'>
             <div className='first' style={firstanimate}></div>
-            <img src={black} />
           </div>
           <div className='container'>
             <div className='second' style={secondanimate}></div>
-            <img src={black}></img>
           </div>
           <div className='container'>
             <div className='three' style={threeanimate}></div>
-            <img src={black}></img>
           </div>
         </div>
         <div className='form' style={{ width: formW, fontSize: `${fontSize}px`, ...formnimate }}>

@@ -1,10 +1,8 @@
 import React from 'react';
-import CheckSub from './checksub';
 import './checkform.less';
 import logo from 'public/checkin/logo.png';
 import xj from 'public/checkin/xj.png';
 import checkin from 'public/checkin/checkin.png';
-import gxline from 'public/checkin/gxline.png';
 import triangle from 'public/checkin/triangle.png';
 import smline from 'public/checkin/smline.png';
 
