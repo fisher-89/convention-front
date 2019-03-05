@@ -47,7 +47,7 @@ export default class DrawView extends React.Component {
     axios.get('/api/new_configuration')
       .then(res => {
         if (res.status == '200') {
-          this.setPrize(res['data']['data']['award'], res['data']['data']['persions'])
+          this.setPrize(res['data']['data']['award'], res['data']['data']['persions']);
           this.state.totalName = res['data']['users'];
           this.state.arraySum = 0;
           this.setAnimaterote(true, true, false);
@@ -92,12 +92,14 @@ export default class DrawView extends React.Component {
         //设置奖品
         this.setPrize(arg['data']['award'], arg['data']['persions']);
         //设置中奖name
-        this.setLucklist(null, 0);
+        this.setLucklist([], 0);
         //设置rote区
         this.setAnimaterote(true, false, true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
+        clearTimeout(this.state.animateRoteId);
         this.circle = { type: 'showLuck', interval: 200, delay: 0 };
+        this.showLuck();
       })
       .listen(
         'DrawStop',
@@ -146,7 +148,6 @@ export default class DrawView extends React.Component {
   }
 
   setPrize = (award, persions) => {
-    console.log(award, persions);
     this.setState({
       award: award,
       awardNum: persions,
