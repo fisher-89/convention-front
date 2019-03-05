@@ -22,7 +22,6 @@ export default class DrawView extends React.Component {
       totalName: null,//参与抽奖人员
       luckName: [],//本轮获奖人员
       luckAvatar: null,
-      animateRoteId: null,
       arrayNum: [checkin, triangle],
       arraySum: 0,
       luckNameSum: 0,
@@ -41,6 +40,8 @@ export default class DrawView extends React.Component {
     type: 'showAvatar',
     interval: 800,
     delay: 0,
+    min: null,
+    max: null,
   }
 
   componentDidMount() {
@@ -50,11 +51,10 @@ export default class DrawView extends React.Component {
           this.setPrize(res['data']['data']['award'], res['data']['data']['persions']);
           this.state.totalName = res['data']['users'];
           this.state.arraySum = 0;
-          this.setAnimaterote(true, true, false);
+          this.setAnimaterote(true, false);
           this.setLucklist(res['data']['data']['winners'], res['data']['data']['winners'].length);
           if (res.data.data.is_progress) {
-            this.circle = { type: 'showLuck', interval: 200, delay: 0 };
-            this.showLuck();
+            this.setCircle('showLuck', 250);
           } else {
             this.showAvatar();
           }
@@ -66,25 +66,23 @@ export default class DrawView extends React.Component {
     echo.channel('configuration')
       .listen('ConfigurationSave', (arg) => {
         this.setPrize(arg['data']['award'], arg['data']['persions']);
-        this.setAnimaterote(true, true, false);
+        this.setAnimaterote(true, false);
         this.setLucklist(null, 0);
         this.state.showName = null;
         this.state.showNumber = null;
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
-        clearTimeout(this.state.animateRoteId);
-        this.circle = { type: 'showAvatar', interval: 800, delay: 0 };
-        this.showAvatar();
+        this.setCircle('showAvatar');
       })
       .listen('ConfigurationUpdate', (arg) => {
         this.setPrize(arg['data']['award'], arg['data']['persions']);
-        this.setAnimaterote(true, true, false);
+        this.setAnimaterote(true, false);
         this.setLucklist(null, 0);
         this.state.showName = null;
         this.state.showNumber = null;
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
-        this.circle = { type: 'showAvatar', interval: 800, delay: 0 };
+        this.setCircle('showAvatar');
       })
 
     echo.channel('draw')
@@ -94,37 +92,35 @@ export default class DrawView extends React.Component {
         //设置中奖name
         this.setLucklist([], 0);
         //设置rote区
-        this.setAnimaterote(true, false, true);
+        this.setAnimaterote(true, true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
-        clearTimeout(this.state.animateRoteId);
-        this.circle = { type: 'showLuck', interval: 200, delay: 0 };
-        this.showLuck();
+        this.setCircle('showLuck', 600, -100, 250);
       })
       .listen(
         'DrawStop',
         (arg) => {
-          this.circle = { type: 'showLuck', interval: 300, delay: 400 };
+          console.log('stop');
+          this.setCircle('showLuck', 300, 300);
           setTimeout(() => {
             let { luckName } = this.state;
             this.state.arraySum = luckName ? luckName.length : 0;
-            this.setAnimaterote(false, false, false);
+            this.setAnimaterote(false, false);
             const luckUsers = luckName ? [...luckName, ...arg['users']] : arg['users'];
             const luckNum = luckName ? luckName.length - 1 : -1;
             this.state.animateRoteNumber = arg['users'].length;
             this.setLucklist(luckUsers, luckNum);
             localStorage.setItem('luckName', this.state.luckName);
             this.state.totalName = null;
-            this.circle = { type: 'showWinluck', interval: 2000, delay: 0 };
-          }, 1000);
+            this.setCircle('showWinluck', 2000);
+          }, 1500);
         }
       )
       .listen('DrawContinue', (arg) => {
-        this.setAnimaterote(true, false, true);
+        this.setAnimaterote(true, true);
         this.state.arraySum = 0;
         this.state.totalName = arg['users'];
-        this.circle = { type: 'showLuck', interval: 200, delay: 0 };
-        this.showLuck();
+        this.setCircle('showLuck', 250);
       });
     echo.channel('winner')
       .listen('WinnerAbandon', (arg) => {
@@ -147,6 +143,14 @@ export default class DrawView extends React.Component {
       })
   }
 
+  setCircle = (type, interval = 800, delay = 0, min = null, max = null) => {
+    console.log(this.animateTimeout);
+    this.circle = { type, interval, delay, min, max };
+    if (!this.animateTimeout) {
+      this[type]();
+    }
+  }
+
   setPrize = (award, persions) => {
     this.setState({
       award: award,
@@ -159,9 +163,8 @@ export default class DrawView extends React.Component {
     this.state.luckNameSum = luckNum;
   }
 
-  setAnimaterote = (circleIsvisible, animateCircle, arrowIsvisible) => {
+  setAnimaterote = (circleIsvisible, arrowIsvisible) => {
     this.state.circleIsvisible = circleIsvisible;
-    // this.state.timePerCircle = animateCircle ? 1.5 : 0.5;
     this.state.arrowIsvisible = arrowIsvisible;
   }
   showAvatar = () => {
@@ -175,7 +178,7 @@ export default class DrawView extends React.Component {
       arraySum: this.state.arraySum + 1,
       luckAvatar: this.state.totalName[this.state.arraySum]['avatar']
     });
-    this.state.animateRoteId = setTimeout(() => {
+    this.animateTimeout = setTimeout(() => {
       this[this.circle.type]();
     }, this.circle.interval);
   }
@@ -186,15 +189,17 @@ export default class DrawView extends React.Component {
       this.state.totalName.sort(() => 0.5 - Math.random())
     }
     this.circle.interval += this.circle.delay;
+    if (this.circle.max && this.circle.interval >= this.circle.max) this.circle.interval = this.circle.max;
+    if (this.circle.min && this.circle.interval <= this.circle.min) this.circle.interval = this.circle.min;
     this.state.timePerCircle = this.circle.interval / 1000;
-    this.state.circleRotate += 160;
+    this.state.circleRotate += 100;
     this.setState({
       arraySum: this.state.arraySum + 1,
       luckAvatar: this.state.totalName[this.state.arraySum]['avatar'],
       showName: this.state.totalName[this.state.arraySum]['name'],
       showNumber: this.state.totalName[this.state.arraySum]['number']
     });
-    this.state.animateRoteId = setTimeout(() => {
+    this.animateTimeout = setTimeout(() => {
       this[this.circle.type]();
     }, this.circle.interval);
   }
@@ -209,7 +214,7 @@ export default class DrawView extends React.Component {
         showNumber: this.state.luckName[this.state.arraySum]['number'],
         showLuckImg: !this.state.showLuckImg
       });
-      this.state.animateRoteId = setTimeout(() => {
+      this.animateTimeout = setTimeout(() => {
         this[this.circle.type]();
       }, this.circle.interval);
     } else {
@@ -217,7 +222,8 @@ export default class DrawView extends React.Component {
         circleIsvisible: false,
         luckNameSum: this.state.luckNameSum + 1
       })
-      clearTimeout(this.state.animateRoteId)
+      clearTimeout(this.animateTimeout);
+      this.animateTimeout = null;
     }
   }
 
@@ -228,11 +234,12 @@ export default class DrawView extends React.Component {
         luckAvatar: this.state.luckName[this.state.arraySum]
       });
       const that = this;
-      this.state.animateRoteId = setTimeout(function () {
+      this.animateTimeout = setTimeout(function () {
         that.showWineprize(timeout);
       }, timeout);
     } else {
-      clearTimeout(this.state.animateRoteId)
+      clearTimeout(this.animateTimeout);
+      this.animateTimeout = null;
     }
   }
 
