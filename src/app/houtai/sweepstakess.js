@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip } from 'antd';
+import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip, message } from 'antd';
 import request from '../../request';
 import './style.less';
 
@@ -210,6 +210,14 @@ class XX extends PureComponent {
         <span className='ccc'>抽{item.persions}人</span>
       </div>)
   }
+
+  stopp = (e, id, name) => {
+    e.preventDefault();
+    if (confirm('确认删除'+name+'？')) {
+      this.delete(id);
+    }
+  };
+
   render() {
     const { award, inround, alldata, tapable, start, nextround, stop, selected, rechoice, makesure } = this.state;
     const formItemLayout = {
@@ -225,7 +233,6 @@ class XX extends PureComponent {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const number = getFieldValue('persions');
     const reSelected = !!!(selected.length !== number && !!number && rechoice);
-
     return (
       <div>
         <Row>
@@ -292,7 +299,7 @@ class XX extends PureComponent {
                   <div className='aaa'>
                     {selected.map(item => {
                       return (
-                        <Tag key={item.openid} closable={true} afterClose={() => this.delete(item.openid)}>
+                        <Tag key={item.openid} closable={true} onClose={(e) => this.stopp(e, item.openid, item.name)} >
                           <Tooltip title={item.mobile}>
                             <Avatar size="mid" src={item.avatar} />{item.name}
                           </Tooltip>
