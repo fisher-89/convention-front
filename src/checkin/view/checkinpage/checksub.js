@@ -5,6 +5,7 @@ import './checksub.less';
 import submit from 'public/checkin/submit.png';
 import smline from 'public/checkin/smline.png';
 import formimg from 'public/checkin/form.png';
+import black from 'public/checkin/black.png';
 
 export default class CheckSub extends React.PureComponent {
   constructor(props) {
@@ -160,12 +161,15 @@ export default class CheckSub extends React.PureComponent {
         <div className='lookback' style={{ width: formW }}>
           <div className='container'>
             <div className='first' style={firstanimate}></div>
+            <img src={black} />
           </div>
           <div className='container'>
             <div className='second' style={secondanimate}></div>
+            <img src={black} />
           </div>
           <div className='container'>
             <div className='three' style={threeanimate}></div>
+            <img src={black} />
           </div>
         </div>
         <div className='form' style={{ width: formW, fontSize: `${fontSize}px`, ...formnimate }}>
