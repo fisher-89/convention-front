@@ -36,17 +36,14 @@ export default class CheckIn extends React.Component {
       const that = this;
       axios.get(`/api/check/${this.handleGetOenId()}`)
         .then(res => {
-          console.log(res);
           if (res.status == '200') {
             if (res.data.openid && res.data.name) {
-              console.log(res);
               localStorage.setItem('check_name', res.data['name']);
               that.setState({
                 isLoading: null,
                 isCheck: true,
               })
             } else {
-              console.log(333);
               that.setState({
                 isLoading: null,
               })

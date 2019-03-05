@@ -1,54 +1,47 @@
-import React,{Suspense } from 'react';
+import React, { Suspense } from 'react';
+import { Toast } from 'antd-mobile';
 import CheckForm from './checkform';
 import CheckSub from './checksub';
 import CradList from './cardlist';
 
 export default class CheckinPage extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      pageTranslate:null,
-      wordAnimate:null,
-    }  
+      pageTranslate: null,
+      wordAnimate: null,
+    }
   }
 
-  
-  handleClick = (e)=>{
+  handleClick = (e) => {
     e.preventDefault();
-    const originalHeight=document.documentElement.clientHeight ||document.body.clientHeight;
-    this.setState({
-      pageTranslate:1,
-      wordAnimate:true,
-      // originalHeight:originalHeight,
-    })
-  } 
+    const curTime = new Date().getTime();
+    const startTime = new Date('2019/03/08 18:00:00').getTime();
+    if (curTime >= startTime) {
+      this.setState({
+        pageTranslate: 1,
+        wordAnimate: true,
+      })
+    } else {
+      Toast.info('签到尚未开始，请于2019-03-08 18:00后签到');
+    }
+  }
 
   handleShowlist = () => {
     this.setState({
-      pageTranslate:-1,
+      pageTranslate: -1,
     })
   }
-  handleGetOenId = () => {
-    const currentUrl = window.location.href;
-    let openId = null;
-    try{
-      openId = currentUrl.split('?')['1'].split('=')['1']
-    }catch(err){
-       console.log(err);
-    }
-    
-    return openId;
-  }
 
-   render(){
-     const {wordAnimate} = this.state;
-     const {screenHeight } = this.props;
-    const bgstyle = wordAnimate?{transition:'background-position-y 1s ease',backgroundPositionY:'bottom'}:null;
-    return (<div  className="root-bg" style={{...bgstyle,height:`${screenHeight}px`}}>
-        <CheckForm handleClick={this.handleClick}  {...this.state} {...this.props}/>
-        <CheckSub  Showlist={this.handleShowlist} {...this.props} {...this.state}/>
-        <CradList {...this.state} {...this.props}/>
+  render() {
+    const { wordAnimate } = this.state;
+    const { screenHeight } = this.props;
+    const bgstyle = wordAnimate ? { transition: 'background-position-y 1s ease', backgroundPositionY: 'bottom' } : null;
+    return (<div className="root-bg" style={{ ...bgstyle, height: `${screenHeight}px` }}>
+      <CheckForm handleClick={this.handleClick}  {...this.state} {...this.props} />
+      <CheckSub Showlist={this.handleShowlist} {...this.props} {...this.state} />
+      <CradList {...this.state} {...this.props} />
     </div>)
-   }
+  }
 }
   
