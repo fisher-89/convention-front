@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip, message } from 'antd';
+import { Row, Col, Form, Select, InputNumber, Button, Tag, List, Card, Avatar, Tooltip, message, Popconfirm } from 'antd';
 import request from '../../request';
 import './style.less';
 
@@ -77,6 +77,32 @@ class XX extends PureComponent {
       const miderr = Object.values(error.response.data.errors);
       message.error(miderr);
     }
+  }
+
+  cleanAllData = () => {
+    const { resetFields } = this.props.form;
+    const _this = this;
+    const options = {
+      type: 'delete',
+      params: {},
+    };
+    function deleteAlldata() {
+      resetFields();
+      _this.setState({
+        alldata: [],
+        inround: 1,
+        makesure: false,
+        nextround: true,
+        pushable: false,
+        rechoice: false,
+        round: null,
+        selected: [],
+        start: true,
+        stop: true,
+        tapable: false,
+      })
+    }
+    request('/api/configuration_clear', options, deleteAlldata, (error) => this.errors(error));
   }
 
   makeSure = () => {
@@ -213,7 +239,7 @@ class XX extends PureComponent {
 
   stopp = (e, id, name) => {
     e.preventDefault();
-    if (confirm('确认删除'+name+'？')) {
+    if (confirm('确认删除' + name + '？')) {
       this.delete(id);
     }
   };
@@ -233,10 +259,16 @@ class XX extends PureComponent {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const number = getFieldValue('persions');
     const reSelected = !!!(selected.length !== number && !!number && rechoice);
+    const clearButton = alldata.length ? (
+      <Popconfirm placement="top" title='确定要删除所有抽奖数据吗？' onConfirm={() => this.cleanAllData()} okText="是的，我就要" cancelText="算了算了">
+        <Button >一键清除所有抽奖数据</Button>
+      </Popconfirm>
+    ) : '';
     return (
       <div>
         <Row>
           <Col span={6} className='eee'>
+            {clearButton}
             <List
               grid={{
                 gutter: 8, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 1,
