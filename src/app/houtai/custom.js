@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Table, Form, Button, Icon, Modal, Input, Row, Col, Popover, Upload, message } from 'antd';
+import { Table, Form, Button, Icon, Modal, Input, Row, Col, Popover, Upload, message, Popconfirm } from 'antd';
 import Highlighter from 'react-highlight-words';
 import request from '../../request';
 
@@ -178,6 +178,25 @@ class AA extends PureComponent {
     resetFields();
   }
 
+  cleanAllData = () => {
+    const _this = this;
+    const options = {
+      type: 'delete',
+      params: {},
+    };
+    function deleteAlldata() {
+      _this.setState({
+        custom: [],
+        visible: false,
+        initialvalue: undefined,
+        searchText: '',
+        loading: false,
+        imageUrl: undefined,
+      })
+    }
+    request('/api/sign_clear ', options, deleteAlldata, (error) => this.errors(error));
+  }
+
   render() {
     const { custom, visible, initialvalue, imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
@@ -277,8 +296,14 @@ class AA extends PureComponent {
         <div>Upload</div>
       </div>
     );
+    const clearButton = custom.length ? (
+      <Popconfirm placement="top" title='确定要删除所有签到数据吗？' onConfirm={() => this.cleanAllData()} okText="是的，我就要" cancelText="算了算了">
+        <Button >一键清除所有签到数据</Button>
+      </Popconfirm>
+    ) : '';
     return (
       <Fragment>
+        {clearButton}
         <Table
           columns={columns}
           rowKey="id"
