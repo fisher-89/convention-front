@@ -16,14 +16,14 @@ export default class CheckinPage extends React.Component {
   handleClick = (e) => {
     e.preventDefault();
     const curTime = new Date().getTime();
-    const startTime = new Date('2019/03/08 18:00:00').getTime();
+    const startTime = new Date('2019/03/07 00:00:00').getTime();
     if (curTime >= startTime) {
       this.setState({
         pageTranslate: 1,
         wordAnimate: true,
       })
     } else {
-      Toast.info('签到尚未开始，请于2019-03-08 18:00后签到');
+      Toast.info('签到尚未开始，请于2019-03-07后签到');
     }
   }
 
