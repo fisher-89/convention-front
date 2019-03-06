@@ -3,32 +3,37 @@ import './cardlist.less';
 import titleImage from 'public/checkin/program_title.png';
 
 const listName = [
-  ['01/', '14:00', '开场白'],
-  ['02/', '14:14', '铁军宣誓仪式'],
-  ['03/', '14:22', '开幕致辞'],
-  ['04/', '14:32', '各品牌军令状'],
-  ['05/', '14:52', '晏总分享'],
-  ['06/', '15:12', '时装走秀'],
-  ['07/', '15:32', '员工颁奖'],
-  ['08/', '15:57', '喜哥分享'],
-  ['09/', '16:30', '客户颁奖'],
-  ['10/', '16:45', '新省代客户授牌'],
-  ['11/', '16:45', '感恩环节'],
-  ['12/', '17:05', '大壮演唱'],
-  ['13/', '17:07', '分红'],
-  ['14/', '17:27', '《我们在一起》大合唱']
+  ['01/', '14:00', '开场舞'],
+  ['02/', '14:11', '奏唱国歌'],
+  ['03/', '14:13', '开幕致辞'],
+  ['04/', '14:23', '铁军宣誓仪式'],
+  ['05/', '14:31', '创创晏总分享'],
+  ['06/', '14:51', '时装走秀'],
+  ['07/', '15:11', '员工颁奖'],
+  ['08/', '15:36', '喜哥演唱×分享'],
+  ['09/', '16:14', '客户/厂家颁奖'],
+  ['10/', '16:29', '省代、市代授证仪式'],
+  ['11/', '16:34', '感恩环节'],
+  ['12/', '16:44', '大壮演唱'],
+  ['13/', '16:56', '分红'],
+  ['14/', '17:18', '各品牌军令状'],
+  ['15/', '17:38', '大合唱'],
 ]
 
 export default class CardList extends React.PureComponent {
 
   makeList = () => {
     let items = [];
-    const interval = 6.8;
-    const positionTop = 2.9;
+    const positionTop = 3;
+    const interval = (98 - positionTop) / listName.length; //6.8
     for (let i = 0; i < listName.length; i += 1) {
-      items.push(<div key={i} className='listitem' style={{ top: `${interval * i + positionTop}%` }}><span
-        className='number'>{listName[i][0]}</span><span className='time'>{listName[i][1]}</span><span
-        className='content'>{listName[i][2]}</span></div>)
+      items.push(
+        <div key={i} className='listitem' style={{ top: `${interval * i + positionTop}%` }}>
+          <span className='number'>{listName[i][0]}</span>
+          <span className='time'>{listName[i][1]}</span>
+          <span className='content'>{listName[i][2]}</span>
+        </div>
+      );
     }
     return items;
   }
@@ -44,8 +49,10 @@ export default class CardList extends React.PureComponent {
     const fontsize = pageWidth * .04375;
     const programBorderRadius = pageWidth * 0.05;
     return (
-      <div className='cardlistPage'
-           style={{ transition: 'top 1s ease', top: pageTranslate == '-1' ? '50%' : '150%', ...pageStyle }}>
+      <div
+        className='cardlistPage'
+        style={{ transition: 'top 1s ease', top: pageTranslate == '-1' ? '50%' : '150%', ...pageStyle }}
+      >
         <div className='title'>
           <img src={titleImage} />
         </div>
