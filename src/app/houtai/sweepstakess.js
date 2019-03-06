@@ -331,7 +331,7 @@ class XX extends PureComponent {
                   <div className='aaa'>
                     {selected.map(item => {
                       return (
-                        <Tag key={item.openid} closable={true} onClose={(e) => this.stopp(e, item.openid, item.name)} >
+                        <Tag key={item.openid} closable={stop} onClose={(e) => this.stopp(e, item.openid, item.name)} >
                           <Tooltip title={item.mobile}>
                             <Avatar size="mid" src={item.avatar} />{item.name}
                           </Tooltip>
