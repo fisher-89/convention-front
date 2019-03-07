@@ -1,9 +1,25 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Table, Form, Button, Icon, Modal, Input, Row, Col, Popover, Upload, message, Popconfirm } from 'antd';
+import {
+  Table,
+  Form,
+  Button,
+  Icon,
+  Modal,
+  Input,
+  Row,
+  Col,
+  Popover,
+  Upload,
+  message,
+  Popconfirm,
+  DatePicker
+} from 'antd';
+import moment from 'moment';
 import Highlighter from 'react-highlight-words';
 import request from '../../request';
 
 const FormItem = Form.Item;
+const dateFormat = 'YYYY-MM-DD';
 
 class AA extends PureComponent {
   constructor(props) {
@@ -72,37 +88,37 @@ class AA extends PureComponent {
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
-      setSelectedKeys, selectedKeys, confirm, clearFilters,
-    }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={node => {
-              this.searchInput = node;
-            }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm)}
-            icon="search"
-            size="small"
-            style={{ width: 90, marginRight: 8 }}
-          >
-            搜索
+                       setSelectedKeys, selectedKeys, confirm, clearFilters,
+                     }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          搜索
         </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            重置
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          重置
         </Button>
-        </div>
-      ),
+      </div>
+    ),
     filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
@@ -142,6 +158,8 @@ class AA extends PureComponent {
         idcard: imageUrl,
       };
     }
+    // 入住开始时间处理
+    params.start_time = params.start_time.format(dateFormat);
     const options = {
       type: 'patch',
       params,
@@ -184,6 +202,7 @@ class AA extends PureComponent {
       type: 'delete',
       params: {},
     };
+
     function deleteAlldata() {
       _this.setState({
         custom: [],
@@ -194,12 +213,23 @@ class AA extends PureComponent {
         imageUrl: undefined,
       })
     }
+
     request('/api/sign_clear ', options, deleteAlldata, (error) => this.errors(error));
   }
+
+  // 获取当前日期
+  getNowDate = () => {
+    const dateObj = new Date(Date.now());
+    const nowDate = dateObj.toLocaleDateString().replace(/\//g, "-");
+    return nowDate;
+  }
+
 
   render() {
     const { custom, visible, initialvalue, imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
+    // 开始入住日期
+    const startTime = (initialvalue && (initialvalue.start_time !== null)) ? initialvalue.start_time : this.getNowDate();
     const columns = [
       {
         title: 'ID',
@@ -240,11 +270,18 @@ class AA extends PureComponent {
           { value: '桐乡市美高大酒店', text: '桐乡市美高大酒店' },
           { value: '桐乡璞遇智慧酒店', text: '桐乡璞遇智慧酒店' },
         ],
-      }, {
+      },
+      {
         title: '酒店房间号',
         dataIndex: 'hotel_num',
         ...this.getColumnSearchProps('hotel_num'),
-      }, {
+      },
+      {
+        title: '入住时间',
+        dataIndex: 'start_time',
+        ...this.getColumnSearchProps('start_time'),
+      },
+      {
         title: '身份证',
         dataIndex: 'idcard',
         render: key => {
@@ -297,8 +334,9 @@ class AA extends PureComponent {
       </div>
     );
     const clearButton = custom.length ? (
-      <Popconfirm placement="top" title='确定要删除所有签到数据吗？' onConfirm={() => this.cleanAllData()} okText="是的，我就要" cancelText="算了算了">
-        <Button >一键清除所有签到数据</Button>
+      <Popconfirm placement="top" title='确定要删除所有签到数据吗？' onConfirm={() => this.cleanAllData()} okText="是的，我就要"
+                  cancelText="算了算了">
+        <Button>一键清除所有签到数据</Button>
       </Popconfirm>
     ) : '';
     return (
@@ -361,6 +399,17 @@ class AA extends PureComponent {
                     initialValue: { ...initialvalue }.hotel_num || '',
                   })(
                     <Input />
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col {...colS}>
+                <FormItem {...longFormItemLayout} label="入住日期">
+                  {getFieldDecorator('start_time', {
+                    initialValue: moment(startTime, dateFormat),
+                  })(
+                    <DatePicker format={dateFormat} />
                   )}
                 </FormItem>
               </Col>
