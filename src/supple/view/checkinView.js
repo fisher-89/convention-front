@@ -49,7 +49,7 @@ class CheckIn extends React.Component {
   handleSearchSubmit = () => {
     const { searchtext } = this.state;
     if (!searchtext) return;
-    const url = `/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}`;
+    const url = `/api/sign/?category=mobile&filters=name~${searchtext}|mobile~${searchtext}|number~${searchtext}`;
     const that = this;
     request(url, {}, res => {
       if (res.status == '200') {
@@ -96,7 +96,7 @@ class CheckIn extends React.Component {
     return (
       <div className='supplePage'>
         <SearchBar
-          placeholder="搜索客户姓名/电话"
+          placeholder="搜索客户姓名/电话/编号"
           cancelText='搜索'
           onChange={this.handleSearch}
           onCancel={this.handleSearchSubmit}
