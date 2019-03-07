@@ -61,14 +61,25 @@ export default class CheckIn extends React.Component {
   }
 
   handleGetOenId = () => {
-    const currentUrl = window.location.href;
-    let openId = null;
-    try {
-      openId = currentUrl.split('?')['1'].split('=')['1']
-    } catch (err) {
-      console.log(err);
+    let query = window.location.search;
+    if(query.indexOf('?') !== -1){
+      query = query.substr(1);
     }
+    const reg = /([^=&\s]+)[=\s]*([^&\s]*)/g;
+    const obj = {};
+    while(reg.exec(query)){
+      obj[RegExp.$1] = RegExp.$2;
+    }
+    const openId = obj.openid;
 
+    // const currentUrl = window.location.href;
+    // let openId = null;
+    // try {
+    //   openId = currentUrl.split('?')['1'].split('=')['1']
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    //
     return openId;
   }
 

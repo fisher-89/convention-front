@@ -121,6 +121,7 @@ export default class CheckSub extends React.PureComponent {
     }).catch(err => {
       //错误返回码
       const { response } = err;
+      console.log(response);
       if (response.status == '422' && response.data.errors['openid']) {
         axios.get(`/api/sign/${this.handleGetOenId()}`)
           .then(res => {
@@ -136,6 +137,8 @@ export default class CheckSub extends React.PureComponent {
         const key = Object.keys(response.data.errors)[0];
         const error = response.data.errors[key];
         Toast.fail(error[0], 1);
+      }else if(response.status === 400){
+        Toast.fail(response.data.message,1);
       }
     })
   }
