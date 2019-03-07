@@ -194,7 +194,7 @@ export default class CheckSub extends React.PureComponent {
                    onChange={this.handlegetName} />
             <input style={{ fontSize: `${fontSize}px` }} className='formphone' type='number' onBlur={this.handleBlur}
                    onChange={this.handlePassword} />
-            <input style={{ fontSize: `${fontSize}px` }} className='formnumber' type='number' onBlur={this.handleBlur}
+            <input style={{ fontSize: `${fontSize}px` }} className='formnumber' type='text' onBlur={this.handleBlur}
                    onChange={this.handleNumber} />
           </div>
         </div>
