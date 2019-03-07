@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { withRouter } from 'react-router-dom';
-import { List, InputItem, Button, Toast, ImagePicker, Picker } from 'antd-mobile';
+import { List, InputItem, Button, Toast, ImagePicker, Picker, DatePicker } from 'antd-mobile';
 import request from '../../request';
 import './index.less';
 
@@ -11,24 +11,38 @@ const options = [
   { value: '桐乡市美高大酒店', label: '桐乡市美高大酒店' },
   { value: '桐乡璞遇智慧酒店', label: '桐乡璞遇智慧酒店' }
 ];
+const now = new Date(Date.now());
 
 class FormSubmit extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       formData: {},
       files: [],
       selectedOption: null,
+      startTime: now,
     }
   }
 
   componentWillMount() {
     const id = this.handleGetID();
     const globalData = JSON.parse(sessionStorage.getItem('globalData'));
+    console.log(id, globalData);
     if (globalData) {
       this.state.formData = globalData[id];
       if (globalData[id] && globalData[id].idcard) {
         this.state.files = [{ url: globalData[id]['idcard'] }]
+      }
+      const startTime = globalData[id].start_time;
+      if (globalData[id] && startTime) {
+        this.setState({
+          startTime: new Date(Date.parse(startTime))
+        })
+      } else {
+        this.setState({
+          startTime: now,
+        })
       }
     }
   }
@@ -44,7 +58,12 @@ class FormSubmit extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { formData } = this.state;
+    const { formData, startTime } = this.state;
+    const dateObj = new Date(startTime);
+    // console.log(startDate.toLocaleDateString().replace(/\//g, "-") + " " + startDate.toTimeString().substr(0, 8));
+    const newStartTime = dateObj.toLocaleDateString().replace(/\//g, "-");
+
+    formData.start_time = newStartTime;
     const url = `/api/sign/${formData['openid']}`
     request(url, { type: 'patch', params: formData },
       res => {
@@ -80,6 +99,11 @@ class FormSubmit extends React.Component {
 
   handleHotelnum = (value) => {
     this.state.formData['hotel_num'] = value;
+  }
+  handleStartTime = (value) => {
+    this.setState({
+      startTime: value,
+    })
   }
 
   filesOnchange = (files, type) => {
@@ -120,7 +144,7 @@ class FormSubmit extends React.Component {
 
   render() {
     const { name, mobile, number, hotel_name, hotel_num } = this.state.formData;
-    let { files, selectedOption } = this.state;
+    let { files, selectedOption, startTime } = this.state;
     if (!selectedOption && hotel_name) {
       let items = [];
       items.push(hotel_name)
@@ -141,6 +165,15 @@ class FormSubmit extends React.Component {
               <List.Item arrow="horizontal">入住酒店</List.Item>
             </Picker>
             <InputItem placeholder='请输入酒店房间号' defaultValue={hotel_num} onChange={this.handleHotelnum}>酒店房间号</InputItem>
+            <DatePicker
+              mode="date"
+              title="选择日期"
+              extra="Optional"
+              value={startTime}
+              onChange={this.handleStartTime}
+            >
+              <List.Item arrow="horizontal">入住日期</List.Item>
+            </DatePicker>
             <List.Item className='idcard'>
               <div style={{ width: '85px', marginRight: '5px' }}>身份证信息</div>
               <ImagePicker
