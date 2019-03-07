@@ -72,6 +72,7 @@ export default class CheckIn extends React.Component {
     }
     const openId = obj.openid;
 
+
     // const currentUrl = window.location.href;
     // let openId = null;
     // try {

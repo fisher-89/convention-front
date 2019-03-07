@@ -138,6 +138,7 @@ export default class CheckSub extends React.PureComponent {
         const error = response.data.errors[key];
         Toast.fail(error[0], 1);
       }else if(response.status === 400){
+
         Toast.fail(response.data.message,1);
       }
     })
