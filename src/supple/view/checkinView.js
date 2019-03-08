@@ -31,8 +31,8 @@ class CheckIn extends React.Component {
         }
       },
       (err) => {
-        if (err.status === 400) {
-          Toast.fail(err.data.message, 1);
+        if (err.response && err.response.data.message) {
+          Toast.fail(err.response.data.message, 1);
         } else {
           Toast.fail('获取数据失败', 1);
         }
@@ -63,8 +63,8 @@ class CheckIn extends React.Component {
         })
       }
     }, (err) => {
-      if (err.status === 400) {
-        Toast.fail(err.data.message, 1);
+      if (err.response && err.response.data.message) {
+        Toast.fail(err.response.data.message, 1);
       } else {
         Toast.fail('获取数据失败', 1);
       }
@@ -81,22 +81,22 @@ class CheckIn extends React.Component {
   }
 
   makeList = (list) => {
-    let items = [];
-    for (let i = 0; i < list.length; i += 1) {
-      let hotel_name = list[i]['hotel_name'];
-      let hotel_num = list[i]['hotel_num'];
-      let idcard = list[i]['idcard'];
-      let supple = hotel_name && hotel_num && !idcard ? (<span>已补录</span>) : (
-        <span index={i} onClick={this.handleHover} className='hover'>点击补录</span>);
-      items.push(
+    return list.map((item, i) => {
+      const { hotel_name, hotel_num, idcard, start_time } = item;
+      const finished = hotel_name && hotel_num && idcard && start_time;
+      let supple = (
+        <span index={i} onClick={this.handleHover} className='hover'>
+          {finished ? '已补录' : '点击补录'}
+        </span>
+      );
+      return (
         <Item className='items' key={i}>
           <div className='name'>{list[i]['name']}</div>
           <div className='mobile'>{list[i]['mobile']}</div>
           <div className='supple'>{supple}</div>
         </Item>
       );
-    }
-    return items;
+    });
   }
 
 

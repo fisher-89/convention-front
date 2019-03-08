@@ -60,20 +60,23 @@ class FormSubmit extends React.Component {
     const { formData, startTime } = this.state;
     const dateObj = new Date(startTime);
     const newStartTime = dateObj.toLocaleDateString().replace(/\//g, "-");
-
     formData.start_time = newStartTime;
     const url = `/api/sign/${formData['openid']}`
     request(url, { type: 'patch', params: formData },
-      res => {
+      (res) => {
         if (res.status == '201') {
           Toast.success('提交成功', 1, function () {
             window.history.go(-1);
           });
         }
       },
-      error => {
-        Toast.success('提交失败', 1);
-      })
+      (err) => {
+        if (err.response && err.response.data.message) {
+          Toast.fail(err.response.data.message, 1);
+        } else {
+          Toast.fail('提交失败', 1);
+        }
+      });
   }
 
   handleName = (value) => {
@@ -132,7 +135,6 @@ class FormSubmit extends React.Component {
           }
         },
         err => {
-          console.log(err);
           Toast.hide();
           Toast.fail('图片上传失败', 1);
         })
