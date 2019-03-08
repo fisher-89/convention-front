@@ -23,15 +23,19 @@ class CheckIn extends React.Component {
     const that = this;
     request('/api/sign/?category=mobile', {},
       (res) => {
-        if (res.status == '200') {
+        if (res.status === 200) {
           sessionStorage.setItem('globalData', JSON.stringify(res['data']));
           that.setState({
             pageList: res['data'],
           })
         }
       },
-      () => {
-        Toast.fail('获取数据失败', 1);
+      (err) => {
+        if (err.status === 400) {
+          Toast.fail(err.data.message, 1);
+        } else {
+          Toast.fail('获取数据失败', 1);
+        }
       }
     )
   }
@@ -53,13 +57,18 @@ class CheckIn extends React.Component {
     const that = this;
     request(url, {}, res => {
       if (res.status == '200') {
+        sessionStorage.setItem('globalData', JSON.stringify(res['data']));
         that.setState({
           pageList: res['data'],
         })
       }
-    }, err => {
-      Toast.fail('获取数据失败', 1);
-    })
+    }, (err) => {
+      if (err.status === 400) {
+        Toast.fail(err.data.message, 1);
+      } else {
+        Toast.fail('获取数据失败', 1);
+      }
+    });
   }
 
   handleBlur = () => {

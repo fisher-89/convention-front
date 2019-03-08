@@ -28,7 +28,6 @@ class FormSubmit extends React.Component {
   componentWillMount() {
     const id = this.handleGetID();
     const globalData = JSON.parse(sessionStorage.getItem('globalData'));
-    console.log(id, globalData);
     if (globalData) {
       this.state.formData = globalData[id];
       if (globalData[id] && globalData[id].idcard) {
@@ -60,7 +59,6 @@ class FormSubmit extends React.Component {
     e.preventDefault();
     const { formData, startTime } = this.state;
     const dateObj = new Date(startTime);
-    // console.log(startDate.toLocaleDateString().replace(/\//g, "-") + " " + startDate.toTimeString().substr(0, 8));
     const newStartTime = dateObj.toLocaleDateString().replace(/\//g, "-");
 
     formData.start_time = newStartTime;
