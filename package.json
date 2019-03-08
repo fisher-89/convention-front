@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "eslint": "^5.12.1",
     "history": "^4.7.2",
+    "image-compressor.js": "^1.1.4",
     "jweixin-module": "^1.4.1",
     "lodash": "^4.17.11",
     "lodash.debounce": "^4.0.8",

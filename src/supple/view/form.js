@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { withRouter } from 'react-router-dom';
+import ImageCompressor from 'image-compressor.js';
 import { List, InputItem, Button, Toast, ImagePicker, Picker, DatePicker } from 'antd-mobile';
 import request from '../../request';
 import './index.less';
@@ -122,27 +123,37 @@ class FormSubmit extends React.Component {
       });
     }
     if (type == 'add') {
-      const imgformData = new FormData();
-      imgformData.append('idcard', files[files.length - 1].file);
-      const that = this;
       Toast.loading('上传中...', 0, null, true);
-      request('/api/upload', { type: 'post', params: imgformData },
-        res => {
-          if (res.status == '201') {
-            Toast.hide();
-            that.state.formData['idcard'] = res.data;
-            that.setState({
-              files: [{ url: res.data }],
-              fileupload: null,
-            });
-          }
-        },
-        err => {
-          Toast.hide();
-          Toast.fail('图片上传失败', 1);
-        })
+      const imgformData = new FormData();
+      const uploadFile = files[files.length - 1].file;
+      const compressor = new ImageCompressor();
+      compressor.compress(
+        uploadFile,
+        { quality: 0.6 },
+      ).then(
+        (blob) => {
+          const type = /.\w+$/.exec(blob.name)[0];
+          imgformData.append('idcard', blob, `idcard${type}`);
+          request('/api/upload', { type: 'post', params: imgformData },
+            (res) => {
+              if (res.status == '201') {
+                Toast.hide();
+                this.state.formData['idcard'] = res.data;
+                this.setState({
+                  files: [{ url: res.data }],
+                  fileupload: null,
+                });
+              }
+            },
+            () => {
+              Toast.hide();
+              Toast.fail('图片上传失败', 1);
+            }
+          );
+        }
+      );
     }
-  }
+  };
 
 
   render() {
