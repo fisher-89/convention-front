@@ -129,7 +129,7 @@ class FormSubmit extends React.Component {
       const compressor = new ImageCompressor();
       compressor.compress(
         uploadFile,
-        { quality: 0.6 },
+        { quality: 0.4 },
       ).then(
         (blob) => {
           const type = /.\w+$/.exec(blob.name)[0];
