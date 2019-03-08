@@ -16,7 +16,6 @@ const now = new Date(Date.now());
 class FormSubmit extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       formData: {},
       files: [],
@@ -59,7 +58,7 @@ class FormSubmit extends React.Component {
     e.preventDefault();
     const { formData, startTime } = this.state;
     const dateObj = new Date(startTime);
-    const newStartTime = dateObj.toLocaleDateString().replace(/\//g, "-");
+    const newStartTime = `${dateObj.getFullYear()}-${this.prefixZero((dateObj.getMonth() + 1), 2)}-${this.prefixZero(dateObj.getDate(), 2)}`;
     formData.start_time = newStartTime;
     const url = `/api/sign/${formData['openid']}`
     request(url, { type: 'patch', params: formData },
@@ -105,6 +104,10 @@ class FormSubmit extends React.Component {
     this.setState({
       startTime: value,
     })
+  }
+
+  prefixZero = (num, n) => {
+    return (Array(n).join(0) + num).slice(-n);
   }
 
   filesOnchange = (files, type) => {
